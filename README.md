@@ -1,6 +1,6 @@
 # PerrisDavis.com
 
-Personal site for Perris Davis — builder, writer, Seattle.
+Personal site for Perris Davis — software engineer.
 
 Static HTML / CSS / a small JS file. Hosted on **GitHub Pages** at
 [perrisdavis.com](https://perrisdavis.com), served from this repo's
