@@ -997,19 +997,29 @@ code {
 
 .site-footer__bottom {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
   padding-top: clamp(20px, 2.5vw, 32px);
   border-top: 1px dashed var(--rule);
 }
 .site-footer__elsewhere {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: .55rem;
   font-size: .76rem;
   color: var(--fg-2);
+}
+@media (max-width: 640px) {
+  .site-footer__bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .site-footer__elsewhere { justify-content: center; }
 }
 .site-footer__elsewhere a {
   color: var(--fg);
