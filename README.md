@@ -23,7 +23,7 @@
 
 I design and ship CI/CD, MDM, and AI/ML systems for strategic customers running fleets of Macs on Apple Silicon. By night: iOS apps, macOS tools, and open-source Swift projects.
 
-Past stops: **Apple** · **Robinhood** · **lululemon** · **Hedge**.
+Shipped at **AWS** · **Apple** · **Robinhood** · **lululemon** · **Hedge**.
 
 ### 🛠️ &nbsp; Currently shipping
 
