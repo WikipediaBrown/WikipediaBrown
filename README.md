@@ -1,53 +1,121 @@
-<!-- This README is the GitHub profile README for @WikipediaBrown.
-     The repo `WikipediaBrown/WikipediaBrown` doubles as a profile repo
-     (this README displays on the profile page) AND hosts the site
-     wikipediabrown.dev (Jekyll, served from /docs). -->
+<!-- Profile README for @WikipediaBrown.
+     `WikipediaBrown/WikipediaBrown` is a same-name-as-username repo, so
+     GitHub renders this README at the top of the profile page. Same repo
+     also hosts wikipediabrown.dev from /docs. -->
 
-```
-╔═══════════════════════════════════════════════════════════════════╗
-║                                                                   ║
-║      ┌────┐  ┌────┐  ┌────┐                                       ║
-║      │ w  │  │ b  │  │  . │      wikipedia@brown ~ %              ║
-║      └────┘  └────┘  └────┘                                       ║
-║                                                                   ║
-╚═══════════════════════════════════════════════════════════════════╝
-```
+<div align="center">
 
-### Hi, I'm Wikipedia Brown 👋
+<a href="https://wikipediabrown.dev">
+  <img alt="Wikipedia Brown — Software Engineer"
+       src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=30&duration=2400&pause=700&color=FF5A30&center=true&vCenter=true&width=760&height=64&lines=Wikipedia+Brown;Software+Engineer;Sr.+Solutions+Architect;Apple+Silicon+%E2%80%94+at+scale;Swift+%C2%B7+iOS+%C2%B7+macOS+%C2%B7+AWS" />
+</a>
 
-I'm a software engineer. Currently a **Senior Solutions Architect** designing
-cloud-based Mac environments — CI/CD, MDM, and AI/ML on Apple Silicon at scale.
-iOS apps, macOS tools, and open-source Swift projects after hours.
+<br/>
 
-Past stops: Apple, Robinhood, lululemon, Hedge.
+<a href="https://wikipediabrown.dev"><img alt="wikipediabrown.dev" src="https://img.shields.io/badge/wikipediabrown.dev-FF5A30?style=for-the-badge&labelColor=0F0E0D" /></a>
+<a href="mailto:hello@wikipediabrown.dev"><img alt="email" src="https://img.shields.io/badge/hello%40wikipediabrown.dev-ECE7DA?style=for-the-badge&labelColor=0F0E0D" /></a>
+<a href="https://www.linkedin.com/in/perris-davis"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=0F0E0D" /></a>
+<a href="https://apps.apple.com/us/developer/perris-davis/id1072361630"><img alt="App Store" src="https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white&labelColor=0F0E0D" /></a>
 
-### What I'm building
-
-| Project | What it is | Where |
-|---|---|---|
-| 🎃 **[Spooktacular](https://spooktacular.app/)** | Open-source macOS VM manager for Apple Silicon — ephemeral runner pools, warm-pool scrub validation, Kubernetes orchestration. 424 tests, MIT-licensed. | [spooktacular.app](https://spooktacular.app/) |
-| 🌈 **[Purizumu](https://apps.apple.com/us/app/purizumu/id6477698065)** | Japanese for *"Prism."* A color exploration app — tap anywhere for a color, build palettes grounded in real color theory. | App Store |
-| 📐 **[napkin](https://getnapkin.to)** | A Swift 6.2 framework for building apps as a tree of isolated, composable units. Uber's RIBs reimagined for Swift Concurrency. | [getnapkin.to](https://getnapkin.to) |
-| 🎯 **[SFSymbolsKit](https://github.com/WikipediaBrown/SFSymbolsKit)** | Tiny Swift package that makes SF Symbols painless. Extensions on `String`, `UIImage`, `NSImage`. | GitHub |
-
-### Stack
-
-`Swift` · `iOS` · `macOS` · `SwiftUI` · `Swift Concurrency` · `AWS` · `MDM` · `CI/CD` · `AI/ML`
-
-### Credentials
-
-- AWS Certified AI Practitioner — [verify](https://www.credly.com/badges/3ca88eef-4a27-4623-af70-ab9df1c46f34)
-- AWS Certified Cloud Practitioner — [verify](https://www.credly.com/badges/dffecc92-f656-4742-af20-add54d9c3634)
-
-### Elsewhere
-
-- 🌐 **[wikipediabrown.dev](https://wikipediabrown.dev)** — full site, field notes, /now
-- 📨 **hello@wikipediabrown.dev**
-- 👔 [LinkedIn](https://www.linkedin.com/in/perris-davis)
-- 🍎 [App Store](https://apps.apple.com/us/developer/perris-davis/id1072361630)
+</div>
 
 ---
 
-<sub>*"I'm just the guy that does the thing." — I bit that.*</sub>
+I design and ship CI/CD, MDM, and AI/ML systems for strategic customers running fleets of Macs on Apple Silicon. By night: iOS apps, macOS tools, and open-source Swift projects.
 
-<sub>This repo also hosts the source for wikipediabrown.dev — see [`/docs`](./docs).</sub>
+Past stops: **Apple** · **Robinhood** · **lululemon** · **Hedge**.
+
+### 🛠️ &nbsp; Currently shipping
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+#### 👻 [Spooktacular](https://spooktacular.app/)
+
+Open-source macOS VM manager for Apple Silicon. Ephemeral runner pools, warm-pool scrub validation, Kubernetes orchestration. **424 tests, MIT-licensed.**
+
+[![spooktacular.app](https://img.shields.io/badge/spooktacular.app-FF5A30?style=flat-square&labelColor=0F0E0D)](https://spooktacular.app/)
+
+</td>
+<td width="50%" valign="top">
+
+#### 🌈 [Purizumu](https://apps.apple.com/us/app/purizumu/id6477698065)
+
+*Japanese for "Prism."* A color exploration app — tap anywhere to surface a color, or build palettes grounded in real color theory. **Shipping on the App Store.**
+
+[![App Store](https://img.shields.io/badge/App_Store-0D96F6?style=flat-square&logo=app-store&logoColor=white&labelColor=0F0E0D)](https://apps.apple.com/us/app/purizumu/id6477698065)
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+#### 📐 [napkin](https://getnapkin.to)
+
+A Swift 6.2 framework for building apps as a tree of isolated, composable units. Uber's RIBs reimagined for Swift Concurrency.
+
+[![getnapkin.to](https://img.shields.io/badge/getnapkin.to-FF5A30?style=flat-square&labelColor=0F0E0D)](https://getnapkin.to)
+
+</td>
+<td valign="top">
+
+#### 🎯 [SFSymbolsKit](https://github.com/WikipediaBrown/SFSymbolsKit)
+
+Tiny Swift package that makes SF Symbols painless. Extensions on `String`, `UIImage`, and `NSImage`; full symbol catalog generated by a Python script.
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white&labelColor=0F0E0D)](https://github.com/WikipediaBrown/SFSymbolsKit)
+
+</td>
+</tr>
+</table>
+
+### 🧰 &nbsp; Stack
+
+![Swift](https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white&labelColor=0F0E0D)
+![SwiftUI](https://img.shields.io/badge/SwiftUI-2196F3?style=for-the-badge&logo=swift&logoColor=white&labelColor=0F0E0D)
+![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white&labelColor=0F0E0D)
+![macOS](https://img.shields.io/badge/macOS-ECE7DA?style=for-the-badge&logo=apple&logoColor=black&labelColor=0F0E0D)
+![Xcode](https://img.shields.io/badge/Xcode-1575F9?style=for-the-badge&logo=xcode&logoColor=white&labelColor=0F0E0D)
+![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white&labelColor=0F0E0D)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&labelColor=0F0E0D)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&labelColor=0F0E0D)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0F0E0D)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white&labelColor=0F0E0D)
+
+### 📊 &nbsp; The stats
+
+<div align="center">
+
+<a href="https://github.com/WikipediaBrown">
+<img height="170" alt="GitHub stats"
+     src="https://github-readme-stats.vercel.app/api?username=WikipediaBrown&show_icons=true&hide_border=true&bg_color=0F0E0D&title_color=FF5A30&text_color=ECE7DA&icon_color=FF5A30&include_all_commits=true&count_private=false" />
+<img height="170" alt="Most used languages"
+     src="https://github-readme-stats.vercel.app/api/top-langs/?username=WikipediaBrown&layout=compact&hide_border=true&bg_color=0F0E0D&title_color=FF5A30&text_color=ECE7DA&langs_count=8" />
+</a>
+
+<br/>
+
+<img alt="Contribution streak"
+     src="https://streak-stats.demolab.com?user=WikipediaBrown&theme=transparent&hide_border=true&background=0F0E0D&stroke=0F0E0D&ring=FF5A30&fire=FF5A30&currStreakLabel=FF5A30&sideLabels=ECE7DA&dates=B8AE9C&currStreakNum=ECE7DA&sideNums=ECE7DA" />
+
+</div>
+
+### 🎓 &nbsp; Certifications
+
+| | Credential | Verify |
+|---|---|---|
+| ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazon-aws&logoColor=white&labelColor=0F0E0D) | **AWS Certified AI Practitioner** | [Credly ↗](https://www.credly.com/badges/3ca88eef-4a27-4623-af70-ab9df1c46f34) |
+| ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazon-aws&logoColor=white&labelColor=0F0E0D) | **AWS Certified Cloud Practitioner** | [Credly ↗](https://www.credly.com/badges/dffecc92-f656-4742-af20-add54d9c3634) |
+
+---
+
+<div align="center">
+
+<sub><i>"I'm just the guy that does the thing." — I bit that.</i></sub>
+
+<br/>
+
+<sub>This repo also hosts the source for <a href="https://wikipediabrown.dev">wikipediabrown.dev</a>. See <a href="./docs">/docs</a>.</sub>
+
+</div>
