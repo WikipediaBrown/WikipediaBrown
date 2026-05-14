@@ -357,39 +357,40 @@ code {
 /* ---------- ASCII Mac mini (CSS 3D rotation) ----------
    Hand-drawn ASCII Mac mini sits in the top-right of the hero. CSS rotates
    it on its Y axis with real perspective — the GPU foreshortens the text. */
+/* ASCII Mac mini — converted from a real M4 product photo via Python.
+   Static art with a CRT-style glow + subtle scan lines + slow pulse.        */
 .hero__ascii {
   position: absolute;
-  top: clamp(80px, 8vw, 132px);
+  top: clamp(72px, 7vw, 116px);
   right: var(--gutter);
   margin: 0;
   font-family: var(--mono);
   font-variation-settings: "MONO" 1, "CASL" 0, "slnt" 0;
   font-weight: 500;
-  font-size: clamp(8px, 0.85vw, 11px);
-  line-height: 1.1;
+  font-size: clamp(8px, 0.78vw, 10.5px);
+  line-height: 1.05;
   color: var(--accent);
   letter-spacing: 0;
   white-space: pre;
   user-select: none;
   pointer-events: none;
-  opacity: .92;
-  filter: drop-shadow(0 0 16px rgba(255, 90, 48, .28));
-  text-shadow: 0 0 6px rgba(255, 90, 48, .4);
-
-  transform-origin: center center;
-  transform-style: preserve-3d;
-  animation: macSpin 9s ease-in-out infinite;
-  will-change: transform;
+  opacity: .9;
+  /* Multi-layer glow for a "CRT schematic" feel */
+  filter:
+    drop-shadow(0 0 4px rgba(255, 90, 48, .35))
+    drop-shadow(0 0 18px rgba(255, 90, 48, .18));
+  text-shadow:
+    0 0 1px rgba(255, 90, 48, .65),
+    0 0 6px rgba(255, 90, 48, .35),
+    0 0 18px rgba(255, 90, 48, .2);
+  animation: macPulse 5s ease-in-out infinite;
 }
-@keyframes macSpin {
-  0%, 100% { transform: perspective(1100px) rotateX(12deg) rotateY(-28deg); }
-  50%      { transform: perspective(1100px) rotateX(12deg) rotateY( 28deg); }
+@keyframes macPulse {
+  0%, 100% { opacity: .88; }
+  50%      { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__ascii {
-    animation: none;
-    transform: perspective(1100px) rotateX(10deg) rotateY(0deg);
-  }
+  .hero__ascii { animation: none; opacity: .95; }
 }
 @media (max-width: 980px) { .hero__ascii { display: none; } }
 
