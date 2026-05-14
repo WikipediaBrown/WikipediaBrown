@@ -28,7 +28,7 @@ Shipped at **Uber** · **Capital One** · **Robinhood** · **Apple** · **AWS**.
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td width="33%" valign="top">
 
 #### 👻 [Spooktacular](https://spooktacular.app/)
 
@@ -37,18 +37,7 @@ Open-source macOS VM manager for Apple Silicon. Ephemeral runner pools, warm-poo
 [![spooktacular.app](https://img.shields.io/badge/spooktacular.app-FF5A30?style=flat-square&labelColor=0F0E0D)](https://spooktacular.app/)
 
 </td>
-<td width="50%" valign="top">
-
-#### 🌈 [Purizumu](https://apps.apple.com/us/app/purizumu/id6477698065)
-
-*Japanese for "Prism."* A color exploration app — tap anywhere to surface a color, or build palettes grounded in real color theory. **Shipping on the App Store.**
-
-[![App Store](https://img.shields.io/badge/App_Store-0D96F6?style=flat-square&logo=app-store&logoColor=white&labelColor=0F0E0D)](https://apps.apple.com/us/app/purizumu/id6477698065)
-
-</td>
-</tr>
-<tr>
-<td valign="top">
+<td width="33%" valign="top">
 
 #### 📐 [napkin](https://getnapkin.to)
 
@@ -57,7 +46,7 @@ A Swift 6.2 framework for building apps as a tree of isolated, composable units.
 [![getnapkin.to](https://img.shields.io/badge/getnapkin.to-FF5A30?style=flat-square&labelColor=0F0E0D)](https://getnapkin.to)
 
 </td>
-<td valign="top">
+<td width="33%" valign="top">
 
 #### 🎯 [SFSymbolsKit](https://github.com/WikipediaBrown/SFSymbolsKit)
 
