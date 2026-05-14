@@ -50,7 +50,7 @@ A Swift 6.2 framework for building apps as a tree of isolated, composable units.
 
 #### 🎯 [SFSymbolsKit](https://github.com/WikipediaBrown/SFSymbolsKit)
 
-Apple's [SF Symbols](https://developer.apple.com/sf-symbols/) ships **without** convenience extensions on `String`, `UIImage`, or `NSImage` — SFSymbolsKit fills that gap. Full [symbol catalog](https://developer.apple.com/design/human-interface-guidelines/sf-symbols) as type-safe Swift enums.
+`UIImage(systemName: "heart.fill")` — stringly-typed, silent `nil` on typo, no autocomplete. **SFSymbolsKit fixes that.** Ships Apple's entire [SF Symbols](https://developer.apple.com/sf-symbols/) catalog as a **type-safe** Swift enum with one-liner factories on `String`, `UIImage`, and `NSImage` (iOS + macOS). Compile-time guarantees, not runtime surprises. Tiny dependency, MIT-licensed.
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white&labelColor=0F0E0D)](https://github.com/WikipediaBrown/SFSymbolsKit)
 
