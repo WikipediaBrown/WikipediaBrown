@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" fill="#0F0E0D"/>
-  <text x="50%" y="50%" dy=".1em" text-anchor="middle" dominant-baseline="central"
+  <text x="50%" y="50%" dy=".05em" text-anchor="middle" dominant-baseline="central"
     font-family="ui-monospace,'SF Mono',Menlo,monospace" font-weight="800"
-    font-size="22" fill="#FF5A30">P</text>
+    font-size="16" fill="#FF5A30">wb</text>
 </svg>

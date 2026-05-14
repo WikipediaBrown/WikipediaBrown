@@ -1,63 +1,53 @@
-# PerrisDavis.com
-
-Personal site for Perris Davis — software engineer.
-
-Static HTML / CSS / a small JS file. Hosted on **GitHub Pages** at
-[perrisdavis.com](https://perrisdavis.com), served from this repo's
-[`/docs`](./docs) directory.
-
-## Local preview
-
-```sh
-cd docs
-python3 -m http.server 8000
-# then open http://localhost:8000
-```
-
-## Deployment
-
-GitHub Pages is configured to serve from `master` branch, `/docs` folder.
-Push to `master` and the site is live within a minute or two.
-
-To set this up in GitHub:
-**Settings → Pages → Build and deployment → Source: Deploy from a branch →
-Branch: `master` / `/docs`**.
-
-The custom domain is configured via the `CNAME` file at `docs/CNAME`. The DNS
-records you need on your domain registrar are:
-
-| Type  | Host | Value                       |
-|-------|------|-----------------------------|
-| A     | @    | 185.199.108.153             |
-| A     | @    | 185.199.109.153             |
-| A     | @    | 185.199.110.153             |
-| A     | @    | 185.199.111.153             |
-| CNAME | www  | wikipediabrown.github.io.   |
-
-Then check **"Enforce HTTPS"** in Pages settings once the certificate provisions
-(usually within an hour after DNS resolves).
-
-## Stack
-
-- Plain HTML5 + CSS (no framework, no build step)
-- Type: Fraunces · Newsreader · JetBrains Mono (Google Fonts)
-- A single vanilla JS file for reveal-on-scroll and the year stamp
-
-## Editing
-
-Most content lives in [`docs/index.html`](./docs/index.html). The `/now` section
-(№ 03) is meant to be updated every season or so — last-revised date is in the
-section kicker.
-
-## Repository layout
+<!-- This README is the GitHub profile README for @WikipediaBrown.
+     The repo `WikipediaBrown/WikipediaBrown` doubles as a profile repo
+     (this README displays on the profile page) AND hosts the site
+     wikipediabrown.dev (Jekyll, served from /docs). -->
 
 ```
-docs/
-  index.html        ← all page markup
-  css/main.css      ← all styles
-  js/main.js        ← tiny progressive enhancement
-  img/              ← portfolio thumbnails
-  CNAME             ← custom domain (perrisdavis.com)
-  .nojekyll         ← skip Jekyll processing
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║      ┌────┐  ┌────┐  ┌────┐                                       ║
+║      │ w  │  │ b  │  │  . │      wikipedia@brown ~ %              ║
+║      └────┘  └────┘  └────┘                                       ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
 ```
 
+### Hi, I'm Wikipedia Brown 👋
+
+I'm a software engineer. Currently a **Senior Solutions Architect** designing
+cloud-based Mac environments — CI/CD, MDM, and AI/ML on Apple Silicon at scale.
+iOS apps, macOS tools, and open-source Swift projects after hours.
+
+Past stops: Apple, Robinhood, lululemon, Hedge.
+
+### What I'm building
+
+| Project | What it is | Where |
+|---|---|---|
+| 🎃 **[Spooktacular](https://spooktacular.app/)** | Open-source macOS VM manager for Apple Silicon — ephemeral runner pools, warm-pool scrub validation, Kubernetes orchestration. 424 tests, MIT-licensed. | [spooktacular.app](https://spooktacular.app/) |
+| 🌈 **[Purizumu](https://apps.apple.com/us/app/purizumu/id6477698065)** | Japanese for *"Prism."* A color exploration app — tap anywhere for a color, build palettes grounded in real color theory. | App Store |
+| 📐 **[napkin](https://getnapkin.to)** | A Swift 6.2 framework for building apps as a tree of isolated, composable units. Uber's RIBs reimagined for Swift Concurrency. | [getnapkin.to](https://getnapkin.to) |
+| 🎯 **[SFSymbolsKit](https://github.com/WikipediaBrown/SFSymbolsKit)** | Tiny Swift package that makes SF Symbols painless. Extensions on `String`, `UIImage`, `NSImage`. | GitHub |
+
+### Stack
+
+`Swift` · `iOS` · `macOS` · `SwiftUI` · `Swift Concurrency` · `AWS` · `MDM` · `CI/CD` · `AI/ML`
+
+### Credentials
+
+- AWS Certified AI Practitioner — [verify](https://www.credly.com/badges/3ca88eef-4a27-4623-af70-ab9df1c46f34)
+- AWS Certified Cloud Practitioner — [verify](https://www.credly.com/badges/dffecc92-f656-4742-af20-add54d9c3634)
+
+### Elsewhere
+
+- 🌐 **[wikipediabrown.dev](https://wikipediabrown.dev)** — full site, field notes, /now
+- 📨 **hello@wikipediabrown.dev**
+- 👔 [LinkedIn](https://www.linkedin.com/in/perris-davis)
+- 🍎 [App Store](https://apps.apple.com/us/developer/perris-davis/id1072361630)
+
+---
+
+<sub>*"I'm just the guy that does the thing." — I bit that.*</sub>
+
+<sub>This repo also hosts the source for wikipediabrown.dev — see [`/docs`](./docs).</sub>

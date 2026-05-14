@@ -272,7 +272,7 @@ code {
   font-family: var(--mono);
   font-variation-settings: "MONO" 1, "CASL" 0, "slnt" 0;
   font-weight: 600;
-  font-size: clamp(56px, 14vw, 208px);
+  font-size: clamp(40px, 11vw, 168px);  /* sized for "Wikipedia" — the longer word */
   line-height: .92;
   letter-spacing: -.045em;
   margin: 0;
