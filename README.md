@@ -70,19 +70,6 @@ Tiny Swift package that makes SF Symbols painless. Extensions on `String`, `UIIm
 </tr>
 </table>
 
-### 🧰 &nbsp; Stack
-
-![Swift](https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white&labelColor=0F0E0D)
-![SwiftUI](https://img.shields.io/badge/SwiftUI-2196F3?style=for-the-badge&logo=swift&logoColor=white&labelColor=0F0E0D)
-![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white&labelColor=0F0E0D)
-![macOS](https://img.shields.io/badge/macOS-ECE7DA?style=for-the-badge&logo=apple&logoColor=black&labelColor=0F0E0D)
-![Xcode](https://img.shields.io/badge/Xcode-1575F9?style=for-the-badge&logo=xcode&logoColor=white&labelColor=0F0E0D)
-![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white&labelColor=0F0E0D)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&labelColor=0F0E0D)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&labelColor=0F0E0D)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0F0E0D)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white&labelColor=0F0E0D)
-
 ### 📊 &nbsp; The stats
 
 <div align="center">
@@ -108,14 +95,3 @@ Tiny Swift package that makes SF Symbols painless. Extensions on `String`, `UIIm
 | ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazon-aws&logoColor=white&labelColor=0F0E0D) | **AWS Certified AI Practitioner** | [Credly ↗](https://www.credly.com/badges/3ca88eef-4a27-4623-af70-ab9df1c46f34) |
 | ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazon-aws&logoColor=white&labelColor=0F0E0D) | **AWS Certified Cloud Practitioner** | [Credly ↗](https://www.credly.com/badges/dffecc92-f656-4742-af20-add54d9c3634) |
 
----
-
-<div align="center">
-
-<sub><i>"I'm just the guy that does the thing." — I bit that.</i></sub>
-
-<br/>
-
-<sub>This repo also hosts the source for <a href="https://wikipediabrown.dev">wikipediabrown.dev</a>. See <a href="./docs">/docs</a>.</sub>
-
-</div>
