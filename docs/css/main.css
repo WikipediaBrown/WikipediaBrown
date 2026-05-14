@@ -737,6 +737,13 @@ code {
 .colophon em {
   font-variation-settings: "MONO" 1, "CASL" 0, "slnt" -8;
 }
+.colophon__sig {
+  margin: 0;
+  font-size: .76rem;
+  letter-spacing: .02em;
+  color: var(--fg-3);
+}
+.notes__list li { grid-template-columns: 1fr; }
 
 
 /* =========================================================================
