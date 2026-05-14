@@ -1,140 +1,120 @@
 #!/usr/bin/env python3
-"""Pre-render a rotating 3D ASCII Mac mini.
+"""Pre-render a rotating 3D ASCII Mac mini using triple-axis Euler rotation
+plus fixed per-face characters — adapted from danieldotwav/Ascii-Cube
+(https://github.com/danieldotwav/Ascii-Cube), which solves the
+cardinal-angle-flattening problem by rotating around all three axes
+simultaneously at different rates. The box never aligns with the view axis,
+so every frame reads as 3D.
 
-Geometry: a rectangular prism with M4 Mac mini proportions
-  (130 × 130 × 50 mm  →  half-dims 2.5, 2.5, 1.0 — chunky cube).
-Shading: per-face Lambertian (light from upper-left-front).
-Apple logo: a darker patch in the center of the top face.
+Geometry: Mac mini M4 proportions — 130×130×50mm (h/w = 0.385).
 
-Output: a JSON array of `N_FRAMES` ASCII frame strings.
+Output: a JSON array of `N_FRAMES` ASCII frame strings on stdout.
 """
 import math, json, sys
 
-W, H = 64, 28
-N_FRAMES = 36     # more frames = smoother slow rotation
+W, H = 64, 30
+N_FRAMES = 48
 
-# Half-dimensions in world units. Real M4 Mac mini is 130×130×50mm — h/w
-# of 0.385. We render at half-dims (1.0, 1.0, 0.385) and let the projection
-# scales blow it up to fill the canvas; this keeps the proportions exact.
-wD, dD, hD = 1.0, 1.0, 0.385
+# World-space half-dimensions (real M4 Mac mini ratio).
+wD, dD, hD = 20.0, 20.0, 7.7   # h/w = 0.385
 
-# Camera tilt — moderate downward angle (~25°) so the top face is visible
-# but the side faces still read as substantial vertical panels.
-tilt = 0.44
-cT, sT = math.cos(tilt), math.sin(tilt)
+# Perspective camera — mild distance so foreshortening is subtle.
+DISTANCE = 100.0
+VIEW_SCALE = 35.0
 
-# Orthographic projection — no perspective foreshortening. A rectangular
-# box projects as a rectangle (with parallel sides), the way an architect
-# or CAD renderer would draw it. Perspective was making the far edge
-# collapse to a point — "wedge of cheese" effect.
-fxH = 23     # horizontal cells per world unit
-fxV = 13     # vertical cells per world unit (chars are taller than wide)
+# Fixed character per face. Each face reads as a distinct surface.
+# (Top is the densest so the box "lights from above"; the front face is
+#  next-densest; sides and back are lower-density.)
+TOP   = '@'
+FRONT = '#'
+BACK  = ';'
+RIGHT = '*'
+LEFT  = '+'
+APPLE = '.'    # Apple-logo recess on top (darker)
 
-# Density ramp — light → dark; we use it inverted so brighter Lambert
-# values map to denser chars.
-SHADES = ' .,:;+*#%@'  # ASCII-only ramp (smaller JS payload — no unicode escapes)
-
-# Light direction (world-space, normalized). Coming from upper-left-front —
-# this hits the top face strongly, plus the +x and +z side faces partially
-# during rotation, so the side faces aren't entirely black.
-Lx, Ly, Lz = -0.55, -0.70, -0.45
-Llen = math.sqrt(Lx * Lx + Ly * Ly + Lz * Lz)
-Lx, Ly, Lz = Lx / Llen, Ly / Llen, Lz / Llen
-
-AMBIENT = 0.22    # base brightness for any visible face
-DIFFUSE = 0.78    # scaling on the Lambert term
-
-# Faces of the box: name, outward normal (local), and (u,v)→3D function.
-FACES = [
-    ('top',   (0, 1, 0),  lambda u, v: (u * wD,  hD,    v * dD)),
-    ('front', (0, 0, 1),  lambda u, v: (u * wD,  v * hD,  dD)),
-    ('back',  (0, 0, -1), lambda u, v: (u * wD,  v * hD, -dD)),
-    ('right', (1, 0, 0),  lambda u, v: ( wD,     v * hD,  u * dD)),
-    ('left',  (-1, 0, 0), lambda u, v: (-wD,     v * hD,  u * dD)),
-]
+# Sampling stride for the face surfaces. Smaller = denser fill, more CPU.
+STRIDE = 0.6
 
 
-def is_apple_logo(name: str, u: float, v: float) -> bool:
-    """Approximate the Apple logo (recessed dark patch) on the top face.
-    (u, v) ∈ [-1, 1]² parameterize the face."""
-    if name != 'top':
-        return False
+def is_apple(u, v):
+    """Apple logo region on the top face — center disc."""
     return (u * u + v * v) < 0.18
 
 
-def render_frame(angle: float) -> str:
-    cA, sA = math.cos(angle), math.sin(angle)
+def render_frame(A: float, B: float, C: float) -> str:
+    cA, sA = math.cos(A), math.sin(A)
+    cB, sB = math.cos(B), math.sin(B)
+    cC, sC = math.cos(C), math.sin(C)
 
     out  = [[' '] * W for _ in range(H)]
-    zbuf = [[float('inf')] * W for _ in range(H)]
+    zbuf = [[0.0] * W for _ in range(H)]    # store inverseDepth (bigger = closer)
 
-    for name, normal, fn in FACES:
-        # --- Rotate the face's outward normal ---------------------------
-        nx0, ny0, nz0 = normal
-        # Y-axis rotation
-        nx1 =  nx0 * cA + nz0 * sA
-        ny1 =  ny0
-        nz1 = -nx0 * sA + nz0 * cA
-        # X-axis tilt (negative — tips the top of the model toward camera)
-        nx2 =  nx1
-        ny2 =  ny1 * cT + nz1 * sT
-        nz2 = -ny1 * sT + nz1 * cT
+    def plot(i_world: float, j_world: float, k_world: float, ch: str):
+        # Triple-axis rotation: R_z(C) ∘ R_y(B) ∘ R_x(A) applied to (i, j, k).
+        # Formulas transcribed from Ascii-Cube/Source.c, which uses these
+        # exact composites — see calculateX, calculateY, calculateZ there.
+        x = (j_world * sA * sB * cC - k_world * cA * sB * cC +
+             j_world * cA * sC + k_world * sA * sC + i_world * cB * cC)
+        y = (j_world * cA * cC + k_world * sA * cC -
+             j_world * sA * sB * sC + k_world * cA * sB * sC - i_world * cB * sC)
+        z = k_world * cA * cB - j_world * sA * cB + i_world * sB
 
-        # Camera looks from -z toward +z; faces visible when their normal
-        # points back toward the camera, i.e., nz2 < 0.
-        if nz2 >= -0.01:
-            continue
+        z += DISTANCE
+        if z <= 0:
+            return
+        inv = 1.0 / z
+        sx = int(W / 2 + VIEW_SCALE * inv * x * 2)   # *2 for char aspect ratio
+        sy = int(H / 2 - VIEW_SCALE * inv * y)
+        if 0 <= sx < W and 0 <= sy < H and inv > zbuf[sy][sx]:
+            zbuf[sy][sx] = inv
+            out[sy][sx] = ch
 
-        # Per-face Lambertian brightness — flat-shaded face (we'll modulate
-        # for the Apple logo per-cell below). Ambient + diffuse so back/side
-        # faces never drop to pure black.
-        lambert = -(nx2 * Lx + ny2 * Ly + nz2 * Lz)
-        base_b = min(1.0, AMBIENT + max(0.0, lambert) * DIFFUSE)
-
-        # --- Sample the face surface ------------------------------------
-        step = 0.030
-        u = -1.0
-        while u <= 1.0:
-            v = -1.0
-            while v <= 1.0:
-                px0, py0, pz0 = fn(u, v)
-
-                # Y rotation
-                px1 =  px0 * cA + pz0 * sA
-                py1 =  py0
-                pz1 = -px0 * sA + pz0 * cA
-                # X tilt (negative)
-                px2 =  px1
-                py2 =  py1 * cT + pz1 * sT
-                pz2 = -py1 * sT + pz1 * cT
-
-                # Orthographic projection — drop the perspective divide.
-                sx = W // 2 + fxH * px2
-                sy = H // 2 - fxV * py2
-                ix, iy = int(round(sx)), int(round(sy))
-                if 0 <= ix < W and 0 <= iy < H and pz2 < zbuf[iy][ix]:
-                    zbuf[iy][ix] = pz2
-
-                    b = base_b
-                    # Apple logo recess: darker patch on top face
-                    if is_apple_logo(name, u, v):
-                        b *= 0.35
-
-                    # Map to density ramp.
-                    idx = max(0, min(len(SHADES) - 1, int(b * len(SHADES))))
-                    out[iy][ix] = SHADES[idx]
-
-                v += step
-            u += step
+    # Sample each face on a 2D grid. Two of the three world coords sweep
+    # over their range; the third is pinned to ±the half-dim.
+    s = STRIDE
+    # u and v sweep over the face's local coords; pre-compute for apple-logo
+    # parameter check on the top face.
+    u = -wD
+    while u < wD:
+        v = -wD
+        while v < wD:
+            uu, vv = u / wD, v / wD     # normalize to [-1, 1] for apple-logo test
+            # Top face (y = +hD): possible Apple logo recess in center disc
+            plot(u, hD, v, APPLE if is_apple(uu, vv) else TOP)
+            # Front face (z = +dD) — parameterise (u, v) → (x, y)
+            if -hD <= v <= hD:
+                plot(u, v, dD, FRONT)
+            # Back face (z = -dD)
+            if -hD <= v <= hD:
+                plot(u, v, -dD, BACK)
+            # Right face (x = +wD)
+            if -hD <= v <= hD:
+                plot(wD, v, u, RIGHT)
+            # Left face (x = -wD)
+            if -hD <= v <= hD:
+                plot(-wD, v, u, LEFT)
+            v += s
+        u += s
 
     return '\n'.join(''.join(row) for row in out)
 
 
 def main():
     frames = []
+    # Frame rates per axis: A does 1 full rotation in N frames, B does 2,
+    # C does 3 — all return to start at frame N, making the loop seamless.
+    A_rate = 2 * math.pi / N_FRAMES
+    B_rate = 4 * math.pi / N_FRAMES
+    C_rate = 6 * math.pi / N_FRAMES
+    # Initial off-axis offsets so frame 0 isn't an axis-aligned (flat-
+    # looking) orientation. These break the cardinal-angle flatness:
+    # at every frame the box is rotated about all three axes by amounts
+    # that prevent any face from being exactly perpendicular to the view.
+    A0, B0, C0 = 0.45, 0.30, 0.20
     for i in range(N_FRAMES):
-        angle = 2 * math.pi * i / N_FRAMES
-        frames.append(render_frame(angle))
+        frames.append(render_frame(A0 + A_rate * i,
+                                    B0 + B_rate * i,
+                                    C0 + C_rate * i))
 
     json.dump(frames, sys.stdout)
     sys.stdout.write('\n')
