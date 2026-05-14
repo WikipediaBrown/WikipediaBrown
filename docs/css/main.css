@@ -401,6 +401,57 @@ code, .mono { font-family: var(--mono); font-size: .85em; letter-spacing: -.01em
 .pull cite { font-style: italic; }
 
 
+/* ---------- Licenses & Certifications card ---------- */
+.certs__head {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin: 0 0 1rem;
+  font-weight: 500;
+}
+.certs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.certs__list li {
+  padding: .9rem 0;
+  border-bottom: 1px dashed rgba(26,20,16,.18);
+}
+.certs__list li:first-child { padding-top: 0; }
+.certs__list li:last-child  { padding-bottom: 0; border-bottom: 0; }
+.certs__name {
+  margin: 0 0 .25rem;
+  font-family: var(--body);
+  font-variation-settings: "opsz" 24, "wght" 560;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.certs__meta {
+  margin: 0 0 .5rem;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+}
+.certs__link {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid currentColor;
+  transition: color .25s var(--ease);
+}
+.certs__link:hover { color: var(--rust-deep); }
+
+
 /* =========================================================================
    WORK
    ========================================================================= */
