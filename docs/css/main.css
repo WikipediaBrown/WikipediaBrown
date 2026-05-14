@@ -375,7 +375,7 @@ code {
   user-select: none;
   pointer-events: none;
   opacity: .9;
-  /* Multi-layer glow for a "CRT schematic" feel */
+  /* CRT glow */
   filter:
     drop-shadow(0 0 4px rgba(255, 90, 48, .35))
     drop-shadow(0 0 18px rgba(255, 90, 48, .18));
@@ -383,21 +383,20 @@ code {
     0 0 1px rgba(255, 90, 48, .65),
     0 0 6px rgba(255, 90, 48, .35),
     0 0 18px rgba(255, 90, 48, .2);
-  transform-style: preserve-3d;
-  transform-origin: center center;
-  will-change: transform;
-  animation: macPulse 5s ease-in-out infinite, macSpin 9s ease-in-out infinite;
+  /* A subtle CRT-scanline overlay drifts down; cheap, GPU-driven background. */
+  background:
+    repeating-linear-gradient(180deg,
+      transparent 0, transparent 2px,
+      rgba(255, 90, 48, .04) 2px, rgba(255, 90, 48, .04) 3px);
+  background-size: 100% 200%;
+  animation: scanlineDrift 4s linear infinite;
 }
-@keyframes macPulse {
-  0%, 100% { opacity: .85; }
-  50%      { opacity: 1; }
-}
-@keyframes macSpin {
-  0%, 100% { transform: perspective(1100px) rotateX(10deg) rotateY(-24deg); }
-  50%      { transform: perspective(1100px) rotateX(10deg) rotateY( 24deg); }
+@keyframes scanlineDrift {
+  from { background-position-y: 0; }
+  to   { background-position-y: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__ascii { animation: none; opacity: .95; transform: none; }
+  .hero__ascii { animation: none; opacity: .95; background: none; }
 }
 @media (max-width: 980px) { .hero__ascii { display: none; } }
 
