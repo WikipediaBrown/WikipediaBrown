@@ -23,7 +23,7 @@
 
 I design and ship CI/CD, MDM, and AI/ML systems for strategic customers running fleets of Macs on Apple Silicon. By night: iOS apps, macOS tools, and open-source Swift projects.
 
-Shipped at **AWS** · **Apple** · **Uber** · **Robinhood** · **Capital One**.
+Shipped at **AWS** · **Apple** · **Robinhood** · **Capital One** · **Uber**.
 
 ### 🛠️ &nbsp; Currently shipping
 
