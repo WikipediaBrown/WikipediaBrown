@@ -24,7 +24,7 @@
       <li><a href="{% if on_home %}#work{% else %}{{ '/#work' | relative_url }}{% endif %}" data-num="02">Work</a></li>
       <li><a href="{% if on_home %}#now{% else %}{{ '/#now' | relative_url }}{% endif %}" data-num="03">Now</a></li>
       <li><a href="{{ '/blog/' | relative_url }}" data-num="04">Blog</a></li>
-      <li><a href="{% if on_home %}#contact{% else %}{{ '/#contact' | relative_url }}{% endif %}" data-num="05">Contact</a></li>
+      <li><a href="{{ '/contact/' | relative_url }}" data-num="05">Contact</a></li>
     </ul>
   </nav>
 </header>

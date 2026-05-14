@@ -395,20 +395,44 @@ code {
 @media (max-width: 980px) { .hero__ascii { display: none; } }
 
 
-/* ---------- Section ASCII accents ----------
-   Small monospaced art block placed below each section heading.            */
-.section__ascii {
-  margin: 0 0 clamp(28px, 3.5vw, 48px);
+/* ---------- Per-page hero ASCII art ----------
+   Photo-derived ASCII (typewriter on /blog/, envelope on /contact/) — same
+   pipeline as the Mac mini in the home hero, same CRT glow + slow pulse.    */
+.page-ascii {
+  display: block;
+  margin: clamp(20px, 3vw, 40px) auto clamp(36px, 5vw, 64px);
+  max-width: 60ch;
+  padding: 1.25rem;
   font-family: var(--mono);
-  font-variation-settings: var(--vf-base);
-  font-size: clamp(10px, 0.78vw, 12px);
-  line-height: 1.25;
-  color: var(--fg-3);
+  font-variation-settings: "MONO" 1, "CASL" 0, "slnt" 0;
+  font-weight: 500;
+  font-size: clamp(7px, 0.7vw, 10px);
+  line-height: 1.05;
+  color: var(--accent);
+  letter-spacing: 0;
   white-space: pre;
   user-select: none;
-  overflow-x: auto;
+  pointer-events: none;
+  text-align: left;
+  filter:
+    drop-shadow(0 0 4px rgba(255, 90, 48, .35))
+    drop-shadow(0 0 18px rgba(255, 90, 48, .18));
+  text-shadow:
+    0 0 1px rgba(255, 90, 48, .65),
+    0 0 6px rgba(255, 90, 48, .35),
+    0 0 18px rgba(255, 90, 48, .2);
+  animation: pageAsciiPulse 5s ease-in-out infinite;
 }
-.section__ascii::-webkit-scrollbar { display: none; }
+@keyframes pageAsciiPulse {
+  0%, 100% { opacity: .88; }
+  50%      { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-ascii { animation: none; opacity: .95; }
+}
+@media (max-width: 640px) {
+  .page-ascii { font-size: 6px; padding: .75rem; }
+}
 
 
 /* ---------- Posts list (blog index + home preview) ---------- */
