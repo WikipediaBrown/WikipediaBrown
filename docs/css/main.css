@@ -361,14 +361,14 @@ code {
    Static art with a CRT-style glow + subtle scan lines + slow pulse.        */
 .hero__ascii {
   position: absolute;
-  top: clamp(72px, 7vw, 116px);
+  top: clamp(64px, 6vw, 108px);
   right: var(--gutter);
   margin: 0;
   font-family: var(--mono);
   font-variation-settings: "MONO" 1, "CASL" 0, "slnt" 0;
   font-weight: 500;
-  font-size: clamp(8px, 0.78vw, 10.5px);
-  line-height: 1.05;
+  font-size: clamp(6px, 0.58vw, 8px);    /* smaller cells = more fidelity */
+  line-height: 1.0;
   color: var(--accent);
   letter-spacing: 0;
   white-space: pre;

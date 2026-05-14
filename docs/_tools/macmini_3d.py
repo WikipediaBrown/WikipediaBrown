@@ -12,7 +12,7 @@ Output: a JSON array of `N_FRAMES` ASCII frame strings on stdout.
 """
 import math, json, sys
 
-W, H = 64, 30
+W, H = 88, 42        # higher-resolution grid → finer detail on the Apple logo
 N_FRAMES = 48
 
 # World-space half-dimensions (real M4 Mac mini ratio).
@@ -20,7 +20,7 @@ wD, dD, hD = 20.0, 20.0, 7.7   # h/w = 0.385
 
 # Perspective camera — mild distance so foreshortening is subtle.
 DISTANCE = 100.0
-VIEW_SCALE = 35.0
+VIEW_SCALE = 50.0    # scaled up to match the bigger canvas
 
 # Fixed character per face. Each face reads as a distinct surface.
 TOP    = '@'
@@ -31,38 +31,54 @@ LEFT   = '+'
 BOTTOM = ':'    # rendered when the tumble exposes it
 APPLE  = '.'    # Apple-logo recess on top (darker)
 
-# Sampling stride for the face surfaces. Smaller = denser fill, more CPU.
-STRIDE = 0.6
+# Sampling stride — smaller now so the denser grid fills properly.
+STRIDE = 0.42
 
 
 def is_apple(u: float, v: float) -> bool:
     """Apple-logo recess on the top face. (u, v) ∈ [-1, 1].
 
-    Three regions composed: body (vertical ellipse) + leaf (small angled
-    ellipse at top-right) − bite (small disc carved out of body's right
-    side). Reads as a clearly Apple-shaped silhouette at projection size,
-    not a generic circle.
+    Composed regions, recognisable as the Apple silhouette:
+      - Body: TWO overlapping circles ('left lobe' + 'right lobe') so the
+        top of the body has the characteristic heart-shaped indent
+        (where the two lobes don't quite overlap), instead of being a
+        plain ellipse.
+      - Bottom point: a small ellipse extending below the lobes for the
+        slight tapering at the apple's base.
+      - Bite: a clear disc cut OUT of the right side of the body.
+      - Leaf: a small angled ellipse positioned above the body with a
+        visible gap.
     """
-    # Leaf — angled ellipse above-right of the body. Big enough to read as
-    # a leaf at ASCII resolution; rotated ~25° clockwise from vertical.
+    # ----- Leaf — angled ellipse, clearly separated above the body -----
     lu = u - 0.06
-    lv = v - 0.50
-    lrot_u =  lu * 0.91 + lv * 0.42
-    lrot_v = -lu * 0.42 + lv * 0.91
-    if (lrot_u * lrot_u) / 0.014 + (lrot_v * lrot_v) / 0.045 < 1:
+    lv = v - 0.62
+    lrot_u =  lu * 0.88 + lv * 0.47
+    lrot_v = -lu * 0.47 + lv * 0.88
+    if (lrot_u * lrot_u) / 0.013 + (lrot_v * lrot_v) / 0.045 < 1:
         return True
 
-    # Body — vertical ellipse, slightly down-of-center
-    bu = u
-    bv = v + 0.05
-    in_body = (bu * bu) / 0.13 + (bv * bv) / 0.20 < 1
+    # ----- Body: two overlapping lobes + a bottom point ----------------
+    # Left lobe
+    llu = u + 0.13
+    llv = v - 0.05
+    in_left  = (llu * llu) / 0.078 + (llv * llv) / 0.095 < 1
+    # Right lobe
+    rlu = u - 0.13
+    rlv = v - 0.05
+    in_right = (rlu * rlu) / 0.078 + (rlv * rlv) / 0.095 < 1
+    # Bottom point — small ellipse below the lobes
+    bpu = u
+    bpv = v + 0.32
+    in_bp = (bpu * bpu) / 0.030 + (bpv * bpv) / 0.060 < 1
+
+    in_body = in_left or in_right or in_bp
     if not in_body:
         return False
 
-    # Bite — bigger disc carved out of the body's right side, biased high
-    bxu = u - 0.42
-    bxv = v - 0.05
-    if bxu * bxu + bxv * bxv * 1.2 < 0.05:
+    # ----- Bite — clear disc carved out of the right side --------------
+    bxu = u - 0.34
+    bxv = v - 0.02
+    if (bxu * bxu) / 0.030 + (bxv * bxv) / 0.024 < 1:
         return False
 
     return True
