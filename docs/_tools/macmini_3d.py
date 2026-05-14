@@ -11,16 +11,20 @@ Output: a JSON array of `N_FRAMES` ASCII frame strings.
 import math, json, sys
 
 W, H = 64, 28
-N_FRAMES = 24
+N_FRAMES = 36     # more frames = smoother slow rotation
 
-# Mac mini half-dimensions (M4 proportions, 5"×5"×2")
-wD, dD, hD = 2.4, 2.4, 1.0
+# Half-dimensions. Width and depth slightly smaller than half-canvas;
+# height bumped to ~58% of width so the box reads as a chunky cube
+# instead of a flat slab.
+wD, dD, hD = 2.0, 2.0, 1.15
 
-# Fixed camera tilt — slight downward angle so the top face is visible.
-tilt = 0.42
+# Camera tilt — middle ground (~18°). Steep enough to see the top face
+# and the Apple-logo recess, gentle enough that the side faces still read
+# as substantial vertical panels (not a wedge of cheese).
+tilt = 0.32
 cT, sT = math.cos(tilt), math.sin(tilt)
 
-camDist = 4.0
+camDist = 4.6
 fxH     = 13     # horizontal projection scale
 fxV     = 9      # vertical projection scale (chars are taller than wide)
 
