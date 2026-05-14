@@ -23,22 +23,58 @@ DISTANCE = 100.0
 VIEW_SCALE = 35.0
 
 # Fixed character per face. Each face reads as a distinct surface.
-# (Top is the densest so the box "lights from above"; the front face is
-#  next-densest; sides and back are lower-density.)
-TOP   = '@'
-FRONT = '#'
-BACK  = ';'
-RIGHT = '*'
-LEFT  = '+'
-APPLE = '.'    # Apple-logo recess on top (darker)
+TOP    = '@'
+FRONT  = '#'
+BACK   = ';'
+RIGHT  = '*'
+LEFT   = '+'
+BOTTOM = ':'    # rendered when the tumble exposes it
+APPLE  = '.'    # Apple-logo recess on top (darker)
 
 # Sampling stride for the face surfaces. Smaller = denser fill, more CPU.
 STRIDE = 0.6
 
 
-def is_apple(u, v):
-    """Apple logo region on the top face — center disc."""
-    return (u * u + v * v) < 0.18
+def is_apple(u: float, v: float) -> bool:
+    """Apple-logo recess on the top face. (u, v) ∈ [-1, 1].
+
+    Three regions composed: body (vertical ellipse) + leaf (small angled
+    ellipse at top-right) − bite (small disc carved out of body's right
+    side). Reads as a clearly Apple-shaped silhouette at projection size,
+    not a generic circle.
+    """
+    # Leaf — angled ellipse above-right of the body. Big enough to read as
+    # a leaf at ASCII resolution; rotated ~25° clockwise from vertical.
+    lu = u - 0.06
+    lv = v - 0.50
+    lrot_u =  lu * 0.91 + lv * 0.42
+    lrot_v = -lu * 0.42 + lv * 0.91
+    if (lrot_u * lrot_u) / 0.014 + (lrot_v * lrot_v) / 0.045 < 1:
+        return True
+
+    # Body — vertical ellipse, slightly down-of-center
+    bu = u
+    bv = v + 0.05
+    in_body = (bu * bu) / 0.13 + (bv * bv) / 0.20 < 1
+    if not in_body:
+        return False
+
+    # Bite — bigger disc carved out of the body's right side, biased high
+    bxu = u - 0.42
+    bxv = v - 0.05
+    if bxu * bxu + bxv * bxv * 1.2 < 0.05:
+        return False
+
+    return True
+
+
+def is_corner_cutoff(u: float, v: float) -> bool:
+    """Skip the very corners of each face to suggest Mac mini's rounded
+    edges. (u, v) ∈ [-1, 1]. Slightly rounds the silhouette."""
+    du = max(0.0, abs(u) - 0.90)
+    dv = max(0.0, abs(v) - 0.90)
+    # Outside a small quarter-circle in each corner — skip the cell.
+    return du * du + dv * dv > 0.0064
 
 
 def render_frame(A: float, B: float, C: float) -> str:
@@ -72,27 +108,33 @@ def render_frame(A: float, B: float, C: float) -> str:
     # Sample each face on a 2D grid. Two of the three world coords sweep
     # over their range; the third is pinned to ±the half-dim.
     s = STRIDE
-    # u and v sweep over the face's local coords; pre-compute for apple-logo
-    # parameter check on the top face.
     u = -wD
     while u < wD:
         v = -wD
         while v < wD:
-            uu, vv = u / wD, v / wD     # normalize to [-1, 1] for apple-logo test
-            # Top face (y = +hD): possible Apple logo recess in center disc
-            plot(u, hD, v, APPLE if is_apple(uu, vv) else TOP)
-            # Front face (z = +dD) — parameterise (u, v) → (x, y)
-            if -hD <= v <= hD:
-                plot(u, v, dD, FRONT)
-            # Back face (z = -dD)
-            if -hD <= v <= hD:
-                plot(u, v, -dD, BACK)
-            # Right face (x = +wD)
-            if -hD <= v <= hD:
-                plot(wD, v, u, RIGHT)
-            # Left face (x = -wD)
-            if -hD <= v <= hD:
-                plot(-wD, v, u, LEFT)
+            uu, vv = u / wD, v / wD     # normalize to [-1, 1]
+
+            # Top face (y = +hD): Apple logo recess in the center
+            if not is_corner_cutoff(uu, vv):
+                plot(u, hD, v, APPLE if is_apple(uu, vv) else TOP)
+                # Bottom face (y = -hD): rendered when the tumble exposes it
+                plot(u, -hD, v, BOTTOM)
+
+            # Side faces use a (u, v) parameter where v sweeps over [-wD, wD]
+            # mapped to the FACE's vertical extent (h = hD). For each side
+            # face we re-parameterize so that the v-axis maps to height.
+            vv_h = v * hD / wD                  # actual height coord
+            uu_h = vv_h / hD                    # normalised to [-1, 1] over height
+            if not is_corner_cutoff(uu, uu_h):
+                # Front face (z = +dD)
+                plot(u, vv_h, dD, FRONT)
+                # Back face (z = -dD)
+                plot(u, vv_h, -dD, BACK)
+                # Right face (x = +wD)
+                plot(wD, vv_h, u, RIGHT)
+                # Left face (x = -wD)
+                plot(-wD, vv_h, u, LEFT)
+
             v += s
         u += s
 
