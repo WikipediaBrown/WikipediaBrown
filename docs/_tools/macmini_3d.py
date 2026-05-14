@@ -13,20 +13,22 @@ import math, json, sys
 W, H = 64, 28
 N_FRAMES = 36     # more frames = smoother slow rotation
 
-# Half-dimensions. Width and depth slightly smaller than half-canvas;
-# height bumped to ~58% of width so the box reads as a chunky cube
-# instead of a flat slab.
-wD, dD, hD = 2.0, 2.0, 1.15
+# Half-dimensions in world units. Real M4 Mac mini is 130×130×50mm — h/w
+# of 0.385. We render at half-dims (1.0, 1.0, 0.385) and let the projection
+# scales blow it up to fill the canvas; this keeps the proportions exact.
+wD, dD, hD = 1.0, 1.0, 0.385
 
-# Camera tilt — middle ground (~18°). Steep enough to see the top face
-# and the Apple-logo recess, gentle enough that the side faces still read
-# as substantial vertical panels (not a wedge of cheese).
-tilt = 0.32
+# Camera tilt — moderate downward angle (~25°) so the top face is visible
+# but the side faces still read as substantial vertical panels.
+tilt = 0.44
 cT, sT = math.cos(tilt), math.sin(tilt)
 
-camDist = 4.6
-fxH     = 13     # horizontal projection scale
-fxV     = 9      # vertical projection scale (chars are taller than wide)
+# Orthographic projection — no perspective foreshortening. A rectangular
+# box projects as a rectangle (with parallel sides), the way an architect
+# or CAD renderer would draw it. Perspective was making the far edge
+# collapse to a point — "wedge of cheese" effect.
+fxH = 23     # horizontal cells per world unit
+fxV = 13     # vertical cells per world unit (chars are taller than wide)
 
 # Density ramp — light → dark; we use it inverted so brighter Lambert
 # values map to denser chars.
@@ -106,22 +108,21 @@ def render_frame(angle: float) -> str:
                 py2 =  py1 * cT + pz1 * sT
                 pz2 = -py1 * sT + pz1 * cT
 
-                D = 1.0 / (pz2 + camDist)
-                if D > 0:
-                    sx = W // 2 + fxH * D * px2
-                    sy = H // 2 - fxV * D * py2
-                    ix, iy = int(round(sx)), int(round(sy))
-                    if 0 <= ix < W and 0 <= iy < H and pz2 < zbuf[iy][ix]:
-                        zbuf[iy][ix] = pz2
+                # Orthographic projection — drop the perspective divide.
+                sx = W // 2 + fxH * px2
+                sy = H // 2 - fxV * py2
+                ix, iy = int(round(sx)), int(round(sy))
+                if 0 <= ix < W and 0 <= iy < H and pz2 < zbuf[iy][ix]:
+                    zbuf[iy][ix] = pz2
 
-                        b = base_b
-                        # Apple logo recess: darker patch on top face
-                        if is_apple_logo(name, u, v):
-                            b *= 0.35
+                    b = base_b
+                    # Apple logo recess: darker patch on top face
+                    if is_apple_logo(name, u, v):
+                        b *= 0.35
 
-                        # Map to density ramp.
-                        idx = max(0, min(len(SHADES) - 1, int(b * len(SHADES))))
-                        out[iy][ix] = SHADES[idx]
+                    # Map to density ramp.
+                    idx = max(0, min(len(SHADES) - 1, int(b * len(SHADES))))
+                    out[iy][ix] = SHADES[idx]
 
                 v += step
             u += step
