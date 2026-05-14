@@ -22,7 +22,7 @@
 
 I design and ship [CI/CD](https://fastlane.tools/), [MDM](https://support.apple.com/guide/deployment/intro-to-mdm-profiles-depc0aadd3fe/web), [AI/ML](https://developer.apple.com/machine-learning/), [VDI](https://developer.apple.com/documentation/virtualization), and [CUA](https://openai.com/index/computer-using-agent/) systems for strategic customers running fleets of Macs on Apple Silicon. By night: iOS apps, macOS tools, and open-source Swift projects.
 
-Shipped at **Uber** · **Capital One** · **Robinhood** · **Apple** · **AWS**.
+Shipped at **Capital One** · **Uber** · **Robinhood** · **Apple** · **AWS**.
 
 ### 🛠️ &nbsp; Currently shipping
 
