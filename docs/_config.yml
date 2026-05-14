@@ -1,0 +1,24 @@
+title: Perris Davis
+description: >-
+  Perris Davis is a software engineer. Currently a Senior Solutions Architect
+  designing cloud-based Mac environments — CI/CD, MDM, and AI/ML on Apple Silicon.
+  iOS apps, macOS tools, and open-source Swift projects after hours.
+url: "https://perrisdavis.com"
+author: Perris Davis
+
+# Posts live under /blog/<slug>/ rather than the default /YYYY/MM/DD/<slug>/.
+# Keeps dates out of URLs (per user preference — no dates anywhere).
+permalink: /blog/:slug/
+
+# GitHub Pages's safe default plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Don't process the raw HTML site source files Jekyll doesn't need to touch.
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

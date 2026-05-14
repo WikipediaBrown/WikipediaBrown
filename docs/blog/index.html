@@ -1,0 +1,36 @@
+---
+layout: default
+title: Field Notes
+description: Short writing from Perris Davis on software, Apple platforms, and adjacent obsessions.
+---
+
+<section class="section blog-index" aria-labelledby="blog-h">
+  <div class="section__head">
+    <span class="section__num">№ 04</span>
+    <h1 id="blog-h" class="section__title">Field <em>Notes</em></h1>
+    <span class="section__kicker">Short writing on software, Apple platforms, and adjacent obsessions.</span>
+  </div>
+
+  <pre class="section__ascii" aria-hidden="true">
+     ┌──────────────────────────┐
+     │  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+     │   /\__/\__/\__/\__/\__   │
+     │   write · publish · read │
+     └──────────────────────────┘
+  </pre>
+
+  {% if site.posts.size > 0 %}
+    <ol class="posts">
+      {% for post in site.posts %}
+        <li class="posts__item">
+          <a class="posts__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          {% if post.summary %}
+            <p class="posts__summary">{{ post.summary }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="posts__empty">Nothing posted yet. Check back soon.</p>
+  {% endif %}
+</section>

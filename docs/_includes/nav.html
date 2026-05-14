@@ -1,0 +1,30 @@
+<header class="masthead" aria-label="Masthead">
+  <nav class="nav" aria-label="Primary">
+    <a class="nav__brand" href="{{ '/' | relative_url }}" aria-label="Home">
+      <span class="nav__brand-mark" aria-hidden="true">[ pd ]</span>
+      <span class="nav__brand-name">perrisdavis.com</span>
+    </a>
+
+    <button class="nav__toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="nav-menu"
+            aria-label="Menu">
+      <span class="nav__toggle-bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <ul id="nav-menu" class="nav__menu">
+      {%- assign on_home = false -%}
+      {%- if page.url == '/' or page.url == '/index.html' -%}{%- assign on_home = true -%}{%- endif -%}
+      <li><a href="{% if on_home %}#about{% else %}{{ '/#about' | relative_url }}{% endif %}" data-num="01">About</a></li>
+      <li><a href="{% if on_home %}#work{% else %}{{ '/#work' | relative_url }}{% endif %}" data-num="02">Work</a></li>
+      <li><a href="{% if on_home %}#now{% else %}{{ '/#now' | relative_url }}{% endif %}" data-num="03">Now</a></li>
+      <li><a href="{{ '/blog/' | relative_url }}" data-num="04">Blog</a></li>
+      <li><a href="{% if on_home %}#contact{% else %}{{ '/#contact' | relative_url }}{% endif %}" data-num="05">Contact</a></li>
+    </ul>
+  </nav>
+</header>
