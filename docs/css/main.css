@@ -742,12 +742,8 @@ code {
 /* =========================================================================
    ENTRY ANIMATIONS
    ========================================================================= */
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .9s var(--ease), transform .9s var(--ease);
-}
-.reveal.in { opacity: 1; transform: none; }
+/* Sections render visible immediately — no scroll-triggered reveals
+   (caused invisible sections for fast-scroll and anchor-link navigation). */
 
 .hero__overline,
 .hero__first,

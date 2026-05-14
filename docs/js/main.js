@@ -7,24 +7,9 @@
   const yr = document.getElementById('year');
   if (yr) yr.textContent = new Date().getFullYear();
 
-  // --- (2) reveal sections as they enter the viewport --------------------
-  const targets = document.querySelectorAll('.section, .marquee');
-  targets.forEach(el => el.classList.add('reveal'));
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
-      }
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
-
-    targets.forEach(el => io.observe(el));
-  } else {
-    targets.forEach(el => el.classList.add('in'));
-  }
+  // Scroll-triggered reveals removed — caused invisible sections for fast
+  // scroll, anchor links, and headless capture. Hero entrance animation
+  // (CSS @keyframes, no observer) still provides the page-load motion.
 
   // --- (3) pause the marquee on hover, gently ----------------------------
   const track = document.querySelector('.marquee__track');
