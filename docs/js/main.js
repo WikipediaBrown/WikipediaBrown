@@ -1,9 +1,11 @@
 // PerrisDavis.com — tiny progressive enhancement
 // Jobs:
-//   (1) mobile nav toggle (accessible hamburger)
+//   (1) accessible mobile-nav hamburger
 //   (2) pause marquee on hover
-//   (3) frame-by-frame ASCII animations: a typing reveal that types each
-//       photo-derived ASCII piece in line-by-line, holds, restarts.
+//   (3) frame-by-frame ASCII "decryption" animations — each cell starts as
+//       a random glyph and settles to its real value over a pattern unique
+//       to its subject (radial for Mac mini, left→right for typewriter,
+//       top→bottom for envelope).
 
 (() => {
   // --- (1) Mobile nav hamburger -----------------------------------------
@@ -46,11 +48,7 @@
     marquee.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
   }
 
-  // --- (3) ASCII frame-by-frame typing reveals --------------------------
-  // Mac mini ASCII lives in JS (preserved from the image-to-ASCII pipeline);
-  // typewriter & envelope ASCII live inline in their pages — we read them
-  // from textContent once, then drive the reveal animation from JS.
-
+  // --- (3) ASCII decryption animations ----------------------------------
   const MAC_MINI = [
     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%@%@@%%%",
     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%",
@@ -76,52 +74,123 @@
   const blog     = document.getElementById('blog-ascii');
   const contact  = document.getElementById('contact-ascii');
 
-  if (mac)      driveReveal(mac, MAC_MINI, { lineMs: 60, holdMs: 3200, clearMs: 700 });
-  if (blog)     driveReveal(blog, blog.textContent, { lineMs: 55, holdMs: 3600, clearMs: 700 });
-  if (contact)  driveReveal(contact, contact.textContent, { lineMs: 80, holdMs: 3800, clearMs: 700 });
+  if (mac)     driveDecrypt(mac,     MAC_MINI,           { pattern: 'radial', durationMs: 1800, holdMs: 3200, tickMs: 55 });
+  if (blog)    driveDecrypt(blog,    blog.textContent,   { pattern: 'ltr',    durationMs: 2100, holdMs: 3600, tickMs: 55 });
+  if (contact) driveDecrypt(contact, contact.textContent,{ pattern: 'ttb',    durationMs: 2300, holdMs: 3800, tickMs: 55 });
 })();
 
-// Frame-by-frame typing reveal:
-//   frame 0:  ""
-//   frame 1:  line[0]
-//   frame N:  line[0..N-1]
-//   then HOLD at the full art, blank, then restart.
-// All frames are rendered as a single textContent set — atomic, no flicker
-// (the "double buffering" tip from the user's guide).
-function driveReveal(el, fullText, opts) {
-  const o = Object.assign({ lineMs: 70, holdMs: 3000, clearMs: 600 }, opts || {});
+// --- driveDecrypt: a "settle-from-noise" frame animation -------------------
+// At t=0 every non-space cell shows a random glyph; over `durationMs`, each
+// cell flips to its real value at a moment determined by `pattern`:
+//   - 'radial': cells near the centroid settle first, expanding outward
+//   - 'ltr':    columns settle left-to-right
+//   - 'ttb':    rows settle top-to-bottom
+// After the full art is revealed it holds for holdMs, then restarts.
+function driveDecrypt(el, fullText, opts) {
+  const o = Object.assign({ pattern: 'radial', durationMs: 1800, holdMs: 3000, tickMs: 60 }, opts || {});
 
-  // Respect reduced motion: render full art and stop.
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     el.textContent = fullText;
     return;
   }
 
+  // Pre-parse the art into a row-major grid.
   const lines = fullText.split('\n');
-  const total = lines.length;
-  let i = 0;
+  const rows  = lines.length;
+  const cols  = lines.reduce((m, l) => Math.max(m, l.length), 0);
 
-  // Pad to the full height with spaces so the element's box doesn't reflow
-  // each frame — reserves the canvas, as the user's guide recommends.
-  const padTo = (n) => {
-    const head = lines.slice(0, n).join('\n');
-    const padding = '\n'.repeat(Math.max(0, total - n));
-    return head + padding;
-  };
+  // Build a settle-time map for each (row, col) cell.
+  // Space cells keep their settleAt = 0 (always show the real char — a space)
+  // so the animation reveals only the inked silhouette.
+  const cx = (cols - 1) / 2;
+  const cy = (rows - 1) / 2;
+  const maxR = Math.hypot(cx, cy) || 1;
 
-  function tick() {
-    if (document.hidden) { setTimeout(tick, 300); return; }
+  // 2D arrays of length rows × cols
+  const real    = [];
+  const settle  = [];
+  for (let r = 0; r < rows; r++) {
+    const realRow = new Array(cols).fill(' ');
+    const settleRow = new Array(cols).fill(0);
+    const line = lines[r];
+    for (let c = 0; c < cols; c++) {
+      const ch = c < line.length ? line[c] : ' ';
+      realRow[c] = ch;
+      if (ch === ' ') { settleRow[c] = 0; continue; }
 
-    if (i <= total) {
-      el.textContent = padTo(i);
-      i += 1;
-      setTimeout(tick, i === total + 1 ? o.holdMs : o.lineMs);
-    } else {
-      // Clear and restart
-      el.textContent = padTo(0);
-      i = 0;
-      setTimeout(tick, o.clearMs);
+      let t;
+      switch (o.pattern) {
+        case 'ltr': {
+          t = (c / Math.max(1, cols - 1)) * 0.85;
+          break;
+        }
+        case 'ttb': {
+          t = (r / Math.max(1, rows - 1)) * 0.85;
+          break;
+        }
+        case 'radial':
+        default: {
+          const d = Math.hypot(c - cx, r - cy) / maxR;
+          t = d * 0.85;
+          break;
+        }
+      }
+      // Add a little jitter so the wave doesn't look too clean.
+      t += Math.random() * 0.18;
+      settleRow[c] = Math.min(1, t) * o.durationMs;
     }
+    real.push(realRow);
+    settle.push(settleRow);
   }
-  tick();
+
+  // Pool of glyphs to flicker through. Lean toward what the art uses so the
+  // pre-settled cells visually rhyme with the destination.
+  const NOISE = ' .,:;+*#%@!?/\\<>|=~$&^()[]{}0123456789';
+  const noise = () => NOISE[1 + ((Math.random() * (NOISE.length - 1)) | 0)];
+
+  let phase = 'decrypt';   // 'decrypt' → 'hold' → (reset) → 'decrypt'
+  let t0 = performance.now();
+
+  function frame(now) {
+    if (document.hidden) {
+      // Pause when tab is backgrounded — no wasted re-renders.
+      setTimeout(() => requestAnimationFrame(frame), 250);
+      return;
+    }
+
+    const elapsed = now - t0;
+
+    if (phase === 'decrypt') {
+      // Build the current frame in one pass; assign textContent once
+      // (double-buffer — atomic update, no flicker).
+      const out = [];
+      for (let r = 0; r < rows; r++) {
+        let line = '';
+        for (let c = 0; c < cols; c++) {
+          const ch = real[r][c];
+          if (ch === ' ' || elapsed >= settle[r][c]) {
+            line += ch;
+          } else {
+            line += noise();
+          }
+        }
+        out.push(line);
+      }
+      el.textContent = out.join('\n');
+
+      if (elapsed >= o.durationMs + 100) {
+        phase = 'hold';
+        t0 = now;
+      }
+    } else { // hold
+      if (elapsed >= o.holdMs) {
+        phase = 'decrypt';
+        t0 = now;
+      }
+      // otherwise: textContent already shows the final art, no-op
+    }
+
+    setTimeout(() => requestAnimationFrame(frame), o.tickMs);
+  }
+  requestAnimationFrame(frame);
 }
