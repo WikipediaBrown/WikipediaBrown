@@ -402,10 +402,9 @@ code {
 
 
 /* ---------- Per-page hero ASCII art ----------
-   Photo-derived ASCII (typewriter on /blog/, envelope on /contact/) — same
-   pipeline as the Mac mini in the home hero, same CRT glow + slow pulse +
-   subject-specific motion (typewriter shakes like keys striking, envelope
-   floats like a card in the wind).                                         */
+   Photo-derived ASCII (typewriter on /blog/, envelope on /contact/). The
+   actual animation is frame-by-frame in JS (typing reveal). CSS only
+   styles the static canvas + scanline drift backdrop.                       */
 .page-ascii {
   display: block;
   margin: clamp(20px, 3vw, 40px) auto clamp(36px, 5vw, 64px);
@@ -422,9 +421,6 @@ code {
   user-select: none;
   pointer-events: none;
   text-align: left;
-  transform-style: preserve-3d;
-  transform-origin: center center;
-  will-change: transform;
   filter:
     drop-shadow(0 0 4px rgba(255, 90, 48, .35))
     drop-shadow(0 0 18px rgba(255, 90, 48, .18));
@@ -432,52 +428,16 @@ code {
     0 0 1px rgba(255, 90, 48, .65),
     0 0 6px rgba(255, 90, 48, .35),
     0 0 18px rgba(255, 90, 48, .2);
-  animation: pageAsciiPulse 5s ease-in-out infinite;
+  background:
+    repeating-linear-gradient(180deg,
+      transparent 0, transparent 2px,
+      rgba(255, 90, 48, .04) 2px, rgba(255, 90, 48, .04) 3px);
+  background-size: 100% 200%;
+  animation: scanlineDrift 4s linear infinite;
+  min-height: 18em;
 }
-@keyframes pageAsciiPulse {
-  0%, 100% { opacity: .85; }
-  50%      { opacity: 1; }
-}
-
-/* Typewriter on /blog/ — quick lateral micro-shake, like keys hitting paper. */
-.page-ascii--typewriter {
-  animation:
-    pageAsciiPulse 5s ease-in-out infinite,
-    typewriterShake 0.42s linear infinite,
-    typewriterRoll 11s ease-in-out infinite;
-}
-@keyframes typewriterShake {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  25%      { transform: translateX(-0.6px) translateY(-0.3px); }
-  50%      { transform: translateX(0.6px) translateY(0.3px); }
-  75%      { transform: translateX(-0.4px) translateY(0); }
-}
-@keyframes typewriterRoll {
-  0%, 100% { transform: perspective(900px) rotateY(-14deg) rotateX(6deg); }
-  50%      { transform: perspective(900px) rotateY( 14deg) rotateX(6deg); }
-}
-
-/* Envelope on /contact/ — slow float + gentle Y rotation, like a letter
-   tumbling slowly mid-air.                                                  */
-.page-ascii--envelope {
-  animation:
-    pageAsciiPulse 5s ease-in-out infinite,
-    envelopeFloat 10s ease-in-out infinite,
-    envelopeRoll 13s ease-in-out infinite;
-}
-@keyframes envelopeFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-@keyframes envelopeRoll {
-  0%, 100% { transform: perspective(900px) rotateY(-18deg) rotateX(4deg); }
-  50%      { transform: perspective(900px) rotateY( 18deg) rotateX(4deg); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .page-ascii,
-  .page-ascii--typewriter,
-  .page-ascii--envelope { animation: none; opacity: .95; transform: none; }
+  .page-ascii { animation: none; opacity: .95; background: none; }
 }
 @media (max-width: 640px) {
   .page-ascii { font-size: 6px; padding: .75rem; }
