@@ -59,7 +59,7 @@ struct Trie {
 }
 ```
 
-This is essentially the canonical class-based Swift trie ([Kodeco n.d.](https://github.com/kodecocodes/swift-algorithm-club/tree/master/Trie)). `node(endingAt:)` does the descent in `O(p)` for a prefix of length `p`. The whole question is now: given that node, how do you enumerate its subtree *well*?
+This is essentially the canonical class-based Swift trie ([Kodeco n.d.](https://github.com/kodecocodes/swift-algorithm-club/tree/master/Trie)). Each node keys its children by `Character` — *"a single extended grapheme cluster that approximates a user-perceived character"* ([Apple Inc. n.d.b](https://developer.apple.com/documentation/swift/character)) — in a `Dictionary` ([Apple Inc. n.d.c](https://developer.apple.com/documentation/swift/dictionary)). `node(endingAt:)` does the descent in `O(p)` for a prefix of length `p`. The whole question is now: given that node, how do you enumerate its subtree *well*?
 
 ## The shortcut everyone tries
 
@@ -69,9 +69,9 @@ Then they justify the memory: *"It's fine — `String` is a value type with copy
 
 This is the moment I lean in, because half of that is true and the wrong half is the half that matters.
 
-The true half: Swift's `String` *is* a value type, and the standard library's design doc is explicit that it works by *"sharing allocated buffers among copies and slices, and enabling in-place modification of uniquely-owned buffers,"* so that *"operations like copying and slicing strings are nearly free"* ([Swift Project n.d.a](https://github.com/swiftlang/swift/blob/main/docs/StringDesign.md)). Copy a long string into a hundred arrays, never mutate it, and you get one heap buffer with a hundred cheap references to it. The candidate's mental model is correct — *for long strings.*
+The true half is in Apple's own reference, not folklore: *"Strings always have value semantics. Modifying a copy of a string leaves the original unaffected,"* and although they have value semantics, *"strings use a copy-on-write strategy to store their data in a buffer. This buffer can then be shared by different copies of a string. A string's data is only copied lazily, upon mutation, when more than one string instance is using the same buffer"* ([Apple Inc. n.d.d](https://developer.apple.com/documentation/swift/string)). The collections you'd store those strings in behave identically — *"Arrays, like all variable-size collections in the standard library, use copy-on-write optimization. Multiple copies of an array share the same storage until you modify one of the copies"* ([Apple Inc. n.d.a](https://developer.apple.com/documentation/swift/array)). The Swift project's design notes compress it to one line: buffers are shared *"among copies and slices,"* so copying is *"nearly free"* ([Swift Project n.d.a](https://github.com/swiftlang/swift/blob/main/docs/StringDesign.md)). Copy a long string into a hundred arrays, never mutate it, and you get one heap buffer with a hundred cheap references to it. The candidate's mental model is correct — *for long strings.*
 
-The wrong half: the very same document lists, as a co-equal optimization, *"storing short strings without heap allocation"* ([Swift Project n.d.a](https://github.com/swiftlang/swift/blob/main/docs/StringDesign.md)). That's the **small-string optimization**: on 64-bit, a `String` is a two-word (16-byte) value, and a string short enough to fit (15 UTF-8 bytes) is stored *inline in those bytes, with no heap buffer at all.* There is no shared allocation because there is no allocation. Every node you copy that string into gets its own independent inline copy of the bytes.
+The wrong half is the part Apple's API reference doesn't mention. Stop at "shared buffer" and you've missed the co-equal optimization the Swift project's String design notes call out: *"storing short strings without heap allocation"* ([Swift Project n.d.a](https://github.com/swiftlang/swift/blob/main/docs/StringDesign.md)). That's the **small-string optimization**: on 64-bit, a `String` is a two-word (16-byte) value, and a string short enough to fit (15 UTF-8 bytes) is stored *inline in those bytes, with no heap buffer at all.* (This last detail is an implementation note in the Swift project's design docs, not a guarantee in Apple's `String` reference — which is itself worth knowing.) There is no shared allocation because there is no allocation. Every node you copy that string into gets its own independent inline copy of the bytes.
 
 Now look at the input. Autocomplete is for *dictionary words*. Essentially every English word is ≤ 15 UTF-8 bytes. So the candidate's design lands squarely in the regime where the copy-on-write argument *does not apply* — and a word of length `L` gets physically copied into all `L` nodes on its path. Across a dictionary of `W` words that's `O(Σ Lᵢ)` independent `String` values, not the "stored once" they pitched. It works; it is not free; and the reason it isn't free is the exact Swift detail the question exists to surface. A candidate who says "value type, COW, therefore free" has the right words and the wrong cost model.
 
@@ -102,7 +102,7 @@ extension Trie {
 Be precise about the bounds, because vague Big-O is the thing this question is designed to catch:
 
 - **Time: `O(p + N)`** — `p` to descend, then `N` = total length of the output, which is optimal: you cannot return the answer without producing it.
-- **Space: `O(1)` with respect to the result.** There is exactly one `path` buffer, reused across the entire traversal. Nothing is allocated per match. Nothing is precomputed at insert time. The only memory that scales with anything is the buffer and the recursion, and both are bounded by the *longest word* — not by how many completions exist, not by dictionary size. The `String(path)` handed to `emit` is the output itself, not overhead.
+- **Space: `O(1)` with respect to the result.** There is exactly one `path` buffer — a value-type `Array` with its own storage ([Apple Inc. n.d.a](https://developer.apple.com/documentation/swift/array)) — reused across the entire traversal. Nothing is allocated per match. Nothing is precomputed at insert time. The only memory that scales with anything is the buffer and the recursion, and both are bounded by the *longest word* — not by how many completions exist, not by dictionary size. The `String(path)` handed to `emit` is the output itself, not overhead.
 
 And because it streams through a closure, **early exit is free** — a caller that wants the first ten just stops consuming; the walk doesn't run to completion, and we never built a list to throw away. That's the payoff the "store it at every node" design can't match: it pays `O(Σ Lᵢ)` memory up front to answer queries we may never ask, in exchange for being *slower* to insert and identical to produce.
 
@@ -194,6 +194,10 @@ There are flashier interview questions. For Swift specifically, I haven't found 
 
 ## References
 
+- Apple Inc. n.d.a. "Array." Apple Developer Documentation. Accessed May 15, 2026. <https://developer.apple.com/documentation/swift/array>.
+- Apple Inc. n.d.b. "Character." Apple Developer Documentation. Accessed May 15, 2026. <https://developer.apple.com/documentation/swift/character>.
+- Apple Inc. n.d.c. "Dictionary." Apple Developer Documentation. Accessed May 15, 2026. <https://developer.apple.com/documentation/swift/dictionary>.
+- Apple Inc. n.d.d. "String." Apple Developer Documentation. Accessed May 15, 2026. <https://developer.apple.com/documentation/swift/string>.
 - GeeksforGeeks. n.d. "Trie \| (Insert and Search)." GeeksforGeeks. Accessed May 15, 2026. <https://www.geeksforgeeks.org/trie-insert-and-search/>.
 - Kodeco. n.d. "Trie." Swift Algorithm Club. Accessed May 15, 2026. <https://github.com/kodecocodes/swift-algorithm-club/tree/master/Trie>.
 - Swift Project. n.d.a. "String Design." Swift. Accessed May 15, 2026. <https://github.com/swiftlang/swift/blob/main/docs/StringDesign.md>.
