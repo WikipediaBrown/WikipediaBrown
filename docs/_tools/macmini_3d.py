@@ -16,9 +16,9 @@ W, H = 88, 42        # higher-resolution grid → finer detail on the Apple logo
 N_FRAMES = 48
 
 # World-space half-dimensions. Real M4 Mac mini is 130×130×50mm
-# (h/w ≈ 0.385); bumped slightly so the silhouette reads as more cube-y
-# at projection than the real flat-slab proportions allow.
-wD, dD, hD = 20.0, 20.0, 9.2
+# (h/w ≈ 0.385); bumped further so the silhouette reads as a proper
+# chunky cube at projection scale.
+wD, dD, hD = 20.0, 20.0, 10.6
 
 # Perspective camera — mild distance so foreshortening is subtle.
 DISTANCE = 100.0
@@ -105,38 +105,40 @@ def is_corner_cutoff(u: float, v: float) -> bool:
     return du * du + dv * dv > 0.022
 
 
-# Front-face port arrangement (real M4 Mac mini, looking AT the front):
-#   left side  — two USB-C ports
-#   right side — one 3.5mm headphone jack
-# (u, v) ∈ [-1, 1] where +v is the top edge of the front face.
+# M4 Mac mini port layout. Each port is small enough at projection size
+# that adjacent ports read as DISCRETE holes, not as a continuous slot
+# (the "disk tray" effect from the earlier oversized ports).
+# (u, v) ∈ [-1, 1] face-local coords.
+
 def is_front_port(u: float, v: float) -> bool:
-    if abs(v) > 0.22:
+    """M4 Mac mini front: 2× USB-C + 1× headphone jack."""
+    if abs(v) > 0.18:
         return False
-    # USB-C × 2 on the left
-    if (u + 0.55) ** 2 + (v ** 2) < 0.018: return True
-    if (u + 0.22) ** 2 + (v ** 2) < 0.018: return True
-    # Headphone jack on the right (smaller)
-    if (u - 0.62) ** 2 + (v ** 2) < 0.010: return True
+    for cx, rx, ry in [
+        (-0.45, 0.0140, 0.0090),   # USB-C 1
+        (-0.18, 0.0140, 0.0090),   # USB-C 2
+        ( 0.55, 0.0070, 0.0070),   # headphone jack (round, smaller)
+    ]:
+        if (u - cx) ** 2 / rx + (v ** 2) / ry < 1:
+            return True
     return False
 
 
-# Back-face port arrangement (looking AT the back):
-#   left to right: power button, ethernet, HDMI, 3× Thunderbolt
-# (u, v) ∈ [-1, 1] where +v is the top edge of the back face.
 def is_back_port(u: float, v: float) -> bool:
-    if abs(v) > 0.22:
+    """M4 Mac mini back: power · ethernet · HDMI · 3× Thunderbolt.
+    Each port has a clear gap from its neighbour at projection scale,
+    so the row reads as discrete ports, not a continuous slot."""
+    if abs(v) > 0.18:
         return False
-    # Six ports across the back, slightly staggered for the bigger ones
-    # (ethernet + HDMI are rectangular and wider than USB-C / power).
-    for cx, cy, rx, ry in [
-        (-0.78, -0.02, 0.025, 0.020),   # power button (round)
-        (-0.50,  0.00, 0.040, 0.024),   # ethernet (rectangular)
-        (-0.20,  0.00, 0.035, 0.020),   # HDMI (rectangular)
-        ( 0.10,  0.00, 0.022, 0.018),   # Thunderbolt 1
-        ( 0.40,  0.00, 0.022, 0.018),   # Thunderbolt 2
-        ( 0.70,  0.00, 0.022, 0.018),   # Thunderbolt 3
+    for cx, rx, ry in [
+        (-0.80, 0.0080, 0.0070),   # power button (small round)
+        (-0.50, 0.0190, 0.0080),   # ethernet (wide rectangle)
+        (-0.18, 0.0160, 0.0080),   # HDMI (wide rectangle)
+        ( 0.14, 0.0110, 0.0080),   # Thunderbolt 1
+        ( 0.44, 0.0110, 0.0080),   # Thunderbolt 2
+        ( 0.74, 0.0110, 0.0080),   # Thunderbolt 3
     ]:
-        if (u - cx) ** 2 / rx + (v - cy) ** 2 / ry < 1:
+        if (u - cx) ** 2 / rx + (v ** 2) / ry < 1:
             return True
     return False
 
