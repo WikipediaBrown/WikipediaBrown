@@ -1,10 +1,10 @@
-// PerrisDavis.com — tiny progressive enhancement
+// wikipediabrown.dev — tiny progressive enhancement
 // Jobs:
 //   (1) accessible mobile-nav hamburger
-//   (2) pause marquee on hover
-//   (3) rotating 3D ASCII object — frames live in a per-page file
+//   (2) rotating 3D ASCII object — frames live in a per-page file
 //       (frames-macmini.js / frames-book.js / frames-envelope.js) that
 //       sets window.ASCII_FRAMES. Generator: docs/_tools/ascii3d.py.
+//   (3) dress code blocks as macOS-style windows with a copy button.
 
 (() => {
   // --- (1) Mobile nav hamburger -----------------------------------------
@@ -30,15 +30,7 @@
     menu.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
   }
 
-  // --- (2) Pause marquee on hover ---------------------------------------
-  const track = document.querySelector('.marquee__track');
-  if (track) {
-    const m = track.parentElement;
-    m.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
-    m.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
-  }
-
-  // --- (3) Mount the rotating ASCII object ------------------------------
+  // --- (2) Mount the rotating ASCII object ------------------------------
   // Whichever page we're on, the ASCII <pre> uses id="ascii-art" and the
   // page has loaded the matching frames file (window.ASCII_FRAMES).
   const el = document.getElementById('ascii-art');
@@ -46,7 +38,7 @@
     cycleFrames(el, window.ASCII_FRAMES, { fps: 7 });
   }
 
-  // --- (4) Dress code blocks as macOS-style windows + copy --------------
+  // --- (3) Dress code blocks as macOS-style windows + copy --------------
   // Only real language blocks (not the plaintext ASCII diagram) get chrome.
   document.querySelectorAll('.post__body [class*="language-"].highlighter-rouge')
     .forEach((win) => {
@@ -99,6 +91,34 @@
         }, 1600);
       });
     });
+
+  // --- (4) Live GitHub numbers (homepage band) --------------------------
+  const gh = document.querySelector('.ghstats');
+  if (gh) {
+    const user = gh.dataset.user;
+    const api = (path) =>
+      fetch('https://api.github.com/' + path, { headers: { Accept: 'application/vnd.github+json' } })
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))));
+    const put = (key, value) => {
+      const n = gh.querySelector('[data-stat="' + key + '"] .ghstats__num');
+      if (n) n.textContent = value.toLocaleString();
+    };
+    Promise.all([
+      api('users/' + user),
+      api('users/' + user + '/repos?per_page=100&type=owner'),
+    ])
+      .then(([u, repos]) => {
+        const stars = Array.isArray(repos)
+          ? repos.reduce((s, r) => s + (r.stargazers_count || 0), 0)
+          : 0;
+        put('repos', u.public_repos || 0);
+        put('stars', stars);
+        put('followers', u.followers || 0);
+        put('gists', u.public_gists || 0);
+        gh.classList.add('is-loaded');
+      })
+      .catch(() => gh.classList.add('is-error'));
+  }
 })();
 
 function cycleFrames(el, frames, opts) {

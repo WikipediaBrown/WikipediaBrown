@@ -765,38 +765,81 @@ code {
 
 
 /* =========================================================================
-   MARQUEE
+   GITHUB BAND
    ========================================================================= */
-.marquee {
+.ghband {
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   background: var(--bg-2);
-  overflow: hidden;
-  padding: 1.1rem 0;
+  padding: clamp(28px, 4vw, 52px) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 30px);
 }
-.marquee__track {
-  display: flex; gap: 2.6rem;
-  white-space: nowrap;
+.ghband__head {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  align-items: baseline;
+  gap: .8rem;
+  text-decoration: none;
+}
+.ghband__handle {
+  font-family: var(--mono);
+  font-size: .82rem;
+  letter-spacing: .04em;
+  color: var(--fg-2);
+  transition: color .15s;
+}
+.ghband__head:hover .ghband__handle { color: var(--accent); }
+.ghstats {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 1.4vw, 18px);
+}
+.ghstats__tile {
+  border: 1px solid var(--rule);
+  background: var(--bg-3);
+  padding: clamp(16px, 2vw, 26px) clamp(12px, 1.6vw, 22px);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: .35em;
+}
+.ghstats__tile dt {
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.ghstats__num {
+  margin: 0;
   font-family: var(--mono);
   font-variation-settings: "MONO" 1, "CASL" 0, "slnt" 0;
-  font-weight: 500;
-  font-size: clamp(22px, 3.6vw + 4px, 48px);
-  letter-spacing: -.015em;
-  color: var(--fg);
-  animation: scroll 38s linear infinite;
-}
-.marquee__track em {
-  font-variation-settings: "MONO" 1, "CASL" 0, "slnt" -10;
+  font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: 1;
   color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
-.marquee__track span[aria-hidden] {
-  color: var(--accent);
-  font-size: .55em;
-  align-self: center;
+.ghstats.is-loaded .ghstats__num { animation: ghpop .4s ease-out both; }
+@keyframes ghpop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.ghstats.is-error { display: none; }
+.ghband__chart {
+  width: 100%;
+  max-width: 1100px;
+  height: auto;
+  opacity: .92;
 }
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+@media (max-width: 720px) {
+  .ghstats { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ghband__handle { transition: none; }
+  .ghstats.is-loaded .ghstats__num { animation: none; }
 }
 
 
