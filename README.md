@@ -14,7 +14,6 @@
 
 <a href="https://wikipediabrown.dev"><img alt="wikipediabrown.dev" src="https://img.shields.io/badge/wikipediabrown.dev-FF5A30?style=for-the-badge&labelColor=0F0E0D" /></a>
 <a href="https://www.linkedin.com/in/perris-davis"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=0F0E0D" /></a>
-<a href="https://apps.apple.com/us/developer/perris-davis/id1072361630"><img alt="App Store" src="https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white&labelColor=0F0E0D" /></a>
 
 </div>
 
