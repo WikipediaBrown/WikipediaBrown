@@ -102,15 +102,19 @@ def is_apple(u: float, v: float) -> bool:
 
 
 def is_corner_cutoff(u: float, v: float) -> bool:
-    """Skip the corners of each face to suggest Mac mini's rounded edges.
-    (u, v) ∈ [-1, 1]. Subtle — the previous aggressive cutoff (0.65,
-    radius² 0.030) was removing so much corner material that adjacent
-    faces stopped meeting at their shared edges and the box visually
-    split apart. This radius just trims the visible silhouette corners
-    without dismantling the geometry."""
-    du = max(0.0, abs(u) - 0.88)
-    dv = max(0.0, abs(v) - 0.88)
-    return du * du + dv * dv > 0.0090
+    """Round only the true CORNERS of each face (where both |u| and |v|
+    are large), never the edge midpoints — so adjacent faces still meet
+    along their shared edges and the box stays solid while the corners
+    visibly round off.
+
+    With inner = 0.72:
+      edge midpoint (1, 0): du²        = 0.0784  → kept  (< 0.11)
+      true corner   (1, 1): du² + dv²  = 0.1568  → cut   (> 0.11)
+    The threshold sits between those two, so edges survive and corners
+    arc away — a noticeably rounder silhouette than before."""
+    du = max(0.0, abs(u) - 0.72)
+    dv = max(0.0, abs(v) - 0.72)
+    return du * du + dv * dv > 0.11
 
 
 # M4 Mac mini port layout. Each port is small enough at projection size
