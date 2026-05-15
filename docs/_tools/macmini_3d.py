@@ -20,7 +20,7 @@ wD, dD, hD = 20.0, 20.0, 7.7   # h/w = 0.385
 
 # Perspective camera — mild distance so foreshortening is subtle.
 DISTANCE = 100.0
-VIEW_SCALE = 50.0    # scaled up to match the bigger canvas
+VIEW_SCALE = 72.0    # bumped so the Mac mini fills more of the canvas
 
 # Fixed character per face. Each face reads as a distinct surface.
 TOP    = '@'
@@ -31,8 +31,15 @@ LEFT   = '+'
 BOTTOM = ':'    # rendered when the tumble exposes it
 APPLE  = '.'    # Apple-logo recess on top (darker)
 
-# Sampling stride — smaller now so the denser grid fills properly.
-STRIDE = 0.42
+# Sampling stride — smaller because the Apple-logo region only spans
+# ~1/3 of the top face now; we need finer samples to resolve the mask
+# at that shrunken size.
+STRIDE = 0.11
+
+# Apple-logo region size as a fraction of the top face's half-extent.
+# Logo lives in u, v ∈ [-APPLE_HALF, +APPLE_HALF] on the top face.
+# 1/3 linear → 1/9 area, per the user spec.
+APPLE_HALF = 0.33
 
 
 # Hand-tuned 2D bitmap of the Apple silhouette. Each row is the same
@@ -69,10 +76,16 @@ _APPLE_W = len(_APPLE_MASK[0])
 
 
 def is_apple(u: float, v: float) -> bool:
-    """Look up (u, v) in the Apple-silhouette bitmap. (u, v) ∈ [-1, 1]."""
-    # Map (u, v) to (col, row) — note v is flipped: v=+1 is top.
-    col = (u + 1.0) * 0.5 * (_APPLE_W - 1)
-    row = (1.0 - v) * 0.5 * (_APPLE_H - 1)
+    """Look up (u, v) in the Apple-silhouette bitmap. (u, v) ∈ [-1, 1].
+    Logo is constrained to the centered |u|, |v| < APPLE_HALF area of
+    the top face — 1/9 of the face by area (1/3 linearly per side)."""
+    if abs(u) > APPLE_HALF or abs(v) > APPLE_HALF:
+        return False
+    # Rescale (u, v) from [-APPLE_HALF, APPLE_HALF] → [-1, 1] for mask lookup.
+    un = u / APPLE_HALF
+    vn = v / APPLE_HALF
+    col = (un + 1.0) * 0.5 * (_APPLE_W - 1)
+    row = (1.0 - vn) * 0.5 * (_APPLE_H - 1)
     ic = int(round(col))
     ir = int(round(row))
     if ir < 0 or ir >= _APPLE_H or ic < 0 or ic >= _APPLE_W:
