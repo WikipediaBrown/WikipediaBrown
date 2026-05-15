@@ -32,6 +32,9 @@ RIGHT  = '*'
 LEFT   = '+'
 BOTTOM = ':'    # rendered when the tumble exposes it
 APPLE  = '.'    # Apple-logo recess on top (darker)
+PORT   = ' '    # Port holes — pure space; reads as a clear absence
+                # rather than letting the adjacent face show through
+                # (which produced the "disk-tray strip" effect).
 
 # Sampling stride in WORLD units. The loop steps u and v from -wD to +wD
 # at this step size; smaller = denser sampling. 0.25 gives ~160 samples
@@ -192,11 +195,17 @@ def render_frame(A: float, B: float, C: float) -> str:
             vv_h = v * hD / wD                  # actual height coord
             uu_h = vv_h / hD                    # normalised to [-1, 1] over height
             if not is_corner_cutoff(uu, uu_h):
-                # Front face (z = +dD) — punch holes for the visible ports
-                if not is_front_port(uu, uu_h):
+                # Front face (z = +dD) — plot ports as explicit dark dots
+                # instead of skipping, so they always show as discrete
+                # holes regardless of what face is behind them.
+                if is_front_port(uu, uu_h):
+                    plot(u, vv_h, dD, PORT)
+                else:
                     plot(u, vv_h, dD, FRONT)
-                # Back face (z = -dD) — punch holes for the back ports
-                if not is_back_port(uu, uu_h):
+                # Back face (z = -dD)
+                if is_back_port(uu, uu_h):
+                    plot(u, vv_h, -dD, PORT)
+                else:
                     plot(u, vv_h, -dD, BACK)
                 # Right face (x = +wD)
                 plot(wD, vv_h, u, RIGHT)
