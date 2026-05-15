@@ -19,7 +19,7 @@ A trie (pronounced "try", from re*trie*val) is a tree where each node represents
         |
         a
        / \
-      t   r*
+      t*  r*
           |
           s*
 ```
