@@ -15,8 +15,10 @@ import math, json, sys
 W, H = 88, 42        # higher-resolution grid → finer detail on the Apple logo
 N_FRAMES = 48
 
-# World-space half-dimensions (real M4 Mac mini ratio).
-wD, dD, hD = 20.0, 20.0, 7.7   # h/w = 0.385
+# World-space half-dimensions. Real M4 Mac mini is 130×130×50mm
+# (h/w ≈ 0.385); bumped slightly so the silhouette reads as more cube-y
+# at projection than the real flat-slab proportions allow.
+wD, dD, hD = 20.0, 20.0, 9.2
 
 # Perspective camera — mild distance so foreshortening is subtle.
 DISTANCE = 100.0
@@ -31,10 +33,11 @@ LEFT   = '+'
 BOTTOM = ':'    # rendered when the tumble exposes it
 APPLE  = '.'    # Apple-logo recess on top (darker)
 
-# Sampling stride — smaller because the Apple-logo region only spans
-# ~1/3 of the top face now; we need finer samples to resolve the mask
-# at that shrunken size.
-STRIDE = 0.11
+# Sampling stride in WORLD units. The loop steps u and v from -wD to +wD
+# at this step size; smaller = denser sampling. 0.25 gives ~160 samples
+# per dim, enough to resolve the Apple-logo bitmap mask (24×22) AND the
+# port rectangles on the side faces without making the JS payload absurd.
+STRIDE = 0.25
 
 # Apple-logo region size as a fraction of the top face's half-extent.
 # Logo lives in u, v ∈ [-APPLE_HALF, +APPLE_HALF] on the top face.
@@ -94,12 +97,48 @@ def is_apple(u: float, v: float) -> bool:
 
 
 def is_corner_cutoff(u: float, v: float) -> bool:
-    """Skip the very corners of each face to suggest Mac mini's rounded
-    edges. (u, v) ∈ [-1, 1]. Slightly rounds the silhouette."""
-    du = max(0.0, abs(u) - 0.90)
-    dv = max(0.0, abs(v) - 0.90)
-    # Outside a small quarter-circle in each corner — skip the cell.
-    return du * du + dv * dv > 0.0064
+    """Skip the corners of each face to suggest Mac mini's rounded edges.
+    (u, v) ∈ [-1, 1]. The further out the cutoff starts, the more
+    pronounced the rounding."""
+    du = max(0.0, abs(u) - 0.80)
+    dv = max(0.0, abs(v) - 0.80)
+    return du * du + dv * dv > 0.022
+
+
+# Front-face port arrangement (real M4 Mac mini, looking AT the front):
+#   left side  — two USB-C ports
+#   right side — one 3.5mm headphone jack
+# (u, v) ∈ [-1, 1] where +v is the top edge of the front face.
+def is_front_port(u: float, v: float) -> bool:
+    if abs(v) > 0.22:
+        return False
+    # USB-C × 2 on the left
+    if (u + 0.55) ** 2 + (v ** 2) < 0.018: return True
+    if (u + 0.22) ** 2 + (v ** 2) < 0.018: return True
+    # Headphone jack on the right (smaller)
+    if (u - 0.62) ** 2 + (v ** 2) < 0.010: return True
+    return False
+
+
+# Back-face port arrangement (looking AT the back):
+#   left to right: power button, ethernet, HDMI, 3× Thunderbolt
+# (u, v) ∈ [-1, 1] where +v is the top edge of the back face.
+def is_back_port(u: float, v: float) -> bool:
+    if abs(v) > 0.22:
+        return False
+    # Six ports across the back, slightly staggered for the bigger ones
+    # (ethernet + HDMI are rectangular and wider than USB-C / power).
+    for cx, cy, rx, ry in [
+        (-0.78, -0.02, 0.025, 0.020),   # power button (round)
+        (-0.50,  0.00, 0.040, 0.024),   # ethernet (rectangular)
+        (-0.20,  0.00, 0.035, 0.020),   # HDMI (rectangular)
+        ( 0.10,  0.00, 0.022, 0.018),   # Thunderbolt 1
+        ( 0.40,  0.00, 0.022, 0.018),   # Thunderbolt 2
+        ( 0.70,  0.00, 0.022, 0.018),   # Thunderbolt 3
+    ]:
+        if (u - cx) ** 2 / rx + (v - cy) ** 2 / ry < 1:
+            return True
+    return False
 
 
 def render_frame(A: float, B: float, C: float) -> str:
@@ -151,10 +190,12 @@ def render_frame(A: float, B: float, C: float) -> str:
             vv_h = v * hD / wD                  # actual height coord
             uu_h = vv_h / hD                    # normalised to [-1, 1] over height
             if not is_corner_cutoff(uu, uu_h):
-                # Front face (z = +dD)
-                plot(u, vv_h, dD, FRONT)
-                # Back face (z = -dD)
-                plot(u, vv_h, -dD, BACK)
+                # Front face (z = +dD) — punch holes for the visible ports
+                if not is_front_port(uu, uu_h):
+                    plot(u, vv_h, dD, FRONT)
+                # Back face (z = -dD) — punch holes for the back ports
+                if not is_back_port(uu, uu_h):
+                    plot(u, vv_h, -dD, BACK)
                 # Right face (x = +wD)
                 plot(wD, vv_h, u, RIGHT)
                 # Left face (x = -wD)
