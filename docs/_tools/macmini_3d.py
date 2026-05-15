@@ -114,13 +114,14 @@ def is_corner_cutoff(u: float, v: float) -> bool:
 # (u, v) ∈ [-1, 1] face-local coords.
 
 def is_front_port(u: float, v: float) -> bool:
-    """M4 Mac mini front: 2× USB-C + 1× headphone jack."""
+    """M4 Mac mini front: 2 USB-C clustered on the left + headphone jack
+    set apart on the right. Real M4 layout."""
     if abs(v) > 0.18:
         return False
     for cx, rx, ry in [
-        (-0.45, 0.0140, 0.0090),   # USB-C 1
-        (-0.18, 0.0140, 0.0090),   # USB-C 2
-        ( 0.55, 0.0070, 0.0070),   # headphone jack (round, smaller)
+        (-0.42, 0.0090, 0.0035),   # USB-C 1 (small oval, slim)
+        (-0.20, 0.0090, 0.0035),   # USB-C 2 (small oval, slim)
+        ( 0.52, 0.0050, 0.0050),   # headphone jack (round)
     ]:
         if (u - cx) ** 2 / rx + (v ** 2) / ry < 1:
             return True
@@ -128,18 +129,20 @@ def is_front_port(u: float, v: float) -> bool:
 
 
 def is_back_port(u: float, v: float) -> bool:
-    """M4 Mac mini back: power · ethernet · HDMI · 3× Thunderbolt.
-    Each port has a clear gap from its neighbour at projection scale,
-    so the row reads as discrete ports, not a continuous slot."""
+    """M4 Mac mini back — simplified to the port TYPES that read at ASCII
+    resolution: power plug, HDMI, and USB-C × 3. Layout left → right:
+        - power plug (small round)
+        - HDMI (wide rectangle)
+        - USB-C × 3 (small slim ovals)
+    """
     if abs(v) > 0.18:
         return False
     for cx, rx, ry in [
-        (-0.80, 0.0080, 0.0070),   # power button (small round)
-        (-0.50, 0.0190, 0.0080),   # ethernet (wide rectangle)
-        (-0.18, 0.0160, 0.0080),   # HDMI (wide rectangle)
-        ( 0.14, 0.0110, 0.0080),   # Thunderbolt 1
-        ( 0.44, 0.0110, 0.0080),   # Thunderbolt 2
-        ( 0.74, 0.0110, 0.0080),   # Thunderbolt 3
+        (-0.78, 0.0050, 0.0050),   # power plug — small round
+        (-0.32, 0.0220, 0.0060),   # HDMI — wide flat rectangle
+        ( 0.16, 0.0090, 0.0040),   # USB-C 1
+        ( 0.42, 0.0090, 0.0040),   # USB-C 2
+        ( 0.68, 0.0090, 0.0040),   # USB-C 3
     ]:
         if (u - cx) ** 2 / rx + (v ** 2) / ry < 1:
             return True
