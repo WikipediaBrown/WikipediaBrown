@@ -32,9 +32,11 @@ RIGHT  = '*'
 LEFT   = '+'
 BOTTOM = ':'    # rendered when the tumble exposes it
 APPLE  = '.'    # Apple-logo recess on top (darker)
-PORT   = ' '    # Port holes — pure space; reads as a clear absence
-                # rather than letting the adjacent face show through
-                # (which produced the "disk-tray strip" effect).
+PORT   = '.'    # Port recess — a low-density mark ON the face, not an
+                # empty hole. Rendering ports as ' ' punched visible gaps
+                # that scattered as the box rotated, making it look
+                # "blown apart". '.' keeps every face solid; the port
+                # just reads as a darker indentation.
 
 # Sampling stride in WORLD units. The loop steps u and v from -wD to +wD
 # at this step size; smaller = denser sampling. 0.25 gives ~160 samples
