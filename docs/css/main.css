@@ -539,6 +539,68 @@ code {
   text-underline-offset: 3px;
 }
 .post__body code { font-size: .9em; }
+
+/* ---------- Fenced code blocks + Rouge syntax theme ---------- */
+/* Jekyll (kramdown + Rouge) wraps ```lang blocks in
+   <div class="highlight"><pre class="highlight"><code>… with token spans. */
+.post__body pre,
+.post__body .highlight {
+  margin: 0 0 1.5em;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--accent);
+  overflow-x: auto;
+}
+.post__body .highlight pre,
+.post__body pre.highlight {
+  margin: 0;
+  background: none;
+  border: 0;
+}
+.post__body pre,
+.post__body .highlight pre {
+  padding: clamp(14px, 1.6vw, 22px);
+  font-size: clamp(13px, .42vw + 11px, 15px);
+  line-height: 1.6;
+  -webkit-overflow-scrolling: touch;
+}
+/* Inside a block, code is plain text — undo the inline <code> chip styling. */
+.post__body pre code,
+.post__body .highlight code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: var(--fg);
+}
+
+/* Token colors — warm dark palette, restrained. */
+.post__body .highlight .c,  .post__body .highlight .cm,
+.post__body .highlight .c1, .post__body .highlight .cs,
+.post__body .highlight .cd { color: var(--fg-3); font-style: italic; }      /* comments */
+.post__body .highlight .k,  .post__body .highlight .kd,
+.post__body .highlight .kn, .post__body .highlight .kp,
+.post__body .highlight .kr, .post__body .highlight .kv { color: var(--accent); }   /* keywords */
+.post__body .highlight .kc { color: var(--accent-2); }                       /* true/false/nil */
+.post__body .highlight .kt,
+.post__body .highlight .nc, .post__body .highlight .nn,
+.post__body .highlight .nt { color: var(--accent-2); }                       /* types / class names */
+.post__body .highlight .s,  .post__body .highlight .s1,
+.post__body .highlight .s2, .post__body .highlight .sb,
+.post__body .highlight .se, .post__body .highlight .sd,
+.post__body .highlight .sc, .post__body .highlight .sx,
+.post__body .highlight .dl { color: var(--accent-3); }                       /* strings */
+.post__body .highlight .mi, .post__body .highlight .mf,
+.post__body .highlight .mh, .post__body .highlight .mo,
+.post__body .highlight .mb, .post__body .highlight .il { color: var(--accent-2); } /* numbers */
+.post__body .highlight .nf, .post__body .highlight .fm { color: var(--fg); }       /* function names */
+.post__body .highlight .nb, .post__body .highlight .bp { color: var(--accent-3); } /* builtins */
+.post__body .highlight .o,  .post__body .highlight .ow,
+.post__body .highlight .p  { color: var(--fg-2); }                           /* operators / punctuation */
+.post__body .highlight .n,  .post__body .highlight .nv,
+.post__body .highlight .vi, .post__body .highlight .nx { color: var(--fg); }       /* identifiers */
+.post__body .highlight .err { color: var(--accent); background: none; }
+
 .post__foot {
   margin-top: clamp(40px, 5vw, 64px);
   padding-top: clamp(20px, 2.5vw, 32px);
