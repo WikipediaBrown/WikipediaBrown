@@ -159,7 +159,7 @@ This is the conversation I actually want to have. *When does each representation
 
 ## Level 4: Compressing the structure itself
 
-Once we've talked about per-node cost, the next move is to attack node *count*. A trie storing `"interview"`, `"interviewer"`, and `"interviewing"` has a long chain of single-child nodes from the root down to `"interview"` — nine nodes that exist only to spell out a prefix nobody branches off of. That's the insight behind a **radix tree** (or compressed trie): collapse runs of single-child nodes into a single edge labeled with a string instead of a character.
+Once we've talked about per-node cost, the next move is to attack node *count*. A trie storing `"interview"`, `"interviewer"`, and `"interviewing"` has a long chain of single-child nodes from the root spelling out `interview` before anything branches — a run of nodes that exist only to encode a prefix nobody splits. That's the insight behind a **radix tree** (or compressed trie): collapse runs of single-child nodes into a single edge labeled with a string instead of a character.
 
 ```swift
 struct RadixNode {

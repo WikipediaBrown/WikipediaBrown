@@ -527,6 +527,31 @@ code {
   line-height: 1.55;
   max-width: 60ch;
 }
+.post__meta {
+  display: flex;
+  align-items: center;
+  gap: .7em;
+  margin: 1.4rem 0 0;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.post__meter {
+  position: relative;
+  width: 44px;
+  height: 4px;
+  background: var(--bg-3);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.post__meter::after {
+  content: "";
+  position: absolute;
+  inset: 0 35% 0 0;
+  background: var(--accent);
+}
+
 .post__body {
   font-size: clamp(15px, .5vw + 13px, 17px);
   line-height: 1.7;
@@ -538,6 +563,62 @@ code {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.post__body a:hover { text-decoration-thickness: 2px; }
+.post__body strong { color: var(--fg); font-weight: 600; }
+.post__body em { font-style: italic; }
+
+.post__body h2,
+.post__body h3 {
+  font-family: var(--mono);
+  color: var(--fg);
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+.post__body h2 {
+  margin: 2.4em 0 .85em;
+  font-size: clamp(21px, 1.4vw + 15px, 29px);
+  font-weight: 600;
+}
+.post__body h2::before {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 2px;
+  margin-bottom: .75em;
+  background: var(--accent);
+}
+.post__body h3 {
+  margin: 1.9em 0 .65em;
+  font-size: clamp(17px, .8vw + 14px, 21px);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.post__body > :first-child { margin-top: 0; }
+
+.post__body ul,
+.post__body ol {
+  margin: 0 0 1.4em;
+  padding-left: 1.5em;
+}
+.post__body li { margin: 0 0 .55em; }
+.post__body li::marker { color: var(--accent); }
+.post__body ol li::marker { color: var(--fg-3); }
+.post__body li > ul,
+.post__body li > ol { margin: .55em 0 0; }
+
+.post__body blockquote {
+  margin: 0 0 1.4em;
+  padding: .2em 0 .2em 1.2em;
+  border-left: 2px solid var(--accent);
+  color: var(--fg-2);
+  font-style: italic;
+}
+.post__body hr {
+  margin: 2.6em 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
 .post__body code { font-size: .9em; }
 
 /* ---------- Fenced code blocks + Rouge syntax theme ---------- */
