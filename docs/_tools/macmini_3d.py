@@ -35,53 +35,49 @@ APPLE  = '.'    # Apple-logo recess on top (darker)
 STRIDE = 0.42
 
 
+# Hand-tuned 2D bitmap of the Apple silhouette. Each row is the same
+# length; '#' = inside the logo, '.' = outside. We rasterize (u, v) ∈
+# [-1, 1] into this grid — gives pixel-level control over the leaf, the
+# heart-indent at the top of the body, the bite cut from the right side,
+# and the bottom taper.
+_APPLE_MASK = [
+    "............#...........",   # row  0  — leaf tip
+    "...........###..........",   # row  1
+    "...........####.........",   # row  2
+    "............###.........",   # row  3
+    "............##..........",   # row  4  — leaf base
+    "........................",   # row  5  — clear gap to body
+    "......####...####.......",   # row  6  — heart-indent: two lobes start
+    ".....######.######......",   # row  7  — lobes
+    "....##################..",   # row  8  — body merges, full width
+    "....##################..",   # row  9
+    "....################....",   # row 10  — BITE: right edge starts cutting
+    "....##############......",   # row 11  — BITE: deeper
+    "....#############.......",   # row 12  — BITE: deepest
+    "....##############......",   # row 13  — BITE: easing out
+    "....################....",   # row 14  — BITE done
+    "....##################..",   # row 15  — full body width
+    ".....################...",   # row 16  — body taper begins
+    "......##############....",   # row 17
+    ".......############.....",   # row 18
+    "........##########......",   # row 19
+    ".........########.......",   # row 20
+    "..........######........",   # row 21  — bottom tip
+]
+_APPLE_H = len(_APPLE_MASK)
+_APPLE_W = len(_APPLE_MASK[0])
+
+
 def is_apple(u: float, v: float) -> bool:
-    """Apple-logo recess on the top face. (u, v) ∈ [-1, 1].
-
-    Composed regions, recognisable as the Apple silhouette:
-      - Body: TWO overlapping circles ('left lobe' + 'right lobe') so the
-        top of the body has the characteristic heart-shaped indent
-        (where the two lobes don't quite overlap), instead of being a
-        plain ellipse.
-      - Bottom point: a small ellipse extending below the lobes for the
-        slight tapering at the apple's base.
-      - Bite: a clear disc cut OUT of the right side of the body.
-      - Leaf: a small angled ellipse positioned above the body with a
-        visible gap.
-    """
-    # ----- Leaf — angled ellipse, clearly separated above the body -----
-    lu = u - 0.06
-    lv = v - 0.62
-    lrot_u =  lu * 0.88 + lv * 0.47
-    lrot_v = -lu * 0.47 + lv * 0.88
-    if (lrot_u * lrot_u) / 0.013 + (lrot_v * lrot_v) / 0.045 < 1:
-        return True
-
-    # ----- Body: two overlapping lobes + a bottom point ----------------
-    # Left lobe
-    llu = u + 0.13
-    llv = v - 0.05
-    in_left  = (llu * llu) / 0.078 + (llv * llv) / 0.095 < 1
-    # Right lobe
-    rlu = u - 0.13
-    rlv = v - 0.05
-    in_right = (rlu * rlu) / 0.078 + (rlv * rlv) / 0.095 < 1
-    # Bottom point — small ellipse below the lobes
-    bpu = u
-    bpv = v + 0.32
-    in_bp = (bpu * bpu) / 0.030 + (bpv * bpv) / 0.060 < 1
-
-    in_body = in_left or in_right or in_bp
-    if not in_body:
+    """Look up (u, v) in the Apple-silhouette bitmap. (u, v) ∈ [-1, 1]."""
+    # Map (u, v) to (col, row) — note v is flipped: v=+1 is top.
+    col = (u + 1.0) * 0.5 * (_APPLE_W - 1)
+    row = (1.0 - v) * 0.5 * (_APPLE_H - 1)
+    ic = int(round(col))
+    ir = int(round(row))
+    if ir < 0 or ir >= _APPLE_H or ic < 0 or ic >= _APPLE_W:
         return False
-
-    # ----- Bite — clear disc carved out of the right side --------------
-    bxu = u - 0.34
-    bxv = v - 0.02
-    if (bxu * bxu) / 0.030 + (bxv * bxv) / 0.024 < 1:
-        return False
-
-    return True
+    return _APPLE_MASK[ir][ic] == '#'
 
 
 def is_corner_cutoff(u: float, v: float) -> bool:
