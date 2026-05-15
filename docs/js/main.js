@@ -1,10 +1,8 @@
 // wikipediabrown.dev — tiny progressive enhancement
 // Jobs:
 //   (1) accessible mobile-nav hamburger
-//   (2) rotating 3D ASCII object — frames live in a per-page file
-//       (frames-macmini.js / frames-book.js / frames-envelope.js) that
-//       sets window.ASCII_FRAMES. Generator: docs/_tools/ascii3d.py.
-//   (3) dress code blocks as macOS-style windows with a copy button.
+//   (2) terminal chrome + copy button on fenced code blocks
+//   (3) live GitHub numbers on the homepage band
 
 (() => {
   // --- (1) Mobile nav hamburger -----------------------------------------
@@ -30,28 +28,21 @@
     menu.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
   }
 
-  // --- (2) Mount the rotating ASCII object ------------------------------
-  // Whichever page we're on, the ASCII <pre> uses id="ascii-art" and the
-  // page has loaded the matching frames file (window.ASCII_FRAMES).
-  const el = document.getElementById('ascii-art');
-  if (el && Array.isArray(window.ASCII_FRAMES)) {
-    cycleFrames(el, window.ASCII_FRAMES, { fps: 7 });
-  }
-
-  // --- (3) Dress code blocks as macOS-style windows + copy --------------
-  // Only real language blocks (not the plaintext ASCII diagram) get chrome.
+  // --- (2) Terminal chrome + copy on code blocks ------------------------
   document.querySelectorAll('.post__body [class*="language-"].highlighter-rouge')
     .forEach((win) => {
       if (win.classList.contains('language-plaintext')) return;
       win.classList.add('codewin');
 
+      const langClass = [...win.classList].find((c) => c.indexOf('language-') === 0);
+      const lang = langClass ? langClass.slice('language-'.length) : 'code';
+
       const bar = document.createElement('div');
       bar.className = 'codewin__bar';
 
-      const dots = document.createElement('span');
-      dots.className = 'codewin__dots';
-      dots.setAttribute('aria-hidden', 'true');
-      for (let d = 0; d < 3; d++) dots.appendChild(document.createElement('i'));
+      const label = document.createElement('span');
+      label.className = 'codewin__lang';
+      label.textContent = lang;
 
       const copy = document.createElement('button');
       copy.type = 'button';
@@ -59,7 +50,7 @@
       copy.textContent = 'Copy';
       copy.setAttribute('aria-label', 'Copy code to clipboard');
 
-      bar.appendChild(dots);
+      bar.appendChild(label);
       bar.appendChild(copy);
       win.insertBefore(bar, win.firstChild);
 
@@ -92,7 +83,7 @@
       });
     });
 
-  // --- (4) Live GitHub numbers (homepage band) --------------------------
+  // --- (3) Live GitHub numbers (homepage band) --------------------------
   const gh = document.querySelector('.ghstats');
   if (gh) {
     const user = gh.dataset.user;
@@ -120,23 +111,3 @@
       .catch(() => gh.classList.add('is-error'));
   }
 })();
-
-function cycleFrames(el, frames, opts) {
-  const o = Object.assign({ fps: 8 }, opts || {});
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    el.textContent = frames[0];
-    return;
-  }
-  const period = 1000 / o.fps;
-  let i = 0, last = 0;
-  function step(now) {
-    if (document.hidden) { setTimeout(() => requestAnimationFrame(step), 250); return; }
-    if (!last || now - last >= period) {
-      el.textContent = frames[i];
-      i = (i + 1) % frames.length;
-      last = now;
-    }
-    requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
