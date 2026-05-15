@@ -113,40 +113,47 @@ def is_corner_cutoff(u: float, v: float) -> bool:
 # (the "disk tray" effect from the earlier oversized ports).
 # (u, v) ∈ [-1, 1] face-local coords.
 
+# --- Port-shape primitives ----------------------------------------------
+# At ASCII resolution, the distinction between port TYPES has to come from
+# clearly different aspect ratios. A USB-C should read as a thin slim slot;
+# HDMI as a wider flat rectangle; the power plug as a small round dot.
+
+# USB-C: aspect ~2.5:1 horizontally, much narrower vertically than USB-A.
+_USBC_RX, _USBC_RY = 0.0120, 0.0022    # semi-axes ≈ 0.110 × 0.047
+
+# HDMI: wider AND flatter — distinctly larger than USB-C in both axes.
+_HDMI_RX, _HDMI_RY = 0.0260, 0.0050    # semi-axes ≈ 0.161 × 0.071
+
+# Power plug: small round dot.
+_POWER_RX, _POWER_RY = 0.0050, 0.0050  # circular
+
+
+def _hit(u, v, cx, rx, ry):
+    return (u - cx) ** 2 / rx + (v ** 2) / ry < 1
+
+
 def is_front_port(u: float, v: float) -> bool:
-    """M4 Mac mini front: 2 USB-C clustered on the left + headphone jack
-    set apart on the right. Real M4 layout."""
-    if abs(v) > 0.18:
+    """M4 front: 2 USB-C clustered on the left + headphone jack on the right."""
+    if abs(v) > 0.15:
         return False
-    for cx, rx, ry in [
-        (-0.42, 0.0090, 0.0035),   # USB-C 1 (small oval, slim)
-        (-0.20, 0.0090, 0.0035),   # USB-C 2 (small oval, slim)
-        ( 0.52, 0.0050, 0.0050),   # headphone jack (round)
-    ]:
-        if (u - cx) ** 2 / rx + (v ** 2) / ry < 1:
-            return True
-    return False
+    return (
+        _hit(u, v, -0.42, _USBC_RX, _USBC_RY) or   # USB-C 1
+        _hit(u, v, -0.20, _USBC_RX, _USBC_RY) or   # USB-C 2
+        _hit(u, v,  0.52, 0.0040, 0.0040)          # headphone jack (small round)
+    )
 
 
 def is_back_port(u: float, v: float) -> bool:
-    """M4 Mac mini back — simplified to the port TYPES that read at ASCII
-    resolution: power plug, HDMI, and USB-C × 3. Layout left → right:
-        - power plug (small round)
-        - HDMI (wide rectangle)
-        - USB-C × 3 (small slim ovals)
-    """
-    if abs(v) > 0.18:
+    """M4 back, left → right: power plug · HDMI · USB-C × 3."""
+    if abs(v) > 0.15:
         return False
-    for cx, rx, ry in [
-        (-0.78, 0.0050, 0.0050),   # power plug — small round
-        (-0.32, 0.0220, 0.0060),   # HDMI — wide flat rectangle
-        ( 0.16, 0.0090, 0.0040),   # USB-C 1
-        ( 0.42, 0.0090, 0.0040),   # USB-C 2
-        ( 0.68, 0.0090, 0.0040),   # USB-C 3
-    ]:
-        if (u - cx) ** 2 / rx + (v ** 2) / ry < 1:
-            return True
-    return False
+    return (
+        _hit(u, v, -0.80, _POWER_RX, _POWER_RY) or   # power plug
+        _hit(u, v, -0.38, _HDMI_RX,  _HDMI_RY)  or   # HDMI
+        _hit(u, v,  0.12, _USBC_RX,  _USBC_RY)  or   # USB-C 1
+        _hit(u, v,  0.40, _USBC_RX,  _USBC_RY)  or   # USB-C 2
+        _hit(u, v,  0.68, _USBC_RX,  _USBC_RY)       # USB-C 3
+    )
 
 
 def render_frame(A: float, B: float, C: float) -> str:
