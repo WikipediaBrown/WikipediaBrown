@@ -45,6 +45,60 @@
   if (el && Array.isArray(window.ASCII_FRAMES)) {
     cycleFrames(el, window.ASCII_FRAMES, { fps: 7 });
   }
+
+  // --- (4) Dress code blocks as macOS-style windows + copy --------------
+  // Only real language blocks (not the plaintext ASCII diagram) get chrome.
+  document.querySelectorAll('.post__body [class*="language-"].highlighter-rouge')
+    .forEach((win) => {
+      if (win.classList.contains('language-plaintext')) return;
+      win.classList.add('codewin');
+
+      const bar = document.createElement('div');
+      bar.className = 'codewin__bar';
+
+      const dots = document.createElement('span');
+      dots.className = 'codewin__dots';
+      dots.setAttribute('aria-hidden', 'true');
+      for (let d = 0; d < 3; d++) dots.appendChild(document.createElement('i'));
+
+      const copy = document.createElement('button');
+      copy.type = 'button';
+      copy.className = 'codewin__copy';
+      copy.textContent = 'Copy';
+      copy.setAttribute('aria-label', 'Copy code to clipboard');
+
+      bar.appendChild(dots);
+      bar.appendChild(copy);
+      win.insertBefore(bar, win.firstChild);
+
+      copy.addEventListener('click', async () => {
+        const code = win.querySelector('code');
+        const text = code ? code.textContent : '';
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+          }
+          copy.textContent = 'Copied';
+          copy.classList.add('is-copied');
+        } catch (_) {
+          copy.textContent = 'Press ⌘C';
+        }
+        clearTimeout(copy._t);
+        copy._t = setTimeout(() => {
+          copy.textContent = 'Copy';
+          copy.classList.remove('is-copied');
+        }, 1600);
+      });
+    });
 })();
 
 function cycleFrames(el, frames, opts) {

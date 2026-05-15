@@ -10,7 +10,7 @@ The short version: a trie is a *Swift question* dressed up as a data structure q
 
 ## Why a trie, specifically
 
-A trie (pronounced "try", from re*trie*val) is a tree where each node represents a character, and paths from the root spell out keys. Insert `"cat"`, `"car"`, and `"cars"`, and you get something like:
+A trie (pronounced "try", from re*trie*val) is a tree where each node represents a character, and paths from the root spell out keys ([GeeksforGeeks n.d.](https://www.geeksforgeeks.org/trie-insert-and-search/)). Insert `"cat"`, `"car"`, and `"cars"`, and you get something like:
 
 ```
        root
@@ -75,7 +75,7 @@ final class Trie {
 }
 ```
 
-This works. It's correct. And it's the moment I start asking questions.
+This works. It's correct, and it mirrors the canonical class-based Swift trie ([Kodeco n.d.](https://github.com/kodecocodes/swift-algorithm-club/tree/master/Trie)). And it's the moment I start asking questions.
 
 **Complexity, as written:**
 
@@ -187,3 +187,9 @@ The trie question is a vehicle for a few things I care about:
 - **Can they have an engineering conversation?** The interesting part of this question isn't the first implementation — it's the second, third, and fourth, and the trade-offs between them.
 
 There are flashier interview questions. There are harder ones. But for Swift specifically, I haven't found a better one for the breadth of signal it gives in the time available. If you're prepping for Swift interviews, build a trie. Build it as a class first. Then build it as a struct. Then make it small. You'll learn more about the language than from any single book chapter I know of.
+
+## References
+
+- GeeksforGeeks. n.d. "Trie \| (Insert and Search)." GeeksforGeeks. Accessed May 15, 2026. <https://www.geeksforgeeks.org/trie-insert-and-search/>.
+- Kodeco. n.d. "Trie." Swift Algorithm Club. Accessed May 15, 2026. <https://github.com/kodecocodes/swift-algorithm-club/tree/master/Trie>.
+{:.refs}

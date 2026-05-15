@@ -682,6 +682,74 @@ code {
 .post__body .highlight .vi, .post__body .highlight .nx { color: var(--fg); }       /* identifiers */
 .post__body .highlight .err { color: var(--accent); background: none; }
 
+/* ---------- macOS-style code window (JS-decorated) ---------- */
+.post__body .codewin {
+  margin: 0 0 1.6em;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.post__body .codewin .highlight {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.codewin__bar {
+  display: flex;
+  align-items: center;
+  gap: .75em;
+  padding: .5em .8em;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--rule);
+}
+.codewin__dots { display: flex; gap: .45em; }
+.codewin__dots i {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--fg-3);
+}
+.codewin__dots i:nth-child(1) { background: #FF5F56; }
+.codewin__dots i:nth-child(2) { background: #FFBD2E; }
+.codewin__dots i:nth-child(3) { background: #27C93F; }
+.codewin__copy {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-variation-settings: var(--vf-base);
+  font-size: .66rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .32em .7em;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.codewin__copy:hover { color: var(--fg); border-color: var(--fg-3); }
+.codewin__copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.codewin__copy.is-copied { color: var(--accent-3); border-color: var(--accent-3); }
+
+/* ---------- References (Chicago author-date) ---------- */
+.post__body .refs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: clamp(13px, .35vw + 11px, 14px);
+  color: var(--fg-2);
+}
+.post__body .refs li {
+  margin: 0 0 .7em;
+  padding-left: 1.6em;
+  text-indent: -1.6em;          /* Chicago hanging indent */
+  line-height: 1.55;
+}
+.post__body .refs a { color: var(--accent); word-break: break-word; }
+
 .post__foot {
   margin-top: clamp(40px, 5vw, 64px);
   padding-top: clamp(20px, 2.5vw, 32px);
