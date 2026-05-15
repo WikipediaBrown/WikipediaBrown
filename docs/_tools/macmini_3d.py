@@ -101,11 +101,11 @@ def is_apple(u: float, v: float) -> bool:
 
 def is_corner_cutoff(u: float, v: float) -> bool:
     """Skip the corners of each face to suggest Mac mini's rounded edges.
-    (u, v) ∈ [-1, 1]. The further out the cutoff starts, the more
-    pronounced the rounding."""
-    du = max(0.0, abs(u) - 0.80)
-    dv = max(0.0, abs(v) - 0.80)
-    return du * du + dv * dv > 0.022
+    (u, v) ∈ [-1, 1]. Corner radius generous — matches the M4's
+    visibly rounded silhouette."""
+    du = max(0.0, abs(u) - 0.65)
+    dv = max(0.0, abs(v) - 0.65)
+    return du * du + dv * dv > 0.030
 
 
 # M4 Mac mini port layout. Each port is small enough at projection size
@@ -114,18 +114,18 @@ def is_corner_cutoff(u: float, v: float) -> bool:
 # (u, v) ∈ [-1, 1] face-local coords.
 
 # --- Port-shape primitives ----------------------------------------------
-# At ASCII resolution, the distinction between port TYPES has to come from
-# clearly different aspect ratios. A USB-C should read as a thin slim slot;
-# HDMI as a wider flat rectangle; the power plug as a small round dot.
+# Sized from the actual M4 Mac mini back. Each port shape is a clearly
+# different aspect ratio so the row reads correctly:
+#
+#  Power : LARGEST (chunky 2-prong C5/figure-8 plug). Wide AND tall.
+#  Ethernet (RJ-45) : square-ish, smaller than power, taller than HDMI.
+#  HDMI : wide flat rectangle, less tall than Ethernet.
+#  USB-C (Thunderbolt): narrow thin slot, MUCH smaller than the others.
 
-# USB-C: aspect ~2.5:1 horizontally, much narrower vertically than USB-A.
-_USBC_RX, _USBC_RY = 0.0120, 0.0022    # semi-axes ≈ 0.110 × 0.047
-
-# HDMI: wider AND flatter — distinctly larger than USB-C in both axes.
-_HDMI_RX, _HDMI_RY = 0.0260, 0.0050    # semi-axes ≈ 0.161 × 0.071
-
-# Power plug: small round dot.
-_POWER_RX, _POWER_RY = 0.0050, 0.0050  # circular
+_POWER_RX, _POWER_RY = 0.0280, 0.0160   # widest + tallest
+_ETH_RX,   _ETH_RY   = 0.0110, 0.0110   # square-ish
+_HDMI_RX,  _HDMI_RY  = 0.0220, 0.0055   # wide flat
+_USBC_RX,  _USBC_RY  = 0.0050, 0.0020   # narrow thin slot
 
 
 def _hit(u, v, cx, rx, ry):
@@ -138,21 +138,23 @@ def is_front_port(u: float, v: float) -> bool:
         return False
     return (
         _hit(u, v, -0.42, _USBC_RX, _USBC_RY) or   # USB-C 1
-        _hit(u, v, -0.20, _USBC_RX, _USBC_RY) or   # USB-C 2
+        _hit(u, v, -0.22, _USBC_RX, _USBC_RY) or   # USB-C 2
         _hit(u, v,  0.52, 0.0040, 0.0040)          # headphone jack (small round)
     )
 
 
 def is_back_port(u: float, v: float) -> bool:
-    """M4 back, left → right: power plug · HDMI · USB-C × 3."""
-    if abs(v) > 0.15:
+    """M4 back, left → right (matches the Apple product photo):
+        power plug · Gigabit Ethernet · HDMI · Thunderbolt (USB-C) × 3"""
+    if abs(v) > 0.16:
         return False
     return (
-        _hit(u, v, -0.80, _POWER_RX, _POWER_RY) or   # power plug
-        _hit(u, v, -0.38, _HDMI_RX,  _HDMI_RY)  or   # HDMI
-        _hit(u, v,  0.12, _USBC_RX,  _USBC_RY)  or   # USB-C 1
-        _hit(u, v,  0.40, _USBC_RX,  _USBC_RY)  or   # USB-C 2
-        _hit(u, v,  0.68, _USBC_RX,  _USBC_RY)       # USB-C 3
+        _hit(u, v, -0.78, _POWER_RX, _POWER_RY) or   # power plug — biggest
+        _hit(u, v, -0.42, _ETH_RX,   _ETH_RY)   or   # Gigabit Ethernet
+        _hit(u, v, -0.13, _HDMI_RX,  _HDMI_RY)  or   # HDMI
+        _hit(u, v,  0.25, _USBC_RX,  _USBC_RY)  or   # Thunderbolt 1
+        _hit(u, v,  0.48, _USBC_RX,  _USBC_RY)  or   # Thunderbolt 2
+        _hit(u, v,  0.71, _USBC_RX,  _USBC_RY)       # Thunderbolt 3
     )
 
 
