@@ -15,7 +15,7 @@
   --fg:    #ECEDEA;
   --fg-2:  #A4A6A1;
   --fg-3:  #6F7268;
-  --accent:#C9F24D;          /* electric chartreuse */
+  --accent:#00F2B0;          /* electric mint */
   --accent-2:#1D2A12;        /* accent wash */
   --accent-ink:#0B0C0E;
 
@@ -334,7 +334,7 @@ code, pre { font-family: var(--mono); }
 .post__body .highlight .k, .post__body .highlight .kd, .post__body .highlight .kn, .post__body .highlight .kp, .post__body .highlight .kr, .post__body .highlight .kv { color: #D7B6FF; font-weight: 600; }
 .post__body .highlight .kc { color: #F2C77B; }
 .post__body .highlight .kt, .post__body .highlight .nc, .post__body .highlight .nn, .post__body .highlight .nt { color: #8FE0C8; }
-.post__body .highlight .s, .post__body .highlight .s1, .post__body .highlight .s2, .post__body .highlight .sb, .post__body .highlight .se, .post__body .highlight .sd, .post__body .highlight .sc, .post__body .highlight .sx, .post__body .highlight .dl { color: #C9F24D; }
+.post__body .highlight .s, .post__body .highlight .s1, .post__body .highlight .s2, .post__body .highlight .sb, .post__body .highlight .se, .post__body .highlight .sd, .post__body .highlight .sc, .post__body .highlight .sx, .post__body .highlight .dl { color: #00F2B0; }
 .post__body .highlight .mi, .post__body .highlight .mf, .post__body .highlight .mh, .post__body .highlight .mo, .post__body .highlight .mb, .post__body .highlight .il { color: #F2C77B; }
 .post__body .highlight .nf, .post__body .highlight .fm { color: var(--fg); font-weight: 600; }
 .post__body .highlight .nb, .post__body .highlight .bp { color: #8FE0C8; }

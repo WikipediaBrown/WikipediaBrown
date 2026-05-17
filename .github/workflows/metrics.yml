@@ -42,7 +42,7 @@ jobs:
             :root { color-scheme: dark; }
             .background, body, svg { background:#0B0C0E !important; fill:#0B0C0E !important; }
             text, tspan, .field, .value, td, th, p, span { fill:#ECEDEA !important; color:#ECEDEA !important; }
-            .title, h2, .header .name, .key, strong, b { fill:#C9F24D !important; color:#C9F24D !important; }
-            a { color:#C9F24D !important; }
+            .title, h2, .header .name, .key, strong, b { fill:#00F2B0 !important; color:#00F2B0 !important; }
+            a { color:#00F2B0 !important; }
             .header .position, .meta, small, .muted { fill:#A4A6A1 !important; color:#A4A6A1 !important; }
             rect[stroke], .frame { stroke:rgba(255,255,255,.09) !important; }
