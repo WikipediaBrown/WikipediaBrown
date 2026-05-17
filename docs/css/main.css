@@ -119,11 +119,11 @@ code, pre { font-family: var(--mono); }
 /* =========================================================================
    HERO
    ========================================================================= */
-.hero { padding-top: clamp(64px, 11vw, 150px); }
+.hero { padding-top: clamp(48px, 8vw, 100px); }
 .hero__name {
-  font-family: var(--display); font-weight: 800;
-  font-size: clamp(56px, 13.5vw, 168px); line-height: .9;
-  letter-spacing: -.045em;
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(34px, 5.6vw, 68px); line-height: 1.04;
+  letter-spacing: -.03em;
 }
 .hero__first { display: block; color: var(--fg); }
 .hero__last { display: block; color: var(--fg-3); }
@@ -362,10 +362,72 @@ code, pre { font-family: var(--mono); }
 .site-footer__sig { font-family: var(--mono); font-size: .68rem; color: var(--fg-3); }
 
 /* =========================================================================
+   INTERACTIONS — purposeful micro-feedback, not decoration
+   ========================================================================= */
+
+/* Clean anchor landings under the sticky header */
+[id] { scroll-margin-top: clamp(72px, 9vh, 100px); }
+
+a { transition: color .14s ease; }
+
+/* Link underline that draws in on hover/focus (content + footer) */
+.hero__lede a,
+.about__copy a,
+.now__card a,
+.post__body a,
+.site-footer__elsewhere a {
+  border-bottom: 0;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  transition: background-size .24s cubic-bezier(.4,0,.2,1), color .14s ease;
+}
+.hero__lede a:hover,  .hero__lede a:focus-visible,
+.about__copy a:hover, .about__copy a:focus-visible,
+.now__card a:hover,   .now__card a:focus-visible,
+.post__body a:hover,  .post__body a:focus-visible,
+.site-footer__elsewhere a:hover,
+.site-footer__elsewhere a:focus-visible { background-size: 100% 1.5px; }
+
+/* Nav: quiet underline that grows from the start of the label */
+.nav__menu a {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  transition: color .14s ease, background-size .22s cubic-bezier(.4,0,.2,1);
+}
+.nav__menu a:hover,
+.nav__menu a:focus-visible { background-size: 100% 1.5px; }
+.nav__menu a[aria-current="page"] { color: var(--fg); background-size: 100% 1.5px; }
+
+/* Cards: hover earns a faint, slow elevation — no jumpy translate */
+.work__item, .posts__item, .ghstats__tile, .contact__links a {
+  transition: border-color .16s ease, box-shadow .24s ease, background-color .16s ease;
+}
+.work__item:hover, .posts__item:hover,
+.ghstats__tile:hover, .contact__links a:hover {
+  box-shadow: 0 14px 34px -24px rgba(0,0,0,.75);
+}
+
+/* Tactile press on actionable controls */
+.work__link, .notes-preview__all a, .codewin__copy,
+.post__back, .nav__toggle {
+  transition: color .14s ease, background-color .14s ease,
+              border-color .14s ease, transform .07s ease;
+}
+.work__link:active, .notes-preview__all a:active,
+.codewin__copy:active, .post__back:active { transform: scale(.97); }
+
+/* External-link affordance: the trailing arrow eases up & right */
+.work__link, .ghband__handle, .certs__link { display: inline-flex; align-items: baseline; gap: .15em; }
+
+/* =========================================================================
    MOTION
    ========================================================================= */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .nav__menu { transition: none; }
-  * { transition: none !important; }
+  * { transition: none !important; animation: none !important; }
 }

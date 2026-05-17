@@ -23,8 +23,12 @@
       <li><a href="{% if on_home %}#about{% else %}{{ '/#about' | relative_url }}{% endif %}" data-num="01">About</a></li>
       <li><a href="{% if on_home %}#work{% else %}{{ '/#work' | relative_url }}{% endif %}" data-num="02">Work</a></li>
       <li><a href="{% if on_home %}#now{% else %}{{ '/#now' | relative_url }}{% endif %}" data-num="03">Now</a></li>
-      <li><a href="{{ '/blog/' | relative_url }}" data-num="04">Blog</a></li>
-      <li><a href="{{ '/contact/' | relative_url }}" data-num="05">Contact</a></li>
+      {%- assign in_blog = false -%}
+      {%- if page.url contains '/blog' -%}{%- assign in_blog = true -%}{%- endif -%}
+      {%- assign in_contact = false -%}
+      {%- if page.url contains '/contact' -%}{%- assign in_contact = true -%}{%- endif -%}
+      <li><a href="{{ '/blog/' | relative_url }}" data-num="04"{% if in_blog %} aria-current="page"{% endif %}>Blog</a></li>
+      <li><a href="{{ '/contact/' | relative_url }}" data-num="05"{% if in_contact %} aria-current="page"{% endif %}>Contact</a></li>
     </ul>
   </nav>
 </header>
