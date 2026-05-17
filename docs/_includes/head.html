@@ -1,27 +1,81 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0B0C0E">
-<title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }} — Software Engineer{% endif %}</title>
-<meta name="description" content="{{ page.description | default: site.description }}">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 
+<title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }} — Software Engineer{% endif %}</title>
+<meta name="description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
+<meta name="author" content="{{ site.author }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+<!-- Open Graph -->
 <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
 <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }} — Software Engineer{% endif %}">
-<meta property="og:description" content="{{ page.description | default: site.description }}">
+<meta property="og:description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
 <meta property="og:site_name" content="{{ site.title }}">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="{{ '/og.png' | absolute_url }}">
+<meta property="og:image:secure_url" content="{{ '/og.png' | absolute_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Wikipedia Brown — Software Engineer, Senior Solutions Architect">
+{%- if page.layout == 'post' %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+<meta property="article:modified_time" content="{{ page.date | date_to_xmlschema }}">
+<meta property="article:author" content="{{ site.author }}">
+{%- endif %}
+
+<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }} — Software Engineer{% endif %}">
-<meta name="twitter:description" content="{{ page.description | default: site.description }}">
+<meta name="twitter:description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
 <meta name="twitter:image" content="{{ '/og.png' | absolute_url }}">
+<meta name="twitter:image:alt" content="Wikipedia Brown — Software Engineer, Senior Solutions Architect">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "{{ site.url }}/#person",
+      "name": {{ site.title | jsonify }},
+      "url": "{{ site.url }}/",
+      "image": "{{ '/og.png' | absolute_url }}",
+      "jobTitle": "Senior Solutions Architect",
+      "description": {{ site.description | strip_newlines | jsonify }},
+      "sameAs": ["https://github.com/WikipediaBrown"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "name": {{ site.title | jsonify }},
+      "url": "{{ site.url }}/",
+      "description": {{ site.description | strip_newlines | jsonify }},
+      "publisher": { "@id": "{{ site.url }}/#person" }
+    }{% if page.layout == 'post' %},
+    {
+      "@type": "BlogPosting",
+      "headline": {{ page.title | jsonify }},
+      "description": {{ page.summary | default: page.description | default: site.description | strip_newlines | jsonify }},
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "dateModified": "{{ page.date | date_to_xmlschema }}",
+      "url": "{{ page.url | absolute_url }}",
+      "mainEntityOfPage": "{{ page.url | absolute_url }}",
+      "image": "{{ '/og.png' | absolute_url }}",
+      "author": { "@id": "{{ site.url }}/#person" },
+      "publisher": { "@id": "{{ site.url }}/#person" }
+    }{% endif %}
+  ]
+}
+</script>
 
 <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
-<link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
