@@ -24,7 +24,7 @@
 
   const rnd = (a, b) => a + Math.random() * (b - a);
 
-  function resize() {
+  function fit() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = window.innerWidth;
     H = window.innerHeight;
@@ -33,6 +33,10 @@
     canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function resize() {
+    fit();
     seed();
   }
 
@@ -160,12 +164,24 @@
     drawSats(t, dt);
   }
 
-  let rt;
+  let rt, lastW = 0, lastH = 0;
+  function onResize() {
+    const w = window.innerWidth, h = window.innerHeight;
+    // Always keep the canvas matched to the viewport, but only
+    // re-seed on a real change. Mobile fires resize while scrolling
+    // (URL bar show/hide changes height only) — re-seeding there is
+    // what made the stars "reset" on scroll.
+    fit();
+    if (w !== lastW || Math.abs(h - lastH) > 220) { seed(); }
+    lastW = w; lastH = h;
+  }
   window.addEventListener('resize', () => {
     clearTimeout(rt);
-    rt = setTimeout(resize, 150);
+    rt = setTimeout(onResize, 150);
   });
 
+  lastW = window.innerWidth;
+  lastH = window.innerHeight;
   resize();
 
   if (reduce) {

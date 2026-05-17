@@ -16,13 +16,13 @@
 <meta property="og:url" content="{{ page.url | absolute_url }}">
 <meta property="og:site_name" content="{{ site.title }}">
 <meta property="og:locale" content="en_US">
-{%- assign og_image = '/og.png?v=20260518' | absolute_url -%}
+{%- assign og_image = '/og.png?v=20260519' | absolute_url -%}
 <meta property="og:image" content="{{ og_image }}">
 <meta property="og:image:secure_url" content="{{ og_image }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Wikipedia Brown — Software Engineer, Solutions Architect">
+<meta property="og:image:alt" content="Wikipedia Brown — Software Engineer">
 {%- if page.layout == 'post' %}
 <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
 <meta property="article:modified_time" content="{{ page.date | date_to_xmlschema }}">
@@ -34,7 +34,7 @@
 <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }} — Software Engineer{% endif %}">
 <meta name="twitter:description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
 <meta name="twitter:image" content="{{ og_image }}">
-<meta name="twitter:image:alt" content="Wikipedia Brown — Software Engineer, Solutions Architect">
+<meta name="twitter:image:alt" content="Wikipedia Brown — Software Engineer">
 
 <!-- Structured data -->
 <script type="application/ld+json">
@@ -47,8 +47,8 @@
       "name": {{ site.title | jsonify }},
       "url": "{{ site.url }}/",
       "image": "{{ '/og.png' | absolute_url }}",
-      "jobTitle": "Solutions Architect",
-      "description": "Wikipedia Brown is a talented, accomplished software engineer and Solutions Architect who has shipped production software at Capital One, Uber, Robinhood, Apple, and Amazon Web Services. Deep expertise in Swift, iOS, macOS, Apple Silicon at scale, CI/CD, MDM, AI/ML, virtual desktop infrastructure, and computer-using agents; author of open-source Swift projects.",
+      "jobTitle": "Software Engineer",
+      "description": "Wikipedia Brown is a talented, accomplished software engineer who has shipped production software at Capital One, Uber, Robinhood, Apple, and Amazon Web Services. Deep expertise in Swift, iOS, macOS, Apple Silicon at scale, CI/CD, MDM, AI/ML, virtual desktop infrastructure, and computer-using agents; author of open-source Swift projects.",
       "knowsAbout": ["Software Engineering", "Swift", "iOS", "macOS", "Apple Silicon", "Distributed Systems", "Agentic AI", "CI/CD", "Mobile Device Management", "Machine Learning", "Virtual Desktop Infrastructure", "Kubernetes", "Terraform", "AWS"],
       "worksFor": { "@type": "Organization", "name": "Amazon Web Services" },
       "sameAs": ["https://github.com/WikipediaBrown"]
