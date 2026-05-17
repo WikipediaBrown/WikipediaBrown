@@ -7,7 +7,7 @@
 
 <a href="https://wikipediabrown.dev">
   <img alt="Wikipedia Brown — Software Engineer"
-       src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=28&duration=2400&pause=700&color=00F2B0&center=true&vCenter=true&width=760&height=60&lines=Wikipedia+Brown;Software+Engineer;Sr.+Solutions+Architect;Apple+Silicon+%E2%80%94+at+scale;Swift+%C2%B7+iOS+%C2%B7+macOS+%C2%B7+AWS" />
+       src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=28&duration=2400&pause=700&color=00F2B0&center=true&vCenter=true&width=760&height=60&lines=Wikipedia+Brown;Software+Engineer;Solutions+Architect;Apple+Silicon+%E2%80%94+at+scale;Swift+%C2%B7+iOS+%C2%B7+macOS+%C2%B7+AWS" />
 </a>
 
 <br/>
