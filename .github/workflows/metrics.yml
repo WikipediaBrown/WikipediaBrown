@@ -1,0 +1,48 @@
+name: metrics
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "github-metrics.svg"
+      - ".github/workflows/metrics.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate metrics card
+        uses: lowlighter/metrics@latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          user: WikipediaBrown
+          filename: github-metrics.svg
+          output_action: commit
+          committer_branch: main
+          committer_message: "chore: refresh github-metrics.svg [skip ci]"
+
+          base: header, activity, repositories, metadata
+          repositories_affiliations: owner
+          config_timezone: America/Los_Angeles
+          plugin_languages: yes
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_limit: 8
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+
+          config_display: large
+          config_animations: yes
+          extras_css: >
+            :root { color-scheme: dark; }
+            .background, body, svg { background:#0B0C0E !important; fill:#0B0C0E !important; }
+            text, tspan, .field, .value, td, th, p, span { fill:#ECEDEA !important; color:#ECEDEA !important; }
+            .title, h2, .header .name, .key, strong, b { fill:#C9F24D !important; color:#C9F24D !important; }
+            a { color:#C9F24D !important; }
+            .header .position, .meta, small, .muted { fill:#A4A6A1 !important; color:#A4A6A1 !important; }
+            rect[stroke], .frame { stroke:rgba(255,255,255,.09) !important; }

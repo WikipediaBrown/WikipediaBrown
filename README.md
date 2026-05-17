@@ -62,16 +62,11 @@ A small Swift package for working with SF Symbols. Extensions on `String`, `UIIm
 <div align="center">
 
 <a href="https://github.com/WikipediaBrown">
-<img height="165" alt="GitHub stats"
-     src="https://github-readme-stats.vercel.app/api?username=WikipediaBrown&show_icons=true&hide_border=true&bg_color=0B0C0E&title_color=C9F24D&text_color=ECEDEA&icon_color=C9F24D&include_all_commits=true&count_private=false" />
-<img height="165" alt="Most used languages"
-     src="https://github-readme-stats.vercel.app/api/top-langs/?username=WikipediaBrown&layout=compact&hide_border=true&bg_color=0B0C0E&title_color=C9F24D&text_color=ECEDEA&langs_count=8" />
+  <img alt="GitHub metrics for @WikipediaBrown — activity, languages, and a year of contributions"
+       src="./github-metrics.svg" width="100%" />
 </a>
 
-<br/>
-
-<img alt="Contribution streak"
-     src="https://streak-stats.demolab.com?user=WikipediaBrown&theme=transparent&hide_border=true&background=0B0C0E&stroke=0B0C0E&ring=C9F24D&fire=C9F24D&currStreakLabel=C9F24D&sideLabels=ECEDEA&dates=A4A6A1&currStreakNum=ECEDEA&sideNums=ECEDEA" />
+<sub>Refreshed daily by GitHub Actions — generated and committed to this repo, so it always loads.</sub>
 
 </div>
 
