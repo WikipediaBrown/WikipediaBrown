@@ -170,7 +170,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .ghband { border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: clamp(18px,2.6vw,28px); }
 .ghband__head { display: flex; align-items: baseline; gap: 1rem; }
 .ghband__head .cue-label { color: var(--fg-3); }
-.ghband__handle { font-family: var(--display); font-weight: 700; color: var(--fg); }
+.ghband__handle { font-family: var(--display); font-weight: 700; color: var(--fg); transition: color .2s ease; }
 .ghband__head:hover .ghband__handle { color: var(--accent); }
 
 .ghstats { margin: 0; display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(10px,1.4vw,16px); }
@@ -358,14 +358,13 @@ main, .site-footer { position: relative; z-index: 1; }
    FOOTER
    ========================================================================= */
 .site-footer { border-top: 1px solid var(--line); padding: 0 var(--gut); }
-.site-footer__nav { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: 1.6rem 0; }
+.site-footer__row {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: .7rem 1.5rem; padding: 1.4rem 0;
+}
+.site-footer__nav { display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
 .site-footer__nav a { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-2); }
 .site-footer__nav a:hover { color: var(--accent); }
-.site-footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .8rem 1.5rem; padding: 1.3rem 0; border-top: 1px solid var(--line); }
-.site-footer__elsewhere { display: flex; align-items: center; gap: .8rem; }
-.site-footer__elsewhere a { color: var(--fg); }
-.site-footer__elsewhere a:hover { color: var(--accent); }
-.site-footer__elsewhere span { color: var(--fg-3); }
 .site-footer__sig { font-family: var(--mono); font-size: .68rem; color: var(--fg-3); }
 
 /* =========================================================================
@@ -375,27 +374,24 @@ main, .site-footer { position: relative; z-index: 1; }
 /* Clean anchor landings under the sticky header */
 [id] { scroll-margin-top: clamp(72px, 9vh, 100px); }
 
-a { transition: color .14s ease; }
+a { transition: color .2s ease; }
 
 /* Link underline that draws in on hover/focus (content + footer) */
 .hero__lede a,
 .about__copy a,
 .now__card a,
-.post__body a,
-.site-footer__elsewhere a {
+.post__body a {
   border-bottom: 0;
   background-image: linear-gradient(var(--accent), var(--accent));
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 1.5px;
-  transition: background-size .24s cubic-bezier(.4,0,.2,1), color .14s ease;
+  transition: background-size .24s cubic-bezier(.4,0,.2,1), color .2s ease;
 }
 .hero__lede a:hover,  .hero__lede a:focus-visible,
 .about__copy a:hover, .about__copy a:focus-visible,
 .now__card a:hover,   .now__card a:focus-visible,
-.post__body a:hover,  .post__body a:focus-visible,
-.site-footer__elsewhere a:hover,
-.site-footer__elsewhere a:focus-visible { background-size: 100% 1.5px; }
+.post__body a:hover,  .post__body a:focus-visible { background-size: 100% 1.5px; }
 
 /* Nav: quiet underline that grows from the start of the label */
 .nav__menu a {
@@ -403,7 +399,7 @@ a { transition: color .14s ease; }
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 1.5px;
-  transition: color .14s ease, background-size .22s cubic-bezier(.4,0,.2,1);
+  transition: color .2s ease, background-size .22s cubic-bezier(.4,0,.2,1);
 }
 .nav__menu a:hover,
 .nav__menu a:focus-visible { background-size: 100% 1.5px; }
@@ -411,7 +407,7 @@ a { transition: color .14s ease; }
 
 /* Cards: hover earns a faint, slow elevation — no jumpy translate */
 .work__item, .posts__item, .ghstats__tile, .contact__links a {
-  transition: border-color .16s ease, box-shadow .24s ease, background-color .16s ease;
+  transition: border-color .16s ease, box-shadow .24s ease, background-color .16s ease, color .2s ease;
 }
 .work__item:hover, .posts__item:hover,
 .ghstats__tile:hover, .contact__links a:hover {
@@ -421,7 +417,7 @@ a { transition: color .14s ease; }
 /* Tactile press on actionable controls */
 .work__link, .notes-preview__all a, .codewin__copy,
 .post__back, .nav__toggle {
-  transition: color .14s ease, background-color .14s ease,
+  transition: color .2s ease, background-color .2s ease,
               border-color .14s ease, transform .07s ease;
 }
 .work__link:active, .notes-preview__all a:active,

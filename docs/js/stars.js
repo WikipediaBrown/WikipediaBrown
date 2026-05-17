@@ -49,8 +49,6 @@
           y: Math.random() * H,
           r: rnd(L.size[0], L.size[1]),
           a: rnd(L.alpha[0], L.alpha[1]),
-          tw: Math.random() * Math.PI * 2,           // twinkle phase
-          tws: rnd(0.4, 1.2),                        // twinkle speed
         });
       }
     });
@@ -90,11 +88,9 @@
         if (s.x < -2) s.x = W + 2; else if (s.x > W + 2) s.x = -2;
         if (s.y < -2) s.y = H + 2; else if (s.y > H + 2) s.y = -2;
       }
-      const a = reduce ? s.a
-        : s.a * (0.75 + 0.25 * Math.sin(s.tw + t * s.tws));
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(236,237,234,' + a.toFixed(3) + ')';
+      ctx.fillStyle = 'rgba(236,237,234,' + s.a.toFixed(3) + ')';
       ctx.fill();
     }
   }
