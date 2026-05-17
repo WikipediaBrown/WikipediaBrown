@@ -60,6 +60,13 @@ code, pre { font-family: var(--mono); }
 
 .masthead, main, .site-footer { max-width: var(--maxw); margin-inline: auto; }
 
+/* Starfield sits behind everything; content rides above it */
+#stars {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+main, .site-footer { position: relative; z-index: 1; }
+
 /* =========================================================================
    NAV
    ========================================================================= */
