@@ -17,7 +17,7 @@
   --fg-3:  #6F7268;
   --accent:#00F2B0;          /* electric mint */
   --accent-2:#1D2A12;        /* accent wash */
-  --accent-ink:#0B0C0E;
+  --accent-ink:#000000;      /* always black on the mint */
 
   --display:"Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
   --sans:"Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
