@@ -80,9 +80,12 @@ main, .site-footer { position: relative; z-index: 1; }
    ========================================================================= */
 .masthead {
   position: sticky; top: 0; z-index: 50;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  backdrop-filter: saturate(160%) blur(12px);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
   border-bottom: 1px solid var(--line);
+  /* NOTE: no backdrop-filter here — it would make .masthead the
+     containing block for the position:fixed mobile drawer, trapping
+     it inside the ~60px header on iOS Safari. The frosted blur is
+     re-added at >=761px where the menu is a static bar, not a drawer. */
 }
 .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem var(--gut); }
 .nav__brand { display: flex; align-items: center; gap: .55ch; color: var(--fg); font-family: var(--display); font-weight: 700; letter-spacing: -.02em; }
@@ -98,10 +101,12 @@ main, .site-footer { position: relative; z-index: 1; }
 .nav__toggle-bars span { display: block; height: 2px; background: currentColor; margin: 5px 0; border-radius: 2px; }
 
 .nav__menu {
-  position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 320px);
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 60;
+  width: min(78vw, 320px); height: 100dvh;
   display: flex; flex-direction: column; gap: 0; align-items: stretch;
   list-style: none; margin: 0; padding: 5rem var(--gut) 2rem;
   background: var(--bg-1); border-left: 1px solid var(--line);
+  overflow-y: auto;
   clip-path: inset(0 0 0 100%); pointer-events: none;
   transition: clip-path .28s ease;
 }
@@ -113,12 +118,18 @@ body.nav-open .nav__menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
 body.nav-open { overflow: hidden; }
 
 @media (min-width: 761px) {
+  /* desktop has a static bar (no fixed drawer), so the frosted blur
+     is safe here and won't trap any fixed descendant */
+  .masthead {
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: saturate(160%) blur(12px);
+  }
   .nav__toggle { display: none; }
   .nav__menu {
-    position: static; width: auto;
+    position: static; width: auto; height: auto; z-index: auto;
     flex-direction: row; align-items: center;
     gap: clamp(1rem, 2.4vw, 2rem);
-    padding: 0; background: none; border-left: 0;
+    padding: 0; background: none; border-left: 0; overflow: visible;
     clip-path: none; pointer-events: auto; transition: none;
   }
   .nav__menu li { padding: 0; border-bottom: 0; }
