@@ -8,20 +8,28 @@ permalink: /404.html
   <div class="section__head">
     <span class="section__num">№ 404</span>
     <h1 id="nf-h" class="section__title">Case <em>unsolved</em>.</h1>
-    <span class="section__kicker">This page isn't in the file.</span>
+    <span class="section__kicker">That page isn't in the file. Poke around the terminal &mdash; type <code>help</code>.</span>
   </div>
 
-  <div class="contact__body">
-    <p class="contact__lede">
-      Wikipedia Brown took the case. Checked every shelf, dusted every
-      URL for prints. Whatever you were looking for moved, got renamed,
-      or never existed and someone's pulling your leg.
-    </p>
-
-    <p class="notes-preview__all">
-      <a href="{{ '/' | relative_url }}" class="work__link">Back to the front page ↗</a>
-      &nbsp;&nbsp;
-      <a href="{{ '/blog/' | relative_url }}" class="work__link">Read the case files ↗</a>
-    </p>
+  <div class="term" id="term">
+    <div class="term__bar" aria-hidden="true">
+      <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+      <span class="term__name">wikipediabrown — 404</span>
+    </div>
+    <div class="term__log" id="term-log" role="log" aria-live="polite" aria-label="Terminal output"></div>
+    <form class="term__form" id="term-form" autocomplete="off">
+      <label class="term__prompt" for="term-input" aria-hidden="true">visitor@wikipediabrown:~$</label>
+      <input class="term__input" id="term-input" name="cmd" type="text"
+             aria-label="Terminal command" spellcheck="false"
+             autocapitalize="off" autocorrect="off" />
+    </form>
   </div>
+
+  <p class="notes-preview__all">
+    <a href="{{ '/' | relative_url }}" class="work__link">cd&nbsp;~&nbsp;(home)</a>
+    &nbsp;&nbsp;
+    <a href="{{ '/blog/' | relative_url }}" class="work__link">cat&nbsp;blog/*</a>
+  </p>
 </section>
+
+<script src="{{ '/js/term.js' | relative_url }}" defer></script>
