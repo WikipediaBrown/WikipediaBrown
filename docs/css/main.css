@@ -84,12 +84,16 @@ main, .site-footer { position: relative; z-index: 1; }
 .nav__menu a { color: var(--fg-2); font-size: .8rem; font-weight: 500; }
 .nav__menu a::before { content: attr(data-num); color: var(--accent); margin-right: .5ch; font-family: var(--mono); font-size: .82em; }
 .nav__menu a:hover { color: var(--fg); }
-.nav__toggle { display: none; background: none; border: 0; cursor: pointer; color: var(--fg); padding: .3rem; }
+.nav__toggle {
+  display: none; background: none; border: 0; cursor: pointer; color: var(--fg);
+  min-width: 44px; min-height: 44px; padding: 10px;
+  align-items: center; justify-content: center;
+}
 .nav__toggle-bars { display: block; width: 24px; }
 .nav__toggle-bars span { display: block; height: 2px; background: currentColor; margin: 5px 0; border-radius: 2px; }
 
 @media (max-width: 760px) {
-  .nav__toggle { display: block; }
+  .nav__toggle { display: flex; }
   .nav__menu {
     position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 320px);
     flex-direction: column; gap: 0; align-items: stretch;
@@ -98,8 +102,8 @@ main, .site-footer { position: relative; z-index: 1; }
     clip-path: inset(0 0 0 100%); pointer-events: none;
     transition: clip-path .28s ease;
   }
-  .nav__menu li { padding: 1rem 0; border-bottom: 1px solid var(--line); }
-  .nav__menu a { font-size: .95rem; }
+  .nav__menu li { padding: 0; border-bottom: 1px solid var(--line); }
+  .nav__menu a { display: block; padding: 1rem 0; font-size: .95rem; }
   body.nav-open .nav__menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
   body.nav-open { overflow: hidden; }
 }
@@ -341,7 +345,17 @@ main, .site-footer { position: relative; z-index: 1; }
 }
 @media (max-width: 560px) {
   .term__prompt { font-size: .72rem; }
-  .term__log, .term__input { font-size: .76rem; }
+  .term__log { font-size: .76rem; }
+  /* keep the input >=16px so iOS Safari doesn't zoom on focus */
+  .term__input { font-size: 16px; }
+}
+/* comfortable touch targets on coarse pointers */
+@media (hover: none) and (pointer: coarse) {
+  .work__link, .notes-preview__all a, .post__back,
+  .nav__menu a, .contact__links a, .site-footer__nav a {
+    min-height: 44px; display: inline-flex; align-items: center;
+  }
+  .site-footer__nav a, .nav__menu a { display: flex; }
 }
 
 /* =========================================================================
