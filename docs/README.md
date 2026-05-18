@@ -1,12 +1,12 @@
 # wikipediabrown.dev
 
 The source for [wikipediabrown.dev](https://wikipediabrown.dev) — a Jekyll site
-hosted on GitHub Pages.
+hosted on GitHub Pages, served from this `docs/` directory.
+
+(The repo-root `README.md` is the GitHub *profile* readme; this file is just
+developer notes for the site and is excluded from the build.)
 
 ## Local preview
-
-The repo includes a small Jekyll site under this `docs/` directory. To run it
-locally:
 
 ```sh
 cd docs
@@ -14,19 +14,18 @@ bundle exec jekyll serve   # or: jekyll serve
 # then open http://localhost:4000
 ```
 
-If you don't have a `Gemfile`, the bare `jekyll` command (Ruby gem) works too,
-since the site only uses GitHub Pages' default plugin allowlist.
+GitHub Pages' default plugin allowlist is all that's needed, so the bare
+`jekyll` gem works without a `Gemfile`.
 
 ## Deployment
 
-GitHub Pages serves this site from the `main` branch's `/docs` folder. Push to
-`main` and the site rebuilds within a minute or two.
+GitHub Pages serves from the `main` branch's `/docs` folder. Push to `main`
+and the site rebuilds within a minute or two.
 
 **Settings → Pages → Build and deployment → Source: Deploy from a branch →
 Branch: `main` · folder `/docs`**
 
-The custom domain `wikipediabrown.dev` is configured via the `CNAME` file at
-`docs/CNAME`. DNS records needed on the registrar:
+The custom domain `wikipediabrown.dev` is set via `docs/CNAME`. DNS:
 
 | Type  | Host | Value                       |
 |-------|------|-----------------------------|
@@ -36,37 +35,50 @@ The custom domain `wikipediabrown.dev` is configured via the `CNAME` file at
 | A     | @    | 185.199.111.153             |
 | CNAME | www  | wikipediabrown.github.io.   |
 
-Check **"Enforce HTTPS"** in Pages settings once the certificate provisions.
+Enable **"Enforce HTTPS"** in Pages settings once the certificate provisions.
 
 ## Stack
 
-- Jekyll (GitHub Pages safe-plugins allowlist: `jekyll-feed`, `jekyll-sitemap`,
-  `jekyll-seo-tag`)
-- Recursive variable font (pinned `MONO=1 CASL=0` — Mono Linear)
-- A small vanilla JS file (hamburger toggle + marquee pause + static ASCII
-  Mac mini painter)
+- Jekyll (GitHub Pages safe plugins: `jekyll-feed`, `jekyll-sitemap`,
+  `jekyll-seo-tag`).
+- Fonts: Bricolage Grotesque (display) + Hanken Grotesk (body) + Recursive
+  in mono mode (code/labels), via Google Fonts.
+- Mobile-first CSS in `css/main.css` (base = phone; `@media (min-width: …)`
+  enhances up). One dark theme, mint accent.
+- Vanilla JS, no build step:
+  - `js/main.js` — mobile-nav hamburger, code-block "terminal window" +
+    copy button, live GitHub stat tiles (GitHub public API).
+  - `js/stars.js` — parallax starfield canvas (shooting stars + satellite).
+  - `js/term.js` — the interactive 404 terminal.
+- `og.png` / `apple-touch-icon.png` / `favicon.svg` are committed assets;
+  cache-busted via a `?v=N` query in `_includes/head.html` / `_layouts`.
+- `github-metrics.svg` (repo root) is regenerated daily by
+  `.github/workflows/metrics.yml` and embedded in the profile readme.
 
 ## Repository layout
 
 ```
 docs/
-  _config.yml         ← site config
-  _layouts/           ← default + post layouts
-  _includes/          ← head, nav, footer partials
-  _posts/             ← blog posts (Markdown, YYYY-MM-DD-slug.md)
-  _tools/             ← Python image-to-ASCII pipeline
-  blog/index.html     ← blog index page
-  css/main.css        ← all styles
-  js/main.js          ← tiny progressive enhancement
-  img/                ← portfolio thumbnails
-  index.html          ← homepage
-  CNAME               ← custom domain
-  favicon.svg
+  _config.yml          ← site config
+  _layouts/            ← default + post
+  _includes/           ← head, nav, footer partials
+  _posts/              ← blog posts (YYYY-MM-DD-slug.md)
+  blog/index.html      ← blog index
+  contact/index.html   ← contact page
+  css/main.css         ← all styles (mobile-first)
+  js/                  ← main.js, stars.js, term.js
+  index.html           ← homepage
+  404.html             ← interactive terminal 404
+  llms.txt             ← machine-readable site map for AI agents
+  robots.txt           ← crawler rules + sitemap pointer
+  og.png, apple-touch-icon.png, favicon.svg
+  CNAME                ← custom domain
 ```
 
 ## Editing
 
-Most homepage content lives in [`docs/index.html`](./index.html). Blog posts
-live in [`docs/_posts/`](./_posts/) — front-matter `layout: post`, filename
-`YYYY-MM-DD-slug.md`. The `/now` section on the homepage is intended for
-seasonal updates.
+Homepage content lives in [`docs/index.html`](./index.html). Blog posts go in
+[`docs/_posts/`](./_posts/) with front-matter `layout: post` and filename
+`YYYY-MM-DD-slug.md`. The `/now` section of the homepage is for seasonal
+updates. Bump the `?v=N` asset version in `_includes/head.html` and the
+layouts whenever `main.css`/the JS changes, so browsers fetch the new files.
