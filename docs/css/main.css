@@ -1,8 +1,16 @@
 /* =========================================================================
    wikipediabrown.dev — "Dark Product"
-   Deep near-black with depth, a distinctive geometric display face
-   (Bricolage Grotesque) over a clean grotesque body (Hanken Grotesk),
-   one electric accent used sparingly, soft cards, restrained motion.
+   Mobile-first: base rules ARE the phone layout; `@media (min-width: …)`
+   blocks progressively enhance for larger screens. Deep near-black,
+   Bricolage Grotesque over Hanken Grotesk, one electric accent.
+
+   Breakpoints (min-width):
+     561px  — small (terminal type scales up)
+     601px  — Now grid → 2 columns
+     641px  — Work item → 3-column row
+     721px  — GitHub stats → 4 columns
+     761px  — desktop navigation (drawer → inline bar)
+     900px  — About → two columns
    ========================================================================= */
 
 :root {
@@ -68,7 +76,7 @@ code, pre { font-family: var(--mono); }
 main, .site-footer { position: relative; z-index: 1; }
 
 /* =========================================================================
-   NAV
+   NAV — base = mobile drawer; ≥761px = inline desktop bar
    ========================================================================= */
 .masthead {
   position: sticky; top: 0; z-index: 50;
@@ -80,36 +88,46 @@ main, .site-footer { position: relative; z-index: 1; }
 .nav__brand { display: flex; align-items: center; gap: .55ch; color: var(--fg); font-family: var(--display); font-weight: 700; letter-spacing: -.02em; }
 .nav__brand:hover { color: var(--fg); }
 .nav__brand-mark { color: var(--fg-3); font-weight: 700; }
-.nav__menu { display: flex; gap: clamp(1rem,2.4vw,2rem); list-style: none; padding: 0; margin: 0; }
-.nav__menu a { color: var(--fg-2); font-size: .8rem; font-weight: 500; }
-.nav__menu a::before { content: attr(data-num); color: var(--accent); margin-right: .5ch; font-family: var(--mono); font-size: .82em; }
-.nav__menu a:hover { color: var(--fg); }
+
 .nav__toggle {
-  display: none; background: none; border: 0; cursor: pointer; color: var(--fg);
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: 0; cursor: pointer; color: var(--fg);
   min-width: 44px; min-height: 44px; padding: 10px;
-  align-items: center; justify-content: center;
 }
 .nav__toggle-bars { display: block; width: 24px; }
 .nav__toggle-bars span { display: block; height: 2px; background: currentColor; margin: 5px 0; border-radius: 2px; }
 
-@media (max-width: 760px) {
-  .nav__toggle { display: flex; }
+.nav__menu {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 320px);
+  display: flex; flex-direction: column; gap: 0; align-items: stretch;
+  list-style: none; margin: 0; padding: 5rem var(--gut) 2rem;
+  background: var(--bg-1); border-left: 1px solid var(--line);
+  clip-path: inset(0 0 0 100%); pointer-events: none;
+  transition: clip-path .28s ease;
+}
+.nav__menu li { padding: 0; border-bottom: 1px solid var(--line); }
+.nav__menu a { display: block; padding: 1rem 0; color: var(--fg-2); font-size: .95rem; font-weight: 500; }
+.nav__menu a::before { content: attr(data-num); color: var(--accent); margin-right: .5ch; font-family: var(--mono); font-size: .82em; }
+.nav__menu a:hover { color: var(--fg); }
+body.nav-open .nav__menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
+body.nav-open { overflow: hidden; }
+
+@media (min-width: 761px) {
+  .nav__toggle { display: none; }
   .nav__menu {
-    position: fixed; top: 0; right: 0; bottom: 0; width: min(78vw, 320px);
-    flex-direction: column; gap: 0; align-items: stretch;
-    background: var(--bg-1); border-left: 1px solid var(--line);
-    padding: 5rem var(--gut) 2rem;
-    clip-path: inset(0 0 0 100%); pointer-events: none;
-    transition: clip-path .28s ease;
+    position: static; width: auto;
+    flex-direction: row; align-items: center;
+    gap: clamp(1rem, 2.4vw, 2rem);
+    padding: 0; background: none; border-left: 0;
+    clip-path: none; pointer-events: auto; transition: none;
   }
-  .nav__menu li { padding: 0; border-bottom: 1px solid var(--line); }
-  .nav__menu a { display: block; padding: 1rem 0; font-size: .95rem; }
-  body.nav-open .nav__menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
-  body.nav-open { overflow: hidden; }
+  .nav__menu li { padding: 0; border-bottom: 0; }
+  .nav__menu a { display: inline; padding: 0; font-size: .8rem; }
+  body.nav-open { overflow: auto; }
 }
 
 /* =========================================================================
-   SECTION SCAFFOLD + load motion
+   SECTION SCAFFOLD
    ========================================================================= */
 .hero, .ghband, .section, .post { padding: clamp(44px, 7vw, 104px) var(--gut); }
 .section { border-top: 1px solid var(--line); }
@@ -169,7 +187,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .hero__scroll svg { width: 11px; height: auto; }
 
 /* =========================================================================
-   GITHUB BAND
+   GITHUB BAND — base = 2-up; ≥721px = 4-up
    ========================================================================= */
 .ghband { border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: clamp(18px,2.6vw,28px); }
 .ghband__head { display: flex; align-items: baseline; gap: 1rem; }
@@ -177,7 +195,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .ghband__handle { font-family: var(--display); font-weight: 700; color: var(--fg); transition: color .2s ease; }
 .ghband__head:hover .ghband__handle { color: var(--accent); }
 
-.ghstats { margin: 0; display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(10px,1.4vw,16px); }
+.ghstats { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px,1.4vw,16px); }
 .ghstats__tile {
   background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px;
   padding: clamp(18px,2.4vw,30px);
@@ -189,10 +207,10 @@ main, .site-footer { position: relative; z-index: 1; }
 .ghstats__tile dt { font-family: var(--mono); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-3); }
 .ghstats.is-error { display: none; }
 
-@media (max-width: 720px) { .ghstats { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 721px) { .ghstats { grid-template-columns: repeat(4,1fr); } }
 
 /* =========================================================================
-   ABOUT
+   ABOUT — base = single column; ≥900px = two columns
    ========================================================================= */
 .about__grid { display: grid; gap: clamp(32px,5vw,72px); grid-template-columns: 1fr; }
 @media (min-width: 900px) { .about__grid { grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); } }
@@ -225,11 +243,11 @@ main, .site-footer { position: relative; z-index: 1; }
 .certs__link { font-family: var(--mono); font-size: .72rem; color: var(--accent); }
 
 /* =========================================================================
-   WORK
+   WORK — base = stacked (index + body, link below); ≥641px = 3-col row
    ========================================================================= */
 .work__list { list-style: none; padding: 0; margin: 0; display: grid; gap: clamp(12px,1.6vw,18px); }
 .work__item {
-  display: grid; grid-template-columns: 2.6rem 1fr auto; gap: 1.4rem; align-items: start;
+  display: grid; grid-template-columns: 2rem 1fr; gap: 1.4rem; align-items: start;
   background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px;
   padding: clamp(20px,2.6vw,32px);
   transition: border-color .15s;
@@ -240,24 +258,25 @@ main, .site-footer { position: relative; z-index: 1; }
 .work__meta { font-family: var(--mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); margin: .45rem 0 .8rem; }
 .work__desc { color: var(--fg-2); max-width: 56ch; }
 .work__desc code { font-family: var(--mono); font-size: .85em; background: var(--bg-3); padding: .05em .35em; border-radius: 4px; color: var(--accent); }
-.work__link { align-self: center; white-space: nowrap; font-family: var(--mono); font-size: .74rem; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); padding: .5em .9em; border-radius: 8px; }
+.work__link { grid-column: 2; justify-self: start; align-self: start; margin-top: .6rem; white-space: nowrap; font-family: var(--mono); font-size: .74rem; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); padding: .5em .9em; border-radius: 8px; }
 .work__link:hover { background: var(--accent); color: var(--accent-ink); }
-@media (max-width: 640px) {
-  .work__item { grid-template-columns: 2rem 1fr; }
-  .work__link { grid-column: 2; justify-self: start; margin-top: .6rem; align-self: start; }
+
+@media (min-width: 641px) {
+  .work__item { grid-template-columns: 2.6rem 1fr auto; }
+  .work__link { grid-column: auto; justify-self: auto; align-self: center; margin-top: 0; }
 }
 
 /* =========================================================================
-   NOW
+   NOW — base = single column; ≥601px = two columns
    ========================================================================= */
-.now__grid { display: grid; gap: clamp(12px,1.6vw,18px); grid-template-columns: repeat(2,1fr); }
+.now__grid { display: grid; gap: clamp(12px,1.6vw,18px); grid-template-columns: 1fr; }
 .now__card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px,2.4vw,28px); }
 .now__card h3 { font-family: var(--mono); font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-3); margin-bottom: .7rem; }
 .now__card p { color: var(--fg-2); }
 .now__card em { font-style: normal; color: var(--fg); font-weight: 600; }
 .now__card a { color: var(--fg); border-bottom: 1px solid var(--accent); }
 .now__card a:hover { color: var(--accent); }
-@media (max-width: 600px) { .now__grid { grid-template-columns: 1fr; } }
+@media (min-width: 601px) { .now__grid { grid-template-columns: repeat(2,1fr); } }
 
 /* =========================================================================
    POSTS LIST
@@ -294,7 +313,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .notfound { border-top: 1px solid var(--line); }
 .notfound .contact__lede { max-width: 50ch; margin: 0 0 1.8rem; }
 
-/* interactive terminal */
+/* interactive terminal — base = phone type; ≥561px scales up */
 .term {
   margin: clamp(20px,3vw,32px) 0;
   max-width: 720px;
@@ -323,7 +342,7 @@ main, .site-footer { position: relative; z-index: 1; }
   padding: 1rem 1.1rem .4rem;
   height: clamp(240px, 42vh, 360px);
   overflow-y: auto;
-  font-size: .82rem; line-height: 1.55; color: var(--fg-2);
+  font-size: .76rem; line-height: 1.55; color: var(--fg-2);
   white-space: pre-wrap; word-break: break-word;
 }
 .term__line { min-height: 1.1em; }
@@ -336,19 +355,19 @@ main, .site-footer { position: relative; z-index: 1; }
   padding: .55rem 1.1rem 1rem;
   border-top: 1px solid var(--line-2);
 }
-.term__prompt { color: var(--accent); font-size: .82rem; white-space: nowrap; }
+.term__prompt { color: var(--accent); font-size: .72rem; white-space: nowrap; }
 .term__input {
   flex: 1; min-width: 0;
   background: none; border: 0; outline: none;
-  color: var(--fg); font-family: var(--mono); font-size: .82rem;
+  color: var(--fg); font-family: var(--mono);
+  font-size: 16px;            /* >=16px so iOS Safari doesn't zoom on focus */
   caret-color: var(--accent); padding: 0;
 }
-@media (max-width: 560px) {
-  .term__prompt { font-size: .72rem; }
-  .term__log { font-size: .76rem; }
-  /* keep the input >=16px so iOS Safari doesn't zoom on focus */
-  .term__input { font-size: 16px; }
+@media (min-width: 561px) {
+  .term__prompt, .term__input { font-size: .82rem; }
+  .term__log { font-size: .82rem; }
 }
+
 /* comfortable touch targets on coarse pointers */
 @media (hover: none) and (pointer: coarse) {
   .work__link, .notes-preview__all a, .post__back,
@@ -491,7 +510,7 @@ a { transition: color .2s ease; }
 .work__link:active, .notes-preview__all a:active,
 .codewin__copy:active, .post__back:active { transform: scale(.97); }
 
-/* External-link affordance: the trailing arrow eases up & right */
+/* External-link affordance */
 .work__link, .ghband__handle, .certs__link { display: inline-flex; align-items: baseline; gap: .15em; }
 
 /* =========================================================================
