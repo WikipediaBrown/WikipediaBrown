@@ -20,7 +20,7 @@ Tools are how the driver acts on anything outside its own token stream. They com
 
 - **MCP servers** — the open protocol Anthropic introduced in November 2024 for connecting LLM applications to external data and capabilities ([Model Context Protocol n.d.](https://modelcontextprotocol.io/)). MCP has since been adopted by OpenAI, Google DeepMind, and most of the major coding-agent vendors, and there are now thousands of community-built servers. The model talks to a standard interface; the server handles the actual integration with Slack, Postgres, GitHub, or whatever else.
 - **External APIs** — any HTTP endpoint the agent can hit directly, with or without an MCP wrapper.
-- **Custom code** — local functions, shell commands, file operations. Coding agents in particular live and die by this category.
+- **Custom tool sets** — local functions, shell commands, file operations. Coding agents in particular live and die by this category.
 
 Coding assistants like Claude Code ([Anthropic n.d.](https://www.anthropic.com/claude-code)) and OpenCode ([OpenCode n.d.](https://opencode.ai/)) are useful examples because they bundle all three. Out of the box they ship a curated tool set (file reads and edits, shell execution, search), and they let you plug in additional MCP servers on top ([Model Context Protocol n.d.](https://modelcontextprotocol.io/)). OpenCode in particular makes a point of being provider-agnostic — you can drive it with Claude, GPT, Gemini, or local models — which is a nice illustration of how cleanly the driver/tools split actually decomposes in practice.
 
