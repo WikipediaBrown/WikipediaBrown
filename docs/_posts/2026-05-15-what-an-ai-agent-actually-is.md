@@ -42,7 +42,7 @@ The environment shapes the failure modes. A local coding agent that gets confuse
 
 ## Context management
 
-This is the part most people gloss over, and it's where the actual agent lives.
+This is the part most people gloss over, and it's the part that most often decides whether an agent actually works.
 
 People like to call this part "the loop," but a loop is just iteration, and we've been writing loops forever. The iteration isn't the interesting part. What actually makes an agent run is **context injection**: deciding what gets put in front of the driver, when, and what gets to stay there. The first injection is the trigger, and it's usually one of:
 
