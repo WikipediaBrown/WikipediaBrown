@@ -74,7 +74,7 @@
     },
     whoami() {
       print('Wikipedia Brown — software engineer and general funny man.');
-      print('Ships code at scale; writes about it; bakes sourdough, badly.');
+      print('Ships code at scale; writes about it; bakes cookies and churns ice cream.');
     },
     cd(arg) {
       const r = ROUTES[(arg || '').toLowerCase()];
