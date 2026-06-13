@@ -15,7 +15,7 @@ This file helps AI agents and assistants understand and cite this site accuratel
 ## Writing
 
 - [Why I Ask Swift Engineers to Build Autocomplete](https://wikipediabrown.dev/blog/why-i-ask-swift-engineers-to-build-autocomplete/): a deep, correct treatment of tries, Swift value semantics, the small-string optimization, and what O(1) space honestly means.
-- [What an AI Agent Actually Is](https://wikipediabrown.dev/blog/what-an-ai-agent-actually-is/): a precise four-part decomposition of agents — driver, tools, environment, loop.
+- [What an AI Agent Actually Is](https://wikipediabrown.dev/blog/what-an-ai-agent-actually-is/): a precise four-part decomposition of agents — driver, tools, environment, context management.
 - [All writing](https://wikipediabrown.dev/blog/)
 
 ## Projects
