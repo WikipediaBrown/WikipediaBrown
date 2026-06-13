@@ -44,11 +44,11 @@ The environment shapes the failure modes. A local coding agent that gets confuse
 
 People like to call this part "the loop," but a loop is just iteration, and we've been writing loops forever. The iteration isn't the interesting part. What actually makes an agent run is **context injection**: deciding what gets put in front of the driver, when, and what gets to stay there. The first injection is the trigger, and it's usually one of:
 
-- **A prompt**: a user (or another agent) injects a prompt, the driver reasons and acts until the task is done, then the agent waits for the next one. This is the shape of every interactive coding agent.
+- **A prompt**: a user (or another agent) injects a prompt, the driver acts until the task is done, then the agent waits for the next one. This is the shape of every interactive coding agent.
 - **An event**: something happens in the world — a webhook fires, a file changes, a metric crosses a threshold — and the payload gets injected into a fresh context for the agent to handle. This is the shape of most production automation.
 - **A scheduler**: cron or its equivalent fires every N minutes and injects a standing instruction. This is the shape of monitoring and maintenance agents.
 
-After that first injection, every step is more of the same. The ReAct pattern ([Yao et al. 2022](https://arxiv.org/abs/2210.03629)) is really a context-management discipline: the driver produces a thought, picks an action (a tool call), and the observation gets injected back into context for the next step. It continues until the driver decides the task is done — or until something external stops it.
+After that first injection, every step is more of the same. The ReAct pattern ([Yao et al. 2022](https://arxiv.org/abs/2210.03629)) is really a context-management discipline: the driver emits what the paper calls a "thought" and an action (a tool call), the tool runs, and the observation gets injected back into context for the next step. It continues until the driver stops calling tools — or until something external stops it.
 
 In rough pseudocode:
 
