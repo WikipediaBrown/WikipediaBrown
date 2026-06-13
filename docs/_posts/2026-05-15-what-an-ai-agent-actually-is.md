@@ -50,17 +50,6 @@ People like to call this part "the loop," but a loop is just iteration, and we'v
 
 After that first injection, every step is more of the same. The ReAct pattern ([Yao et al. 2022](https://arxiv.org/abs/2210.03629)) is really a context-management discipline: the driver emits what the paper calls a "thought" and an action (a tool call), the tool runs, and the observation gets injected back into context for the next step. It continues until the driver stops calling tools — or until something external stops it.
 
-In rough pseudocode:
-
-```text
-context = [wait_for_trigger()]
-while not done:
-    thought, action = driver.step(context)
-    observation = tools.execute(action)
-    context.append(thought, action, observation)
-respond(context)
-```
-
 That's the entire pattern. Everything else — multi-agent orchestration, planning, evaluator/optimizer setups, the whole menagerie of patterns Anthropic catalogs in their agents post ([Anthropic 2024](https://www.anthropic.com/engineering/building-effective-agents)) — is a variation on what gets injected into whose context, and when. Compaction, sub-agents with their own windows, loading tool definitions on demand (that 98.7% reduction from the tools section) — it's all context management, and it's where most of the real engineering in a production agent goes.
 
 ## Why the decomposition matters
