@@ -43,7 +43,7 @@ The environment shapes the failure modes. A local coding agent that gets confuse
 
 This is the part most people gloss over, and it's where the actual agent lives.
 
-People — me included, in an earlier version of this post — like to call this part "the loop." But a loop is just iteration, and we've been writing loops forever. The iteration isn't the interesting part. What actually makes an agent run is **context injection**: deciding what gets put in front of the driver, when, and what gets to stay there. The first injection is the trigger, and it's usually one of:
+People like to call this part "the loop," but a loop is just iteration, and we've been writing loops forever. The iteration isn't the interesting part. What actually makes an agent run is **context injection**: deciding what gets put in front of the driver, when, and what gets to stay there. The first injection is the trigger, and it's usually one of:
 
 - **A prompt**: a user (or another agent) injects a prompt, the driver reasons and acts until the task is done, then the agent waits for the next one. This is the shape of every interactive coding agent.
 - **An event**: something happens in the world — a webhook fires, a file changes, a metric crosses a threshold — and the payload gets injected into a fresh context for the agent to handle. This is the shape of most production automation.
