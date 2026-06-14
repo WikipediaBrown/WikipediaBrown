@@ -54,7 +54,7 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 ## Why the decomposition matters
 
-The four-part frame is useful because it tells you where to look when something is wrong:
+It earns its keep when something breaks. Each symptom points at a different piece:
 
 - **Bad outputs?** That's usually the driver. Different model, different prompt, different reasoning strategy.
 - **Can't get the work done?** That's usually the tools. Wrong tool surface, missing capability, descriptions that don't tell the model what it needs.
