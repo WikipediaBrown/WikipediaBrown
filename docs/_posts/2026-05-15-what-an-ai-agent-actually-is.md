@@ -25,7 +25,7 @@ Tools are how the driver acts on anything outside its own token stream. They com
 
 Coding assistants like Claude Code ([Anthropic n.d.](https://www.anthropic.com/claude-code)) and OpenCode ([OpenCode n.d.](https://opencode.ai/)) are useful examples because they bundle two of the four parts — the tools and the context management — and leave the driver to you. Out of the box they ship a curated tool set (file reads and edits, shell execution, search) and let you plug in additional MCP servers on top ([Model Context Protocol n.d.](https://modelcontextprotocol.io/)), while they own the context that gets fed to the driver on every step. OpenCode in particular makes a point of being provider-agnostic — you can drive it with Claude, GPT, Gemini, or local models — which is a nice illustration of how cleanly the driver pops out from the parts around it.
 
-The interesting design question with tools isn't "what should the agent be able to do" but "what should the agent see." Tool descriptions live in the context window and cost real tokens; Anthropic's piece on code-execution-based MCP makes the point concrete: presenting MCP servers as code APIs — so the agent loads tool definitions on demand and intermediate results stay in the execution environment instead of passing through the context window — cut one worked example from 150,000 tokens to about 2,000, a 98.7% reduction ([Anthropic 2025](https://www.anthropic.com/engineering/code-execution-with-mcp)). The shape of your tool surface is a first-class design concern, not an afterthought.
+The interesting design question with tools isn't "what should the agent be able to do" but "what should the agent see." Tool descriptions live in the context window and cost real tokens; Anthropic's piece on code-execution-based MCP makes the point concrete: presenting MCP servers as code APIs — so the agent loads tool definitions on demand and intermediate results stay in the execution environment instead of passing through the context window — cut one worked example from 150,000 tokens to about 2,000, a 98.7% reduction ([Anthropic 2025a](https://www.anthropic.com/engineering/code-execution-with-mcp)). The shape of your tool surface is a first-class design concern, not an afterthought.
 
 ## The environment
 
@@ -56,10 +56,10 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 When an agent breaks, it breaks in one of these four parts. The symptom usually tells you which:
 
-- **Bad outputs?** That's usually the driver. Different model, different prompt, different reasoning strategy.
-- **Can't get the work done?** That's usually the tools. Wrong tool surface, missing capability, descriptions that don't tell the model what it needs.
-- **Flaky, slow, or expensive?** That's usually the environment. Wrong place to run this thing, or the wrong observability story.
-- **Goes off the rails?** That's usually context management. No stopping condition, no checkpoints, no guardrails, context accumulating until the driver forgets what it was doing.
+- **Bad outputs?** That's usually the driver. Anthropic's advice is to exhaust the single model call first — sharper prompt, in-context examples, retrieval — since for a lot of tasks that alone is enough ([Anthropic 2024](https://www.anthropic.com/engineering/building-effective-agents)). Still wrong after that, and you're looking at a model or reasoning-strategy problem.
+- **Can't get the work done?** That's usually the tools. Descriptions get loaded into the context and steer how the model picks and calls things; Anthropic found that small wording changes to a tool's description measurably shift its behavior, and that bloated tool outputs crowd out everything else — they suggest keeping responses under about 25,000 tokens ([Anthropic 2025d](https://www.anthropic.com/engineering/writing-tools-for-agents)). The fix is usually clearer names and leaner outputs, not more tools.
+- **Flaky, slow, or expensive?** That's usually the environment. Agentic setups trade latency and dollars for capability, so the wrong one quietly overcharges you ([Anthropic 2024](https://www.anthropic.com/engineering/building-effective-agents)); and anything running unattended needs a harness around it — checkpoints, progress tracking, a way to recover — or it drifts off task over a long run ([Anthropic 2025c](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)).
+- **Goes off the rails?** That's usually context management. Models don't use a long context evenly — they're worst at the information buried in the middle of it ([Liu et al. 2023](https://arxiv.org/abs/2307.03172)) — and accuracy keeps sliding as the input grows, which Chroma measured across eighteen frontier models ([Hong et al. 2025](https://www.trychroma.com/research/context-rot)). The levers are the ones from the last section: compaction, note-taking, sub-agents with their own windows ([Anthropic 2025b](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)).
 
 Most "the agent is broken" complaints I hear from other engineers are really complaints about one of these four pieces, dressed up as a complaint about agents in general. Once you can name which piece, the fix tends to be obvious.
 
@@ -70,7 +70,12 @@ Agents aren't magic, and they aren't a single thing. They're a driver, a set of 
 - A2A Project. n.d. "Agent2Agent (A2A) Protocol." Linux Foundation. Accessed June 13, 2026. <https://a2a-protocol.org/>.
 - Anthropic. n.d. "Claude Code." Anthropic. Accessed May 15, 2026. <https://www.anthropic.com/claude-code>.
 - Anthropic. 2024. "Building Effective Agents." Anthropic. <https://www.anthropic.com/engineering/building-effective-agents>.
-- Anthropic. 2025. "Code Execution with MCP: Building More Efficient AI Agents." Anthropic. <https://www.anthropic.com/engineering/code-execution-with-mcp>.
+- Anthropic. 2025a. "Code Execution with MCP: Building More Efficient AI Agents." Anthropic. <https://www.anthropic.com/engineering/code-execution-with-mcp>.
+- Anthropic. 2025b. "Effective Context Engineering for AI Agents." Anthropic. <https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents>.
+- Anthropic. 2025c. "Effective Harnesses for Long-Running Agents." Anthropic. <https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents>.
+- Anthropic. 2025d. "Writing Effective Tools for AI Agents." Anthropic. <https://www.anthropic.com/engineering/writing-tools-for-agents>.
+- Hong, Kelly, Anton Troynikov, and Jeff Huber. 2025. "Context Rot: How Increasing Input Tokens Impacts LLM Performance." Chroma. <https://www.trychroma.com/research/context-rot>.
+- Liu, Nelson F., Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang. 2023. "Lost in the Middle: How Language Models Use Long Contexts." arXiv. <https://arxiv.org/abs/2307.03172>.
 - Model Context Protocol. n.d. "What Is the Model Context Protocol (MCP)?" Accessed May 15, 2026. <https://modelcontextprotocol.io/>.
 - OpenCode. n.d. "OpenCode." Accessed May 15, 2026. <https://opencode.ai/>.
 - Yao, Shunyu, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. 2022. "ReAct: Synergizing Reasoning and Acting in Language Models." arXiv. <https://arxiv.org/abs/2210.03629>.
