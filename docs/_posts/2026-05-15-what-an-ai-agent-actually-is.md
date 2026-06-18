@@ -56,7 +56,7 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 So that's the four parts. Here's how they fit together. The driver takes a context and outputs tokens. Those tokens are interpreted as calls to the tools, which act in the world and write the results back into the context. Then the driver runs again on the updated context.
 
-The driver is the only piece that acts, and only when it's called. The tools sit inert until the driver calls one. And context management isn't really a component at all — it's the running decision about what goes into the driver each turn and what gets left out.
+The driver is the only piece that acts, and only when it's called. The tools sit inert until the driver calls one. And context management is what decides what's in the context each turn — what carries over and what gets dropped.
 
 The environment is the box it all runs in, and that's what lets it set the terms: what the tools can reach, what a turn costs, what happens when one fails and nobody's watching the terminal. Move the same agent from your laptop to a sandbox and those same tool calls suddenly need guardrails — the driver and the tools didn't change, their surroundings did.
 
