@@ -54,13 +54,13 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 ## Putting it back together
 
-I've spent four sections pulling the agent apart. That's the easy direction. The parts only become an agent when they come back together — an agent isn't four pieces sitting side by side, it's what happens in the space between them.
+So that's the four parts. But nobody ships four parts — you ship an agent, and what makes it an agent is the way they interact. Leave them in four tidy boxes and you've described the pieces, not the thing.
 
-The driver is the only part that acts. The other three exist to shape what it acts on: the tools set what it *can* do, the environment sets where it runs and what that costs, and context management sets what it has in front of it at each step. Take the driver out and you don't have three-quarters of an agent — you have a model with some accessories bolted on. Take out any of the other three and the driver has no way to act, nowhere to run, or no faithful view of the world.
+Only the driver actually does anything. The other three are there to serve it: the tools are how it acts on anything outside its own output, the environment is where it runs and what that costs, and context management is what it has in front of it at any given moment. A driver by itself isn't an agent, it's a model you can chat with. Give it tools but nowhere sensible to run, or no grip on its context, and you've built the demo that works once and falls over the second time.
 
-And none of them holds still while you change the others. Widen the tool surface and you spend context describing it. Move from a laptop to a sandboxed VM and a different set of tools suddenly makes sense. Manage context well and a cheaper driver starts keeping up; manage it badly and your best model's answers fall apart partway through a long task. Every decision in one part quietly sets the terms for the other three.
+They also drag each other around. Add a tool and you've spent tokens describing it — tokens you no longer have for the actual work. Decide to run unattended on a VM instead of babysitting a terminal, and now you care about retries and guardrails you could happily ignore before. Get the context right and a cheap model will surprise you; get it wrong and the best one on the market still comes apart halfway through a long job. You don't get to tune one and walk away.
 
-So the question worth asking is never "is this a good driver" or "are these the right tools" on their own. It's whether the four fit the job and fit each other. Agents aren't magic, and they aren't a single thing. They're a driver acting through a set of tools, inside an environment, on a context you've chosen to manage — and the agent is the way those four come together, nothing more and nothing less.
+Which is the real reason it's worth pulling apart in the first place — not so you can file the bug under the right heading, but so you can see that "is this a good agent" was never quite the question. The question is whether these four were chosen for each other and for the job in front of them. Because that's all an agent is: a driver, some tools, a place to run, and a context somebody's actually managing. Get the four pulling together and there's nothing left over that needs to be magic.
 
 ## References
 
