@@ -56,7 +56,7 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 So that's the four parts — but an agent isn't four things running side by side. It's one thread of control that passes through them in turn. A turn starts at the driver: you hand it a context, it produces output, and some of that output is a request to call a tool. While the tool runs, the driver is doing nothing. The result comes back, gets folded into the context, and the driver is called again on the updated context. That hand-off — driver to tool to context and back — is the whole of it.
 
-So the parts aren't peers, and they aren't separate services chattering at each other. The driver is the only one that acts, and only when it's called. The tools sit inert until it asks for one. And context management isn't really a component at all — it's the running decision about what goes in front of the driver each turn and what gets left out.
+Inside that loop, the driver is the only thing that acts, and only when it's called. The tools sit inert until it asks for one. And context management isn't really a component at all — it's the running decision about what goes in front of the driver each turn and what gets left out.
 
 The environment is the box, but it isn't another step in that hand-off — it's where the hand-off happens. Which is why it sets the terms: what the tools can reach, what a turn costs, what happens when one fails and nobody's watching the terminal. Move the same loop from your laptop to a sandbox and those same tool calls suddenly need guardrails — the driver and the tools didn't change, their surroundings did.
 
