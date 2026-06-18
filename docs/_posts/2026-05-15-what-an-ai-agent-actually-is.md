@@ -54,13 +54,13 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 ## Putting it back together
 
-So that's the four parts, and the thing that moves between them is context. You inject it into the driver; the driver emits tokens; those tokens are interpreted as input to the tools. The tools do the actual work — they take action in the world and write the results back into the context — and the driver runs again on what comes back. That's the whole motion of it: context into the driver, tokens out to the tools, the world and the context updated, and back into the driver.
+So that's the four parts. Here's how they fit together. The driver takes a context and outputs tokens. Those tokens are interpreted as calls to the tools, which act in the world and write the results back into the context. Then the driver runs again on the updated context.
 
 The driver is the only piece that acts, and only when it's called. The tools sit inert until the driver calls one. And context management isn't really a component at all — it's the running decision about what goes into the driver each turn and what gets left out.
 
-The environment is the box. It isn't a step in that motion — it's where all of it happens, which is why it sets the terms: what the tools can reach, what a turn costs, what happens when one fails and nobody's watching the terminal. Move the same agent from your laptop to a sandbox and those same tool calls suddenly need guardrails — the driver and the tools didn't change, their surroundings did.
+The environment is the box it all runs in, and that's what lets it set the terms: what the tools can reach, what a turn costs, what happens when one fails and nobody's watching the terminal. Move the same agent from your laptop to a sandbox and those same tool calls suddenly need guardrails — the driver and the tools didn't change, their surroundings did.
 
-And because every part lands on the same context window, turn after turn, you can't tune one in isolation. Spend tokens describing a tool and that's context the driver no longer has for the work. So the question was never "is this a good driver" or "are these good tools" — it's whether this driver, these tools, this much context discipline, and this place to run fit the job and each other. Get that right and there's nothing left over that needs to be magic.
+And because every part lands on the same context window, turn after turn, you can't tune one in isolation. Spend tokens describing a tool and that's context the driver no longer has for the work. So the question was never "is this a good driver" or "are these good tools" — it's whether this driver, these tools, this much context discipline, and this place to run fit the job and each other. Get those four right and the rest mostly takes care of itself.
 
 ## References
 
