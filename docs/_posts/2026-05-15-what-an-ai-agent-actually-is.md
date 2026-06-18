@@ -60,7 +60,7 @@ The driver is the model itself — it produces the tokens, and that's all it doe
 
 The environment is the box it all runs in, and that's what lets it set the terms: what the tools can reach, what a turn costs, what happens when one fails and nobody's watching the terminal. Move the same agent from your laptop to a sandbox and those same tool calls suddenly need guardrails — the driver and the tools didn't change, their surroundings did.
 
-And because every part lands on the same context window, turn after turn, you can't tune one in isolation. Spend tokens describing a tool and that's context the driver no longer has for the work. So the question was never "is this a good driver" or "are these good tools" — it's whether this driver, these tools, this much context discipline, and this place to run fit the job and each other. Get those four right and the rest mostly takes care of itself.
+And because every part lands on the same context window, turn after turn, you can't tune one in isolation. Spend tokens describing a tool and that's context the driver no longer has for the work. So the question was never "is this a good driver" or "are these good tools" — it's whether this driver, these tools, this much context discipline, and this place to run fit the job and each other. Get that fit right and you have an agent. Get it wrong and nothing else will save it.
 
 ## References
 
