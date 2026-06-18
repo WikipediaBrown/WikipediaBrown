@@ -54,13 +54,13 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 ## Putting it back together
 
-So that's the four parts. But nobody ships four parts — you ship an agent, and what makes it an agent is the way they interact. Leave them in four tidy boxes and you've described the pieces, not the thing.
+So that's the four parts — but they don't sit side by side as equals. The environment is the box. The driver, the tools, and context management are what runs inside it, and they only add up to an agent because they run together.
 
-Only the driver actually does anything. The other three are there to serve it: the tools are how it acts on anything outside its own output, the environment is where it runs and what that costs, and context management is what it has in front of it at any given moment. A driver by itself isn't an agent, it's a model you can chat with. Give it tools but nowhere sensible to run, or no grip on its context, and you've built the demo that works once and falls over the second time.
+Start from the inside. The driver is the only piece that acts; the tools are how it reaches past its own output, to a file or an API or another agent; context management is what it has to work from on any given turn. Pull them apart and none of them is an agent — a driver with no tools is a model you can chat with, and tools with no driver are just an SDK sitting on a shelf. You get an agent when the driver is working through the tools, on a context someone's keeping usable, turn after turn.
 
-They also drag each other around. Add a tool and you've spent tokens describing it — tokens you no longer have for the actual work. Decide to run unattended on a VM instead of babysitting a terminal, and now you care about retries and guardrails you could happily ignore before. Get the context right and a cheap model will surprise you; get it wrong and the best one on the market still comes apart halfway through a long job. You don't get to tune one and walk away.
+And all of that runs somewhere. The box shapes everything in it: what the tools can reach, what a turn costs, what happens when a step fails and nobody's watching the terminal. Change the box — laptop to VM to sandbox to phone — and the machinery inside changes with it. It goes the other way just as much: spend tokens describing a tool and that's context the driver no longer has for the work; pick a riskier place to run and you need guardrails you'd skip on your own laptop. You don't tune one and walk away.
 
-Which is the real reason it's worth pulling apart in the first place — not so you can file the bug under the right heading, but so you can see that "is this a good agent" was never quite the question. The question is whether these four were chosen for each other and for the job in front of them. Because that's all an agent is: a driver, some tools, a place to run, and a context somebody's actually managing. Get the four pulling together and there's nothing left over that needs to be magic.
+Which is the whole point of taking it apart — not so you can file a bug under the right heading, but so you stop asking "is this a good agent" and start asking whether these four were built for each other and for the job in front of them. That's all an agent ever is: a driver working through its tools, on a context somebody's actually managing, inside a box that fits the work. Get those pulling together and there's nothing left over that needs to be magic.
 
 ## References
 
