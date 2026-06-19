@@ -16,13 +16,14 @@
 <meta property="og:url" content="{{ page.url | absolute_url }}">
 <meta property="og:site_name" content="{{ site.title }}">
 <meta property="og:locale" content="en_US">
-{%- assign og_image = '/og.png?v=20260519' | absolute_url -%}
+{%- if page.image -%}{%- assign og_image = page.image | absolute_url -%}{%- else -%}{%- assign og_image = '/og.png?v=20260519' | absolute_url -%}{%- endif -%}
+{%- assign og_image_alt = page.image_alt | default: 'Wikipedia Brown — Software Engineer' -%}
 <meta property="og:image" content="{{ og_image }}">
 <meta property="og:image:secure_url" content="{{ og_image }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Wikipedia Brown — Software Engineer">
+<meta property="og:image:alt" content="{{ og_image_alt }}">
 {%- if page.layout == 'post' %}
 <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
 <meta property="article:modified_time" content="{{ page.date | date_to_xmlschema }}">
@@ -34,7 +35,7 @@
 <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }} — Software Engineer{% endif %}">
 <meta name="twitter:description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
 <meta name="twitter:image" content="{{ og_image }}">
-<meta name="twitter:image:alt" content="Wikipedia Brown — Software Engineer">
+<meta name="twitter:image:alt" content="{{ og_image_alt }}">
 
 <!-- Structured data -->
 <script type="application/ld+json">
@@ -69,7 +70,7 @@
       "dateModified": "{{ page.date | date_to_xmlschema }}",
       "url": "{{ page.url | absolute_url }}",
       "mainEntityOfPage": "{{ page.url | absolute_url }}",
-      "image": "{{ '/og.png' | absolute_url }}",
+      "image": "{{ page.image | default: '/og.png' | absolute_url }}",
       "author": { "@id": "{{ site.url }}/#person" },
       "publisher": { "@id": "{{ site.url }}/#person" }
     }{% endif %}
