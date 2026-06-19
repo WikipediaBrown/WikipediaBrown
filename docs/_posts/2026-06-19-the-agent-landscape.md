@@ -3,7 +3,7 @@ layout: post
 title: The Agent Landscape
 summary: A follow-up to the four-part frame — how the parts compose into single agents and into systems of agents, and why the most useful way to judge a non-deterministic agent is the path of tool calls it took, not the output it produced.
 image: /img/posts/the-agent-landscape.png?v=1
-image_alt: "The Agent Landscape — multi-agent systems, path over output, agents aren't products."
+image_alt: "The Agent Landscape — context vs environment, multi-agent systems, and the path over the output."
 ---
 
 Earlier I wrote that an agent is four parts: a driver, a tool set, an environment, and context management ([What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/)). That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
@@ -45,14 +45,6 @@ These are non-deterministic systems. Run the same agent on the same task a hundr
 An agent can only change the world through a tool call, and its state only moves when it makes one. So you can record something more stable than the output: the sequence of tool calls it made, and the state of the workspace at each one, tracked separately for every sub-agent. Because every state change is a tool call and every tool call is observable, that sequence is a complete snapshot of what the agent did, step by step.
 
 Say you ask an agent to write a newspaper article and run it a hundred times. Maybe seventy times it reads the workspace and then writes. Twenty-nine times it writes first and reads afterward to check for anything it missed. Once it asks a question and never finishes the run. You aren't measuring the article — the article varies every time. You're measuring how it works: the course of action it took, given that tool set, in that environment, under that context. That holds still even when the output doesn't, and it's the honest answer to "what did this thing actually do, and why," without pretending it was deterministic.
-
-## Agents aren't products
-
-Last thing, because it's where most of the confusion about money lives.
-
-An agent isn't a product. An agent does a thing — it's in the name. A lot of what's been sold in this space is something people pay for that doesn't actually do anything. The goal worth chasing is an agent system that achieves a goal on its own, more cheaply than a person doing it by hand.
-
-That's not "replace the people." It's closer to the opposite. An agent has no value of its own — the moment one stops being the best at a task, you throw it away and run a different one. That's the whole point of it being disposable software wired to a tool set. A person is not disposable, and a person has the one thing the stack doesn't: they know the right thing to do. The model is a token generator that doesn't think. The tools are how you interpret the tokens. The environment is where that runs. The prompt is your context injection. Build the system so the disposable part does the work and the person decides what's worth doing. That's the product.
 
 ## References
 
