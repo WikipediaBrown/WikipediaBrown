@@ -2,6 +2,8 @@
 layout: post
 title: Why I Ask Swift Engineers to Build Autocomplete
 summary: '"Build autocomplete for me" is a Swift question wearing a data-structure costume — value semantics, the small-string trap, and what O(1) space actually means.'
+image: /img/posts/why-i-ask-swift-engineers-to-build-autocomplete.png?v=1
+image_alt: "Why I Ask Swift Engineers to Build Autocomplete — tries, value semantics, the small-string trap, and O(1) space."
 ---
 
 In technical interviews, I give Swift candidates one prompt: *build autocomplete for me.* Type `car`, get back `car`, `card`, `cars` — every word in the dictionary that continues the prefix.
