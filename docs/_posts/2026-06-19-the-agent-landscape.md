@@ -16,7 +16,7 @@ This is also why "best" keeps moving. Models will keep getting better and more v
 
 ## Tools, skills, and the MCP-versus-CLI argument
 
-The words around tools get muddled, so: a tool is the bridge from tokens to actions. Usually that's an MCP server; it can also be a CLI, an API, or a local function. A skill — a markdown file of instructions you staple to the front or back of a prompt — is not a tool; it's context injection. Memory is context management. Keeping these straight matters, because people argue about them as if they're the same fight.
+The words around tools get muddled, so: a tool is the bridge from tokens to actions — an MCP server, a CLI, an API, or a local function. A skill — instructions in a markdown file, sometimes with scripts attached — is context injection: the instructions get loaded into the prompt, and any scripts it ships are just tools by another name. Memory is context management. Keeping these straight matters, because people argue about them as if they're the same fight.
 
 There's a recurring argument that MCP is dead and the CLI won. It's mostly noise. A model can drive a lot of different tool sets; for a narrow one you might fine-tune it to be fluent, but hand it nothing but a raw shell and it'll still produce usable commands some fraction of the time — and you can wrap a harness around that fraction. The shape is the same either way: tokens come out, something interprets them as actions. What actually matters is that your tool set is yours. You don't want a generic one. The specific tools are the business — the thing you have that nobody else does. A few companies open-source theirs; OpenCode is one.
 
@@ -26,7 +26,7 @@ The question people actually want answered is how to make several agents work to
 
 The other axis is how they share state. You can give them a shared workspace — a file system they all read and write, which is just their memory held in common — and let them work the same problem in their own ways, all updating the same place. Or you can isolate them: each agent on a copy of the data, in its own container, its own Kubernetes pod, even its own AWS Nitro Enclave where you genuinely can't see in, all running the same task, with the outputs compared at the end.
 
-Agent-to-agent communication has its own protocol fight — Google's A2A against Anthropic's MCP — but mechanically there's nothing new in it. An agent reaches another agent the same way it uses any tool: tokens interpreted as a call. Another agent is just a tool with its own driver behind it.
+Agent-to-agent communication has its own protocol — Google's A2A, the complement to Anthropic's MCP: MCP standardizes how an agent reaches a tool, A2A how an agent reaches another agent. Mechanically, though, there's nothing new in it. An agent reaches another agent the same way it uses any tool: tokens interpreted as a call. Another agent is just a tool with its own driver behind it.
 
 ## Judge the path, not the output
 
