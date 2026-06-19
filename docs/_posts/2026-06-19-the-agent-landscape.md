@@ -8,8 +8,6 @@ image_alt: "The Agent Landscape — tool sets, multi-agent systems, and the path
 
 Earlier I wrote that an agent is four parts: a driver, a tool set, an environment, and context management ([What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/)). That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
 
-One quick disambiguation the first post glossed over: by *context* I mean the context window — the tokens going into the model and coming back — not the environment it runs in. Easy to conflate; not the same thing.
-
 ## What builders actually optimize
 
 Nobody is building the perfect agent. There isn't one, and there won't be. The best agent is the one that wins today, on the problem in front of you — and tomorrow it might be a different one. What a builder actually optimizes is the output: a better model plus a better tool set producing a better result than the setup before it. That's the only thing a customer ever cares about.
