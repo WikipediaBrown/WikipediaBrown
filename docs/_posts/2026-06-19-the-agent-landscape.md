@@ -3,18 +3,12 @@ layout: post
 title: The Agent Landscape
 summary: A follow-up to the four-part frame — how the parts compose into single agents and into systems of agents, and why the most useful way to judge a non-deterministic agent is the path of tool calls it took, not the output it produced.
 image: /img/posts/the-agent-landscape.png?v=1
-image_alt: "The Agent Landscape — context vs environment, multi-agent systems, and the path over the output."
+image_alt: "The Agent Landscape — tool sets, multi-agent systems, and the path over the output."
 ---
 
 Earlier I wrote that an agent is four parts: a driver, a tool set, an environment, and context management ([What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/)). That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
 
-## Context is not the environment
-
-The one place that frame gets muddy is the word "context," because it sounds like the environment. They aren't the same thing, and it's worth pulling them apart.
-
-The environment is where the compute runs: your laptop, a VM in a data center, a phone, a GPU you're renting by the hour from a box that was mining crypto last month. The context is the context window — the tokens going into the model and the tokens coming back. Context management is the work in between: deciding what goes in (your prompt, the system prompt, earlier tool results, whatever you've kept as memory) and interpreting what comes out (which tokens are tool calls, which get handed back to you).
-
-Every agent tool does this for you on every turn. When you type into Claude Code, it assembles a context — your input, plus a system prompt, plus some files it keeps around — sends it to the model, and reads the result back to work out which tokens were requests to use a tool. OpenCode does the same thing a different way. "Memory" is part of this, not separate from it: a pile of markdown files the tool reads back in each turn is context management wearing a friendlier name. There's nothing magic under there.
+One quick disambiguation the first post glossed over: by *context* I mean the context window — the tokens going into the model and coming back — not the environment it runs in. Easy to conflate; not the same thing.
 
 ## What builders actually optimize
 
@@ -50,7 +44,6 @@ Say you ask an agent to write a newspaper article and run it a hundred times. Ma
 
 - A2A Project. n.d. "Agent2Agent (A2A) Protocol." Linux Foundation. Accessed June 19, 2026. <https://a2a-protocol.org/>.
 - Amazon Web Services. n.d. "What Is Nitro Enclaves?" AWS Documentation. Accessed June 19, 2026. <https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html>.
-- Anthropic. n.d. "Claude Code." Anthropic. Accessed June 19, 2026. <https://www.anthropic.com/claude-code>.
 - Model Context Protocol. n.d. "What Is the Model Context Protocol (MCP)?" Accessed June 19, 2026. <https://modelcontextprotocol.io/>.
 - OpenCode. n.d. "OpenCode." Accessed June 19, 2026. <https://opencode.ai/>.
 {:.refs}
