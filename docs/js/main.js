@@ -3,6 +3,7 @@
 //   (1) accessible mobile-nav hamburger
 //   (2) terminal chrome + copy button on fenced code blocks
 //   (3) live GitHub numbers on the homepage band
+//   (4) reading-progress bar in the masthead
 
 (() => {
   // --- (1) Mobile nav hamburger -----------------------------------------
@@ -109,5 +110,23 @@
         gh.classList.add('is-loaded');
       })
       .catch(() => gh.classList.add('is-error'));
+  }
+
+  // --- (4) Reading progress bar -----------------------------------------
+  const progress = document.querySelector('.masthead__progress');
+  if (progress) {
+    let ticking = false;
+    const update = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const y = doc.scrollTop || document.body.scrollTop || 0;
+      const p = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+      progress.style.transform = 'scaleX(' + p + ')';
+      ticking = false;
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
   }
 })();
