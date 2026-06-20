@@ -403,9 +403,7 @@ body.nav-open { overflow: hidden; }
 .post__kicker a:hover { color: var(--accent); }
 .post__title { font-family: var(--display); font-weight: 800; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -.035em; }
 .post__summary { margin-top: 1.2rem; color: var(--fg-2); font-size: 1.15rem; max-width: 54ch; }
-.post__meta { display: flex; align-items: center; gap: .8em; margin-top: 1.5rem; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); }
-.post__meter { width: 52px; height: 5px; background: var(--bg-3); border-radius: 3px; position: relative; overflow: hidden; }
-.post__meter::after { content:""; position:absolute; inset:0 35% 0 0; background: var(--accent); }
+.post__meta { margin-top: 1.5rem; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); }
 
 .post__body { font-size: clamp(16px,.5vw+14px,18px); line-height: 1.75; color: var(--fg-2); }
 .post__body p { margin: 0 0 1.35em; }
