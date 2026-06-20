@@ -1,6 +1,7 @@
 ---
 layout: post
 title: The Agent Landscape
+order: 4
 summary: 'A follow-up to "What an AI Agent Actually Is" — how the parts compose into single agents and into systems of agents, and why the most useful way to judge a non-deterministic agent is the path of tool calls it took, not the output it produced.'
 dek: 'A follow-up to ["What an AI Agent Actually Is"](/blog/what-an-ai-agent-actually-is/) — how the parts compose into single agents and into systems of agents, and why the most useful way to judge a non-deterministic agent is the path of tool calls it took, not the output it produced.'
 image: /img/posts/the-agent-landscape.png?v=1

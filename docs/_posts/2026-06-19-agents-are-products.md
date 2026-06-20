@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Agents Are Products
+order: 2
 summary: An agent that does a thing on its own is a product — that's the whole word. The model inside it is a commodity you swap; the part you can't commoditize is the person deciding what it should do.
 image: /img/posts/agents-are-products.png?v=1
 image_alt: "Agents Are Products — agents do things, models are commodities, judgment isn't."
