@@ -11,9 +11,9 @@ In [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/) I broke a
 
 ## What builders actually optimize
 
-Nobody is building the perfect agent. There isn't one, and there won't be. The best agent is the one that wins today, on the problem in front of you — and tomorrow it might be a different one. What a builder actually optimizes is the output: a better model plus a better tool set producing a better result than the setup before it. That's the only thing a customer ever cares about.
+Nobody is building the perfect agent. There isn't one, and there won't be. An agent succeeds when it accomplishes the task in front of you — and the setup that does that today might be a different one tomorrow. What a builder optimizes is exactly that: whether the agent finishes the job, reliably, at a cost that makes sense. A better model or a better tool set matters only insofar as it gets the job done more often, or more cheaply. That's all a customer cares about — whether the work got done.
 
-This is also why "best" keeps moving. Models will keep getting better and more varied; there will be many of them, good at different things, and no single correct one. The same goes for tool sets: many of them, each suited to some use case, and increasingly you'll have a model build them for you rather than write them by hand. I built one by hand once. It was a waste of time. This isn't cryptography, where there's a right primitive and a list of things you must never use — it's a space where the right tool for your use case is something you generate and replace when a better one shows up.
+It also means no setup stays the right one for long. Models will keep getting better and more varied; there will be many of them, good at different things, and no single correct one. The same goes for tool sets: many of them, each suited to some use case, and increasingly you'll have a model build them for you rather than write them by hand. I built one by hand once. It was a waste of time. This isn't cryptography, where there's a right primitive and a list of things you must never use — it's a space where the right tool for your use case is something you generate and replace when a better one shows up.
 
 ## Tools, skills, and the MCP-versus-CLI argument
 
