@@ -8,7 +8,7 @@ image: /img/posts/the-agent-landscape.png?v=1
 image_alt: "The Agent Landscape — tool sets, multi-agent systems, and the path over the output."
 ---
 
-In [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/) I broke an agent into four parts: a driver, a tool set, an environment, and context management. That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
+In [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/) I laid out the four parts an agent has: a driver, a tool set, an environment, and context management. That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
 
 ## What builders actually optimize
 
