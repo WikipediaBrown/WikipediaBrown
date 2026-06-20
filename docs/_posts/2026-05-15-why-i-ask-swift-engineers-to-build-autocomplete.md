@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Why I Ask Swift Engineers to Build Autocomplete
-order: 1
+date: 2026-06-19 10:00:00 -0000
 summary: '"Build autocomplete for me" is a Swift question wearing a data-structure costume — value semantics, the small-string trap, and what O(1) space actually means.'
 image: /img/posts/why-i-ask-swift-engineers-to-build-autocomplete.png?v=1
 image_alt: "Why I Ask Swift Engineers to Build Autocomplete — tries, value semantics, the small-string trap, and O(1) space."
