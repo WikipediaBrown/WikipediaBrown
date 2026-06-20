@@ -12,7 +12,7 @@ description: Short writing from Wikipedia Brown on software, Apple platforms, AI
   </div>
 
   {% if site.posts.size > 0 %}
-    {% assign ordered = site.posts | sort: 'order' %}
+    {% assign ordered = site.posts | sort: 'date' %}
     <ol class="posts">
       {% for post in ordered %}
         <li class="posts__item">
