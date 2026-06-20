@@ -5,7 +5,9 @@ layout: default
   <header class="post__head">
     <p class="post__kicker"><a href="{{ '/blog/' | relative_url }}">← Stuff I Said</a></p>
     <h1 class="post__title">{{ page.title }}</h1>
-    {% if page.summary %}
+    {% if page.dek %}
+      <p class="post__summary">{{ page.dek | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
+    {% elsif page.summary %}
       <p class="post__summary">{{ page.summary }}</p>
     {% endif %}
     {%- assign _words = content | strip_html | number_of_words -%}
