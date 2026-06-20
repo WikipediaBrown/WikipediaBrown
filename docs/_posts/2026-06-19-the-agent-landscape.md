@@ -6,7 +6,7 @@ image: /img/posts/the-agent-landscape.png?v=1
 image_alt: "The Agent Landscape — tool sets, multi-agent systems, and the path over the output."
 ---
 
-Earlier I wrote that an agent is four parts: a driver, a tool set, an environment, and context management ([What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/)). That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
+In [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/) I broke an agent into four parts: a driver, a tool set, an environment, and context management. That post was about naming the parts. This one is about what you do with them — how they compose into one agent, how several agents compose into a system, and how you'd actually tell whether any of it is doing its job.
 
 ## What builders actually optimize
 
@@ -42,6 +42,7 @@ Say you ask an agent to write a newspaper article and run it a hundred times. Ma
 
 - A2A Project. n.d. "Agent2Agent (A2A) Protocol." Linux Foundation. Accessed June 19, 2026. <https://a2a-protocol.org/>.
 - Amazon Web Services. n.d. "What Is Nitro Enclaves?" AWS Documentation. Accessed June 19, 2026. <https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html>.
+- Brown, Wikipedia. 2026. "What an AI Agent Actually Is." Wikipedia Brown. <https://wikipediabrown.dev/blog/what-an-ai-agent-actually-is/>.
 - Model Context Protocol. n.d. "What Is the Model Context Protocol (MCP)?" Accessed June 19, 2026. <https://modelcontextprotocol.io/>.
 - OpenCode. n.d. "OpenCode." Accessed June 19, 2026. <https://opencode.ai/>.
 {:.refs}
