@@ -12,8 +12,9 @@ description: Short writing from Wikipedia Brown on software, Apple platforms, AI
   </div>
 
   {% if site.posts.size > 0 %}
+    {% assign ordered = site.posts | sort: 'order' %}
     <ol class="posts">
-      {% for post in site.posts %}
+      {% for post in ordered %}
         <li class="posts__item">
           <a class="posts__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
           {% if post.summary %}

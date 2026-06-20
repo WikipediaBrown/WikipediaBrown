@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What an AI Agent Actually Is
+order: 3
 summary: Strip away the marketing and an agent is four parts — a driver, tools, an environment, and context management. The agent is the way they come together.
 image: /img/posts/what-an-ai-agent-actually-is.png?v=1
 image_alt: "What an AI Agent Actually Is — a driver, tools, an environment, and context management."
