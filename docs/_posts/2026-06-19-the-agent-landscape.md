@@ -8,7 +8,7 @@ image: /img/posts/the-agent-landscape.png?v=2
 image_alt: "The Agent Landscape — no perfect agent, tools and skills, and getting agents to work together."
 ---
 
-In [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/) I laid out the four parts an agent has: a driver, a tool set, an environment, and context management. That post was about naming the parts. This one is about what you do with them — how they compose into one agent, and how several agents compose into a system.
+An agent isn't a magic thing you set down somewhere that gets up and goes off to do something on its own. It's four parts wired together: a driver — an LLM producing tokens — a tool set that turns those tokens into actions, an environment the whole thing runs in, and the context you inject to make it act at all. I pulled those apart in [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/). Once you stop treating an agent as a single magic box and start treating it as a composition of those four parts, the useful questions are all about how you compose them — into one agent that does the job, and into several agents working together.
 
 ## There is no perfect agent
 
@@ -24,7 +24,7 @@ There's a recurring argument that MCP is dead and the CLI won. It's mostly noise
 
 ## Getting agents to work together
 
-The question people actually want answered is how to make several agents work together. One common shape is doer / watcher / overseer: one agent does the work, one checks it, one decides. It's a fine pattern. It's also non-deterministic, like everything else here.
+The question people actually want answered is how to make several agents work together. One common shape is doer / watcher / overseer: one agent does the work, one checks it, one signs off. It's a fine pattern. It's also non-deterministic, like everything else here.
 
 The other axis is how they share state. You can give them a shared workspace — a file system they all read and write, which is just their memory held in common — and let them work the same problem in their own ways, all updating the same place. Or you can isolate them: each agent on a copy of the data, in its own container, its own Kubernetes pod, even its own AWS Nitro Enclave where you genuinely can't see in, all running the same task, with the outputs compared at the end.
 
