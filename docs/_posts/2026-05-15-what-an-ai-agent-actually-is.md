@@ -7,7 +7,7 @@ image: /img/posts/what-an-ai-agent-actually-is.png?v=1
 image_alt: "What an AI Agent Actually Is — a driver, tools, an environment, and context management."
 ---
 
-The word "agent" has gotten away from us. It now stretches from a single prompt-plus-tool-call demo all the way to fully autonomous systems running unattended for hours. That's a wide enough range to be useless as a definition, so when I talk about agents with other engineers I find it more productive to break the thing into its actual moving parts.
+The word "agent" has gotten away from us. It now stretches from a single prompt-plus-tool-call demo all the way to fully autonomous systems running unattended for hours. That's a wide enough range to be useless as a definition, so when I talk about agents with other engineers I find it more productive to talk about the parts it's actually made of.
 
 Strip away the marketing and an AI agent is four things glued together: a **driver**, a set of **tools**, an **environment**, and **context management**. Once you see it that way, the architecture of any given agent — from a Claude Code session to a cron-driven scraper to a phone-based assistant — becomes a lot easier to reason about.
 

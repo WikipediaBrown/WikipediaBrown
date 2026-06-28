@@ -8,7 +8,7 @@ image: /img/posts/the-agent-landscape.png?v=2
 image_alt: "The Agent Landscape — no perfect agent, tools and skills, and getting agents to work together."
 ---
 
-An agent isn't a magic thing you set down somewhere that gets up and goes off to do something on its own. It's four parts wired together: a driver — an LLM producing tokens — a tool set that turns those tokens into actions, an environment the whole thing runs in, and the context you inject to make it act at all. I pulled those apart in [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/). Once you stop treating an agent as a single magic box and start treating it as a composition of those four parts, the useful questions are all about how you compose them — into one agent that does the job, and into several agents working together.
+An agent isn't a magic thing you set down somewhere that gets up and goes off to do something on its own. It's four parts wired together: a driver — an LLM producing tokens — a tool set that turns those tokens into actions, an environment the whole thing runs in, and the context you inject to make it act at all. I described those four parts, and how they work together, in [What an AI Agent Actually Is](/blog/what-an-ai-agent-actually-is/). Once you stop treating an agent as a single magic box and see it as the four parts it's made of, the useful questions are all about how you compose them — into one agent that does the job, and into several agents working together.
 
 ## There is no perfect agent
 
