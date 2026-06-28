@@ -12,7 +12,7 @@ An agent isn't a magic thing you set down somewhere that gets up and goes off to
 
 ## There is no perfect agent
 
-Nobody is building the perfect agent. There isn't one, and there won't be. An agent succeeds when it accomplishes the task it's assigned — whether you assigned it or another agent did — and the setup that does that today might be a different one tomorrow. What matters is whether the agent finishes the job, reliably, at a cost that makes sense; a better model or a better tool set counts only insofar as it gets the job done more often, or more cheaply. That's all anyone cares about — whether the work got done.
+There is no perfect agent, and there never will be. An agent succeeds when it accomplishes the task it's assigned — whether you assigned it or another agent did — and the setup that does that today might be a different one tomorrow. What matters is whether the agent finishes the job, reliably, at a cost that makes sense; a better model or a better tool set counts only insofar as it gets the job done more often, or more cheaply. That's all anyone cares about — whether the work got done.
 
 It also means no setup stays the right one for long. Models will keep getting better and more varied; there will be many of them, good at different things, and no single correct one. The same goes for tool sets: many of them, each suited to some use case, and increasingly you'll have a model build them for you rather than write them by hand. I built one by hand once. It was a waste of time. This isn't cryptography, where there's a right primitive and a list of things you must never use — it's a space where the right tool for your use case is something you generate and replace when a better one shows up.
 
