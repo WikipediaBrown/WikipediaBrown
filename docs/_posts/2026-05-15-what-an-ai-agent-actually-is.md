@@ -17,16 +17,28 @@ The driver is what generates content and decides what to do next. In 2026 this i
 
 That dynamic control is the whole point. The driver isn't just a content generator — it's the thing choosing which tool to call, how to interpret the result, and when to stop. Everything else in the system exists to give the driver useful options and a faithful view of the world.
 
+## The interpreter
+
+The driver produces tokens. That is the only thing it does — it cannot reach out and run anything. So a tool call, at the level the driver works, is just tokens: a pattern of text sitting in the same stream as everything else it writes.
+
+Something outside the driver has to read that stream and split it in two — this span is text meant for the person, that span is a request to run a tool. It pulls the requests out, turns each one into an actual call (a tool name and its arguments), hands those to the tool set, and passes the rest through as ordinary output. That reader is the interpreter. It is the seam between the driver and the tools — not a fifth part, but the wiring that connects the first two.
+
+A model "trained for tool use" is trained to write those requests in a fixed, recognizable shape, every time, so the interpreter can find them without guessing. That is most of what "supports tool use" means. Not that the model can touch the world — it can't, it only writes — but that it reliably writes its tool requests in a form something else can parse, and, if you go through a hosted API, that the provider ships the parser.
+
+Where the interpreter runs changes from setup to setup. With Claude through Anthropic's API, it runs on their servers: the model writes the call inline, in its token stream, and by the time the response reaches you the calls have already been pulled out and handed back as a clean list, separate from the text ([Anthropic n.d.b](https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works)). Run a model like llama.cpp yourself and often nothing runs that step, so the same inline call arrives as plain text and parsing it is on you — which is why people put a small proxy in front that does the parsing the local setup skipped.
+
+OpenCode is a good place to watch this. It doesn't scan tokens for tool syntax itself; it hands that job to the Vercel AI SDK, which asks the provider for a structured list of calls and checks each one's arguments against the tool's schema before running it ([Vercel n.d.](https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling)). When a model doesn't cooperate — the wrong casing on a tool name, arguments that aren't valid JSON, an empty list where a call should be — the run stalls at the interpreter, not at the driver and not at the tool. That is the tell that it is a real, separate piece: it has its own way of breaking.
+
 ## The tools
 
-Tools are how the driver acts on anything outside its own token stream. They come in a few flavors:
+Tools are what run once the interpreter routes a call — the only things that touch anything outside the driver's token stream. They come in a few flavors:
 
 - **MCP servers** — the open protocol Anthropic introduced in November 2024 for connecting LLM applications to external data and capabilities ([Model Context Protocol n.d.](https://modelcontextprotocol.io/)). MCP has since been adopted by OpenAI, Google DeepMind, and most of the major coding-agent vendors, and there are now thousands of community-built servers. The model talks to a standard interface; the server handles the actual integration with Slack, Postgres, GitHub, or whatever else.
 - **External APIs** — any HTTP endpoint the agent can hit directly, with or without an MCP wrapper.
 - **Custom tool sets** — local functions, shell commands, file operations. Coding agents in particular live and die by this category.
 - **A2A communication** — agents talking to other agents, whether through an open protocol like Agent2Agent, introduced by Google in April 2025 and now governed by the Linux Foundation ([A2A Project n.d.](https://a2a-protocol.org/)), or just a parent agent delegating to sub-agents. From the driver's perspective, another agent is just a tool with its own driver behind it.
 
-Coding assistants like Claude Code ([Anthropic n.d.](https://www.anthropic.com/claude-code)) and OpenCode ([OpenCode n.d.](https://opencode.ai/)) are useful examples because they bundle two of the four parts — the tools and the context management — and leave the driver to you. Out of the box they ship a curated tool set (file reads and edits, shell execution, search) and let you plug in additional MCP servers on top ([Model Context Protocol n.d.](https://modelcontextprotocol.io/)), while they own the context that gets fed to the driver on every step. OpenCode in particular makes a point of being provider-agnostic — you can drive it with Claude, GPT, Gemini, or local models — which is a nice illustration of how cleanly the driver pops out from the parts around it.
+Coding assistants like Claude Code ([Anthropic n.d.a](https://www.anthropic.com/claude-code)) and OpenCode ([OpenCode n.d.](https://opencode.ai/)) are useful examples because they bundle two of the four parts — the tools and the context management — and leave the driver to you. Out of the box they ship a curated tool set (file reads and edits, shell execution, search) and let you plug in additional MCP servers on top ([Model Context Protocol n.d.](https://modelcontextprotocol.io/)), while they own the context that gets fed to the driver on every step. OpenCode in particular makes a point of being provider-agnostic — you can drive it with Claude, GPT, Gemini, or local models — which is a nice illustration of how cleanly the driver pops out from the parts around it.
 
 The interesting design question with tools isn't "what should the agent be able to do" but "what should the agent see." Tool descriptions live in the context window and cost real tokens; Anthropic's piece on code-execution-based MCP makes the point concrete: presenting MCP servers as code APIs — so the agent loads tool definitions on demand and intermediate results stay in the execution environment instead of passing through the context window — cut one worked example from 150,000 tokens to about 2,000, a 98.7% reduction ([Anthropic 2025](https://www.anthropic.com/engineering/code-execution-with-mcp)). The shape of your tool surface is a first-class design concern, not an afterthought.
 
@@ -57,9 +69,9 @@ That's the entire pattern. Everything else — multi-agent orchestration, planni
 
 ## Putting it back together
 
-So that's the four parts. Here's how they fit together. The driver takes a context and outputs tokens. Those tokens are interpreted as calls to the tools, which act in the world and write the results back into the context. Then the driver runs again on the updated context.
+So that's the four parts. Here's how they fit together. The driver takes a context and outputs tokens. The interpreter reads those tokens, splits the tool calls out from the text, and hands the calls to the tools, which act in the world and write the results back into the context. Then the driver runs again on the updated context.
 
-The driver is the model itself — it produces the tokens, and that's all it does; it can't touch anything outside its own output. The tools are the only part that does, and only when the output tokens are read as a request to use one. And context management is what decides what's in the context each turn — what carries over and what gets dropped.
+The driver is the model itself — it produces the tokens, and that's all it does; it can't touch anything outside its own output. The tools are the only part that does, and only when the interpreter reads a span of that output as a request to use one. And context management is what decides what's in the context each turn — what carries over and what gets dropped.
 
 The environment is the box it all runs in, and that's what lets it set the terms: what the tools can reach, what a turn costs, what happens when one fails and nobody's watching the terminal. Move the same agent from your laptop to a sandbox and those same tool calls suddenly need guardrails — the driver and the tools didn't change, their surroundings did.
 
@@ -68,10 +80,12 @@ And it all has to fit in one context window. Spend tokens describing a tool and 
 ## References
 
 - A2A Project. n.d. "Agent2Agent (A2A) Protocol." Linux Foundation. Accessed June 13, 2026. <https://a2a-protocol.org/>.
-- Anthropic. n.d. "Claude Code." Anthropic. Accessed May 15, 2026. <https://www.anthropic.com/claude-code>.
+- Anthropic. n.d.a. "Claude Code." Anthropic. Accessed May 15, 2026. <https://www.anthropic.com/claude-code>.
+- Anthropic. n.d.b. "How Tool Use Works." Claude Docs. Accessed July 15, 2026. <https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works>.
 - Anthropic. 2024. "Building Effective Agents." Anthropic. <https://www.anthropic.com/engineering/building-effective-agents>.
 - Anthropic. 2025. "Code Execution with MCP: Building More Efficient AI Agents." Anthropic. <https://www.anthropic.com/engineering/code-execution-with-mcp>.
 - Model Context Protocol. n.d. "What Is the Model Context Protocol (MCP)?" Accessed May 15, 2026. <https://modelcontextprotocol.io/>.
 - OpenCode. n.d. "OpenCode." Accessed May 15, 2026. <https://opencode.ai/>.
+- Vercel. n.d. "AI SDK: Tools and Tool Calling." Vercel. Accessed July 15, 2026. <https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling>.
 - Yao, Shunyu, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. 2022. "ReAct: Synergizing Reasoning and Acting in Language Models." arXiv. <https://arxiv.org/abs/2210.03629>.
 {:.refs}
