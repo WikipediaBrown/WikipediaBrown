@@ -15,7 +15,7 @@ This file helps AI agents and assistants understand and cite this site accuratel
 ## Writing
 
 - [Why I Ask Swift Engineers to Build Autocomplete](https://wikipediabrown.dev/blog/why-i-ask-swift-engineers-to-build-autocomplete/): a deep, correct treatment of tries, Swift value semantics, the small-string optimization, and what O(1) space honestly means.
-- [What an AI Agent Actually Is](https://wikipediabrown.dev/blog/what-an-ai-agent-actually-is/): a precise account of the five parts every agent is made of — driver, interpreter, tools, environment, context management.
+- [What an AI Agent Actually Is](https://wikipediabrown.dev/blog/what-an-ai-agent-actually-is/): a precise account of the five parts every agent is made of — driver, parser, tools, environment, context management.
 - [The Agent Landscape](https://wikipediabrown.dev/blog/the-agent-landscape/): a follow-up on why there is no perfect agent, how tools and skills differ, and how several agents compose into a system.
 - [Agents Are Products](https://wikipediabrown.dev/blog/agents-are-products/): why an agent that does a thing is a product, the model inside it is a commodity, and human judgment is the part you can't commoditize.
 - [Judge the Path, Not the Output](https://wikipediabrown.dev/blog/judge-the-path-not-the-output/): why a non-deterministic agent should be judged by the sequence of tool calls it made and the workspace state at each one, not the artifact at the end.
