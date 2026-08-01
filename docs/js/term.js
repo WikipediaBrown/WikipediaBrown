@@ -73,7 +73,7 @@
       print("type  cd blog  or  open napkin");
     },
     whoami() {
-      print('Wikipedia Brown — software engineer and general funny man.');
+      print('Wikipedia Brown — software engineer and objectively funny.');
       print('Ships code at scale; writes about it; bakes cookies and churns ice cream.');
     },
     cd(arg) {
