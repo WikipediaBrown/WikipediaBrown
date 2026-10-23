@@ -9,6 +9,12 @@
 - Desktop/mobile screenshots inspected. Corrected Tailwind shared-component scanning so generated controls have their documented dimensions.
 - `git diff --check`: clean.
 
+## Verified on GitHub Actions
+
+[Site and booking checks, run 39926896862](https://github.com/WikipediaBrown/WikipediaBrown/actions/runs/39926896862) passed for commit `2975853e212ec4576434bd0dc344f2c73f2b5a26`: clean dependency installation, both type-check projects, backend tests, both builds, browser tests, and build-artifact uploads. These checks use the same explicit Google/Stripe mocks; they do not replace the live checks below.
+
+The manual Apps Script source-sync workflow passes actionlint 1.7.12. Pinned clasp 3.4.1 accepts the configured command options; local file enumeration selects exactly the three backend scripts, manifest, and generated booking HTML. An actual upload remains pending owner OAuth credentials and the bound Script ID.
+
 ## Google Sheet prepared through connected account
 
 A private native spreadsheet was created in the account's ChatGPT folder with Read me, Bookings, and History tabs. Verified timezone America/Los_Angeles, column headers, no-refund/paid-rescheduling instructions, frozen headers, system-column hiding configuration, attention formatting, and owner-only sharing metadata through connector readback. No fake bookings were inserted. Visual fit was checked through API formatting/width metadata; no authenticated Google browser render was available.
@@ -23,4 +29,4 @@ Production Jekyll /docs and its existing deployment have not been changed. The m
 
 ## Publishing status
 
-Review branch: `feat/svelte-advisory-booking`. GitHub write access was verified by creating this branch after the repository owner's personal-account Codex Connector installation was added. The earlier authorization blocker is resolved. Main and production deployment remain unchanged; the Google/Stripe account setup and live checks above are still required before launch.
+Review branch: `feat/svelte-advisory-booking`, published in [draft PR #52](https://github.com/WikipediaBrown/WikipediaBrown/pull/52). Branch creation, commit push, and PR creation all succeeded after the personal-account Codex Connector installation was added. Main and production deployment remain unchanged; the Google/Stripe account setup and live checks above are still required before launch.

@@ -1,7 +1,7 @@
 name: Site and booking checks
 on:
   pull_request:
-    paths: ['website/**', 'booking/**', 'backend/**', 'tests/**', 'scripts/**', '*config*', 'package*.json', '.github/workflows/site-checks.yml']
+    paths: ['website/**', 'booking/**', 'backend/**', 'tests/**', 'scripts/**', '*config*', 'package*.json', '.github/workflows/*.yml']
   workflow_dispatch:
 permissions:
   contents: read
