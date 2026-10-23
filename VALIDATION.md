@@ -17,6 +17,10 @@ The actual Sheet ID and owner email are kept in ignored local deployment configu
 
 ## Required live checks — not claimed as passed
 
-No Stripe account/key, Apps Script deployment or Google Calendar authorization has been supplied. Therefore real Google/Stripe payment, invitation, Meet, trigger, public-access and owner-menu behavior remains unexecuted. DEPLOYMENT.md supplies the complete account acceptance checklist. The booking app stays disabled and the public link stays unconfigured until setup is complete. Payment confirmation is a polling design rather than Stripe's recommended signed-webhook integration; account acceptance must explicitly verify that tradeoff.
+Google Calendar connector access was verified against the account’s owned primary calendar with a busy-only query; it returned successfully. This does not authorize the separate Apps Script project. No Stripe key or Apps Script deployment/authorization has been supplied. Real payment, invitation, Meet, trigger, public-access and owner-menu behavior therefore remains unexecuted. DEPLOYMENT.md supplies the complete account acceptance checklist. The booking app stays disabled and the public link stays unconfigured until setup is complete. Payment confirmation is a polling design rather than Stripe's recommended signed-webhook integration; account acceptance must explicitly verify that tradeoff.
 
 Production Jekyll /docs and its existing deployment have not been changed. The migration is reviewable on a branch; the remaining production cutover must change the source/build and retire legacy /docs together after hosting applicability and account setup are resolved.
+
+## Publishing status
+
+Local branch: `feat/svelte-advisory-booking`. Git CLI push and GitHub connector branch creation both returned HTTP 403 (the connector reports “Resource not accessible by integration”). No remote branch or PR was created and main was not changed. Source ZIP and a Git-format patch are supplied as a recoverable handoff. Repository Contents write permission is needed to publish the branch and open the planned draft PR.

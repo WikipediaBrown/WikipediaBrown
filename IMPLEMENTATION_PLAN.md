@@ -40,3 +40,9 @@ Complete source migration and lifecycle implementation; passed available automat
 
 ## Verification status
 See VALIDATION.md for commands, results, and live-account checks that cannot be run without credentials. Legacy /docs remains solely to avoid changing the live deployment before an approved cutover; remove it when changing the production build source.
+
+## Executed / remaining
+- Implemented migration and complete booking lifecycle; passed builds, both type-check projects, 22 backend tests and 13 desktop/mobile checks.
+- Created and verified the real private Google Sheet; verified busy-only access to the owned primary Google Calendar.
+- Prepared actual account configuration locally, with checkout disabled. Account identifiers are not committed.
+- Blocked: GitHub writes return 403; Stripe key and bound Apps Script authorization/deployment are not available. These are account prerequisites, not deferred feature versions.
