@@ -45,4 +45,5 @@ See VALIDATION.md for commands, results, and live-account checks that cannot be 
 - Implemented migration and complete booking lifecycle; passed builds, both type-check projects, 22 backend tests and 13 desktop/mobile checks.
 - Created and verified the real private Google Sheet; verified busy-only access to the owned primary Google Calendar.
 - Prepared actual account configuration locally, with checkout disabled. Account identifiers are not committed.
-- Blocked: GitHub writes return 403; Stripe key and bound Apps Script authorization/deployment are not available. These are account prerequisites, not deferred feature versions.
+- GitHub write access is verified after the personal-account Codex Connector installation was added; the review branch is `feat/svelte-advisory-booking`.
+- Remaining account prerequisites: Stripe key and bound Apps Script authorization/deployment. Live checks are listed in DEPLOYMENT.md.
