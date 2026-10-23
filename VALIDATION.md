@@ -23,4 +23,4 @@ Production Jekyll /docs and its existing deployment have not been changed. The m
 
 ## Publishing status
 
-Local branch: `feat/svelte-advisory-booking`. Git CLI push and GitHub connector branch creation both returned HTTP 403 (the connector reports “Resource not accessible by integration”). No remote branch or PR was created and main was not changed. Source ZIP and a Git-format patch are supplied as a recoverable handoff. Repository Contents write permission is needed to publish the branch and open the planned draft PR.
+Local branch: `feat/svelte-advisory-booking`. Git CLI push and GitHub connector branch creation both returned HTTP 403 (the connector reports “Resource not accessible by integration”). No remote branch or PR was created and main was not changed. The user explicitly rejected downloadable patch/source delivery. Continue by repairing the writable GitHub connection and publishing the existing local commits. /workspace/HANDOFF.md records the exact state. Official OpenAI documentation distinguishes the read-only ChatGPT GitHub app from writable Codex workflows; reconnecting the same read-only app is not a proven fix.
