@@ -1,0 +1,41 @@
+name: Site and booking checks
+on:
+  pull_request:
+    paths: ['website/**', 'booking/**', 'backend/**', 'tests/**', 'scripts/**', '*config*', 'package*.json', '.github/workflows/site-checks.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+        env:
+          PUBLIC_BOOKING_URL: ${{ vars.PUBLIC_BOOKING_URL }}
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-static
+          path: build/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apps-script-booking
+          path: |
+            backend/*.gs
+            backend/appsscript.json
+            backend/Booking.html
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-results
+          path: test-results/
+# No deployment on push: existing Pages deployment remains in place until cutover.

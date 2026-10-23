@@ -1,0 +1,524 @@
+<script>
+  import SEO from '$lib/SEO.svelte';
+  import * as Card from '$lib/components/ui/card/index.js';
+  import PostList from '$lib/PostList.svelte';
+  import GitHubStats from '$lib/GitHubStats.svelte';
+  import { Button } from '$lib/components/ui/button/index.js';
+  let { data } = $props();
+  const posts = $derived(data.posts);
+</script>
+
+<SEO />
+
+<!-- ─────────────────────────────  HERO  ───────────────────────────── -->
+<section class="hero" aria-labelledby="hero-h">
+  <h1 id="hero-h" class="hero__name">
+    <span class="hero__first">Wikipedia</span>
+    <span class="hero__last"><em>Brown</em></span>
+  </h1>
+
+  <p class="hero__lede">
+    Software engineer and objectively funny. I build cloud-based Mac
+    environments that customers run on Apple Silicon at scale: continuous
+    integration and delivery (<a
+      href="https://fastlane.tools/"
+      rel="noopener"
+      target="_blank">CI/CD</a
+    >), mobile device management (<a
+      href="https://support.apple.com/guide/deployment/intro-to-mdm-profiles-depc0aadd3fe/web"
+      rel="noopener"
+      target="_blank">MDM</a
+    >), artificial intelligence and machine learning (<a
+      href="https://developer.apple.com/machine-learning/"
+      rel="noopener"
+      target="_blank">AI/ML</a
+    >), virtual desktop infrastructure (<a
+      href="https://developer.apple.com/documentation/virtualization"
+      rel="noopener"
+      target="_blank">VDI</a
+    >), and computer-using agents (<a
+      href="https://openai.com/index/computer-using-agent/"
+      rel="noopener"
+      target="_blank">CUA</a
+    >). I write the code, not just the architecture. After hours I ship iOS
+    apps, macOS tools, and open-source Swift.
+  </p>
+
+  <ul class="hero__cues" aria-label="Currently">
+    <li>
+      <span class="cue-label">At work</span><span class="cue-val"
+        ><a
+          href="https://aws.amazon.com/ec2/instance-types/mac/"
+          rel="noopener"
+          target="_blank">Mac fleets</a
+        >,
+        <a
+          href="https://developer.apple.com/documentation/apple-silicon"
+          rel="noopener"
+          target="_blank">Apple Silicon</a
+        >,
+        <a
+          href="https://developer.apple.com/machine-learning/"
+          rel="noopener"
+          target="_blank">AI/ML</a
+        ></span
+      >
+    </li>
+    <li>
+      <span class="cue-label">Open source</span><span class="cue-val"
+        ><a href="https://getnapkin.to" rel="noopener" target="_blank">napkin</a
+        >
+        ·
+        <a href="https://sfsymbolskit.com" rel="noopener" target="_blank"
+          >SFSymbolsKit</a
+        >
+        ·
+        <a href="https://spooktacular.app/" rel="noopener" target="_blank"
+          >Spooktacular</a
+        ></span
+      >
+    </li>
+    <li>
+      <span class="cue-label">Shipping</span><span class="cue-val"
+        ><a href="https://spooktacular.app/" rel="noopener" target="_blank"
+          >Spooktacular</a
+        >
+        for
+        <a
+          href="https://developer.apple.com/documentation/apple-silicon"
+          rel="noopener"
+          target="_blank">Apple Silicon</a
+        ></span
+      >
+    </li>
+    <li>
+      <span class="cue-label">Reading</span><span class="cue-val"
+        ><a
+          href="https://www.amazon.com/Real-War-Richard-Library-Editions-ebook/dp/B00AHE248A"
+          rel="noopener"
+          target="_blank"><em>The Real War</em>, Richard Nixon</a
+        ></span
+      >
+    </li>
+  </ul>
+
+  <div class="hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <svg width="14" height="44" viewBox="0 0 14 44"
+      ><path
+        d="M7 0 v40 M1 34 l6 6 l6 -6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+      /></svg
+    >
+  </div>
+</section>
+
+<!-- ─────────────────────────────  GITHUB  ───────────────────────────── -->
+<aside class="ghband" aria-label="GitHub activity">
+  <a
+    class="ghband__head"
+    href="https://github.com/WikipediaBrown"
+    rel="noopener"
+    target="_blank"
+  >
+    <span class="cue-label">On GitHub</span>
+    <span class="ghband__handle">@WikipediaBrown&nbsp;↗</span>
+  </a>
+
+  <GitHubStats />
+</aside>
+
+<!-- ─────────────────────────────  ABOUT  ───────────────────────────── -->
+<section class="section about" id="about" aria-labelledby="about-h">
+  <div class="section__head">
+    <span class="section__num">№ 01</span>
+    <h2 id="about-h" class="section__title">A bit <em>about</em> me.</h2>
+    <span class="section__kicker">How I got here.</span>
+  </div>
+
+  <div class="about__grid">
+    <div class="about__copy">
+      <p>
+        I'm a software engineer. I've shipped software at
+        <em>Capital One</em>, <em>Uber</em>, <em>Robinhood</em>,
+        <em>Apple</em>, and Amazon Web Services (<em>AWS</em>). These days I
+        design and build the
+        <a href="https://fastlane.tools/" rel="noopener" target="_blank"
+          >CI/CD</a
+        >,
+        <a
+          href="https://support.apple.com/guide/deployment/intro-to-mdm-profiles-depc0aadd3fe/web"
+          rel="noopener"
+          target="_blank">MDM</a
+        >,
+        <a
+          href="https://developer.apple.com/machine-learning/"
+          rel="noopener"
+          target="_blank">AI/ML</a
+        >,
+        <a
+          href="https://developer.apple.com/documentation/virtualization"
+          rel="noopener"
+          target="_blank">VDI</a
+        >, and
+        <a
+          href="https://openai.com/index/computer-using-agent/"
+          rel="noopener"
+          target="_blank">CUA</a
+        >
+        systems customers use to run fleets of Macs on Apple Silicon.
+      </p>
+      <p>
+        After hours I build open-source Swift projects &mdash;
+        <em>napkin</em>, <em>SFSymbolsKit</em>, and <em>Spooktacular</em>, a
+        macOS virtual machine (VM) manager &mdash; and I write.
+      </p>
+      <p>
+        Right now I'm building <em>distributed agentic systems</em>: fleets of
+        AI agents that run on real hardware and produce real outcomes, not
+        demos. I care about <em>local-first</em> software, readable typography
+        on small screens, clear
+        <code>README</code>s, and software that works for the person using it.
+      </p>
+    </div>
+
+    <aside class="about__sidebar">
+      <Card.Root
+        ><Card.Content
+          ><dl class="stats">
+            <div>
+              <dt>Currently</dt>
+              <dd>Software Engineer</dd>
+            </div>
+            <div>
+              <dt>Shipped at</dt>
+              <dd>
+                <a
+                  href="https://github.com/capitalone"
+                  rel="noopener"
+                  target="_blank">Capital One</a
+                >
+                ·
+                <a href="https://github.com/uber" rel="noopener" target="_blank"
+                  >Uber</a
+                >
+                ·
+                <a
+                  href="https://github.com/robinhood"
+                  rel="noopener"
+                  target="_blank">Robinhood</a
+                >
+                ·
+                <a
+                  href="https://github.com/apple"
+                  rel="noopener"
+                  target="_blank">Apple</a
+                >
+                ·
+                <a href="https://github.com/aws" rel="noopener" target="_blank"
+                  >AWS</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt>Shipping</dt>
+              <dd>
+                <a
+                  href="https://www.swift.org/documentation/"
+                  rel="noopener"
+                  target="_blank">Swift</a
+                >
+                ·
+                <a
+                  href="https://developer.apple.com/ios/"
+                  rel="noopener"
+                  target="_blank">iOS</a
+                >
+                ·
+                <a
+                  href="https://developer.apple.com/macos/"
+                  rel="noopener"
+                  target="_blank">macOS</a
+                >
+                ·
+                <a
+                  href="https://developer.hashicorp.com/terraform/docs"
+                  rel="noopener"
+                  target="_blank">Terraform</a
+                >
+                ·
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+                  rel="noopener"
+                  target="_blank">JavaScript</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt>AI advisory</dt>
+              <dd><a href="/advisory/">Book a private session ↗</a></dd>
+            </div>
+          </dl></Card.Content
+        ></Card.Root
+      >
+
+      <blockquote class="pull">
+        <p>"I'm just the guy that does the&nbsp;thing."</p>
+        <footer>— I bit that</footer>
+      </blockquote>
+
+      <Card.Root
+        ><Card.Content class="certs" aria-labelledby="certs-h">
+          <h3 id="certs-h" class="certs__head">
+            Licenses &amp; Certifications
+          </h3>
+          <ol class="certs__list">
+            <li>
+              <p class="certs__name">AWS Certified AI Practitioner</p>
+              <p class="certs__meta">Amazon Web Services</p>
+              <a
+                class="certs__link"
+                href="https://www.credly.com/badges/3ca88eef-4a27-4623-af70-ab9df1c46f34"
+                rel="noopener"
+                target="_blank"
+                aria-label="Verify AWS Certified AI Practitioner on Credly"
+                >Verify&nbsp;↗</a
+              >
+            </li>
+            <li>
+              <p class="certs__name">AWS Certified Cloud Practitioner</p>
+              <p class="certs__meta">Amazon Web Services</p>
+              <a
+                class="certs__link"
+                href="https://www.credly.com/badges/dffecc92-f656-4742-af20-add54d9c3634"
+                rel="noopener"
+                target="_blank"
+                aria-label="Verify AWS Certified Cloud Practitioner on Credly"
+                >Verify&nbsp;↗</a
+              >
+            </li>
+          </ol>
+        </Card.Content></Card.Root
+      >
+    </aside>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  WORK  ───────────────────────────── -->
+<section class="section work" id="work" aria-labelledby="work-h">
+  <div class="section__head">
+    <span class="section__num">№ 02</span>
+    <h2 id="work-h" class="section__title">Selected <em>Work</em></h2>
+    <span class="section__kicker">Three projects worth showing today.</span>
+  </div>
+
+  <ol class="work__list">
+    <li class="work__item">
+      <span class="work__index">01</span>
+      <div class="work__body">
+        <h3 class="work__title">Spooktacular</h3>
+        <p class="work__meta">macOS · Open Source</p>
+        <p class="work__desc">
+          An open-source macOS VM manager for Apple Silicon: ephemeral runner
+          pools, warm-pool scrub validation, Kubernetes orchestration. One box
+          delivers two Macs' worth of CI capacity. 424 tests, MIT-licensed.
+        </p>
+      </div>
+      <a
+        class="work__link"
+        href="https://spooktacular.app/"
+        rel="noopener"
+        target="_blank"
+        aria-label="Spooktacular site">spooktacular.app&nbsp;↗</a
+      >
+    </li>
+
+    <li class="work__item">
+      <span class="work__index">02</span>
+      <div class="work__body">
+        <h3 class="work__title">napkin</h3>
+        <p class="work__meta">Swift Framework · Open Source</p>
+        <p class="work__desc">
+          A Swift 6.2 framework for building apps as a tree of isolated,
+          composable units &mdash; Uber's RIBs pattern, rebuilt for Swift
+          Concurrency. I reimplemented it in project after project, so I
+          published it.
+        </p>
+      </div>
+      <a
+        class="work__link"
+        href="https://getnapkin.to"
+        rel="noopener"
+        target="_blank"
+        aria-label="napkin homepage">getnapkin.to&nbsp;↗</a
+      >
+    </li>
+
+    <li class="work__item">
+      <span class="work__index">03</span>
+      <div class="work__body">
+        <h3 class="work__title">SFSymbolsKit</h3>
+        <p class="work__meta">Swift Package · Open Source</p>
+        <p class="work__desc">
+          A small Swift package for working with <code>SFSymbols</code>.
+          Extensions on <code>String</code>, <code>UIImage</code>, and
+          <code>NSImage</code>; the full symbol catalog is generated by a Python
+          script in the repo.
+        </p>
+      </div>
+      <a
+        class="work__link"
+        href="https://sfsymbolskit.com"
+        rel="noopener"
+        target="_blank"
+        aria-label="SFSymbolsKit homepage">sfsymbolskit.com&nbsp;↗</a
+      >
+    </li>
+  </ol>
+</section>
+
+<!-- ─────────────────────────────  NOW  ───────────────────────────── -->
+<section class="section now" id="now" aria-labelledby="now-h">
+  <div class="section__head">
+    <span class="section__num">№ 03</span>
+    <h2 id="now-h" class="section__title">
+      What I'm <em>doing</em>, this season.
+    </h2>
+    <span class="section__kicker"
+      >A <a href="https://nownownow.com" rel="noopener" target="_blank">/now</a> page.</span
+    >
+  </div>
+
+  <div class="now__grid">
+    <Card.Root class="now__card"
+      ><Card.Header><Card.Title>At the desk</Card.Title></Card.Header
+      ><Card.Content>
+        <p>
+          Building a private <em>agentic AI finance project</em>. More when
+          there's something to show.
+        </p>
+      </Card.Content></Card.Root
+    >
+    <Card.Root class="now__card"
+      ><Card.Header><Card.Title>On the page</Card.Title></Card.Header
+      ><Card.Content>
+        <p>
+          Halfway through Nixon's <a
+            href="https://www.amazon.com/Real-War-Richard-Library-Editions-ebook/dp/B00AHE248A"
+            rel="noopener"
+            target="_blank"><em>The Real War</em></a
+          >. Reading it slowly, on purpose.
+        </p>
+      </Card.Content></Card.Root
+    >
+    <Card.Root class="now__card"
+      ><Card.Header><Card.Title>In the headphones</Card.Title></Card.Header
+      ><Card.Content>
+        <p>
+          <a
+            href="https://music.apple.com/us/artist/tops/875389571"
+            rel="noopener"
+            target="_blank">TOPS</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/griselda/1484884776"
+            rel="noopener"
+            target="_blank">Griselda</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/part-time/438577174"
+            rel="noopener"
+            target="_blank">Part Time</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/yves-tumor/1006599780"
+            rel="noopener"
+            target="_blank">Yves Tumor</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/ghostface-killah/462455"
+            rel="noopener"
+            target="_blank">Ghostface Killah</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/vince-staples/566639154"
+            rel="noopener"
+            target="_blank">Vince Staples</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/big-body-bes/586810954"
+            rel="noopener"
+            target="_blank">Big Body Bes</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/meyhem-lauren/276205200"
+            rel="noopener"
+            target="_blank">Meyhem Lauren</a
+          >,
+          <a
+            href="https://music.apple.com/us/artist/badbadnotgood/505464105"
+            rel="noopener"
+            target="_blank">BADBADNOTGOOD</a
+          >, and
+          <a
+            href="https://music.apple.com/us/artist/kanye-west/2715720"
+            rel="noopener"
+            target="_blank">Kanye West</a
+          >
+          on rotation.
+        </p>
+      </Card.Content></Card.Root
+    >
+    <Card.Root class="now__card"
+      ><Card.Header><Card.Title>Off the keyboard</Card.Title></Card.Header
+      ><Card.Content>
+        <p>
+          Mentoring a few engineers and remembering how much I like it. Trying
+          out new bits at open mics — stand-up is harder than distributed
+          systems. Baking cookies and making ice cream, and slowly getting good
+          at both.
+        </p>
+      </Card.Content></Card.Root
+    >
+  </div>
+</section>
+
+<!-- ─────────────────────────  NOTES PREVIEW  ─────────────────────── -->
+<section class="section notes-preview" id="notes" aria-labelledby="notes-h">
+  <div class="section__head">
+    <span class="section__num">№ 04</span>
+    <h2 id="notes-h" class="section__title">Stuff I <em>Said</em></h2>
+    <span class="section__kicker"
+      >Short writing. Read the latest, or <a href="/blog/"
+        >see everything&nbsp;→</a
+      ></span
+    >
+  </div>
+
+  <PostList posts={posts.slice(0, 3)} />
+
+  <p class="notes-preview__all">
+    <a href="/blog/" class="work__link">Read all the stuff ↗</a>
+  </p>
+</section>
+
+<!-- ─────────────────────────────  CONTACT (CTA → /contact/)  ───────────── -->
+<section class="section contact-cta" aria-labelledby="contact-cta-h">
+  <div class="section__head">
+    <span class="section__num">№ 05</span>
+    <h2 id="contact-cta-h" class="section__title">Say <em>hello</em>.</h2>
+    <span class="section__kicker">Private AI advisory · $500 / hour.</span>
+  </div>
+
+  <p class="contact__lede">
+    Use the links below. Reach out about a project, a problem, or music I should
+    hear.
+  </p>
+
+  <p class="notes-preview__all">
+    <Button href="/advisory/">Book an AI advisory session ↗</Button>
+    <Button href="/contact/" variant="outline">Other ways to reach me</Button>
+  </p>
+</section>
