@@ -1,0 +1,4 @@
+**/**
+!backend/*.gs
+!backend/appsscript.json
+!backend/Booking.html
