@@ -1,0 +1,63 @@
+name: Sync Apps Script source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apps-script-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Check required secrets
+        env:
+          HAS_CLASP_CREDENTIALS: ${{ secrets.CLASPRC_JSON != '' }}
+          HAS_APPS_SCRIPT_ID: ${{ secrets.APPS_SCRIPT_ID != '' }}
+        run: |
+          if [ "$HAS_CLASP_CREDENTIALS" != true ] || [ "$HAS_APPS_SCRIPT_ID" != true ]; then
+            echo '::error::Set the CLASPRC_JSON and APPS_SCRIPT_ID repository Actions secrets. See DEPLOYMENT.md.'
+            exit 1
+          fi
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - name: Upload to the existing bound project
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+          APPS_SCRIPT_ID: ${{ secrets.APPS_SCRIPT_ID }}
+        run: |
+          umask 077
+          node --input-type=module <<'NODE'
+          import { writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const { CLASPRC_JSON, APPS_SCRIPT_ID, RUNNER_TEMP } = process.env;
+          try {
+            JSON.parse(CLASPRC_JSON);
+            if (!/^[A-Za-z0-9_-]+$/.test(APPS_SCRIPT_ID)) throw new Error();
+          } catch {
+            console.error('::error::CLASPRC_JSON must be valid JSON and APPS_SCRIPT_ID must be a Script ID.');
+            process.exit(1);
+          }
+          writeFileSync(join(RUNNER_TEMP, 'apps-script-clasprc.json'), CLASPRC_JSON, { mode: 0o600 });
+          writeFileSync('.clasp.json', JSON.stringify({ scriptId: APPS_SCRIPT_ID, rootDir: 'backend' }), { mode: 0o600 });
+          NODE
+          npx --yes @google/clasp@3.4.1 \
+            --auth "$RUNNER_TEMP/apps-script-clasprc.json" \
+            --project "$GITHUB_WORKSPACE/.clasp.json" \
+            --ignore "$GITHUB_WORKSPACE/backend/.claspignore" \
+            push --force
+      - name: Remove temporary credentials and project mapping
+        if: always()
+        run: rm -f "$RUNNER_TEMP/apps-script-clasprc.json" "$GITHUB_WORKSPACE/.clasp.json"
