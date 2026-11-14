@@ -1,0 +1,33 @@
+{
+  "enabled": false,
+  "title": "Private AI Advisory",
+  "ownerEmail": "",
+  "spreadsheetId": "",
+  "calendarId": "",
+  "conflictCalendarIds": [],
+  "timeZone": "America/Los_Angeles",
+  "durationMinutes": 60,
+  "amount": 50000,
+  "currency": "usd",
+  "weeklyHours": {
+    "1": [[720, 1080]],
+    "2": [[720, 1080]],
+    "3": [[720, 1080]],
+    "4": [[720, 1080]],
+    "5": [[720, 1080]],
+    "6": [[720, 1080]]
+  },
+  "blockedDates": [],
+  "minimumNoticeHours": 0,
+  "bufferMinutes": 0,
+  "horizonDays": 90,
+  "cancellationNoticeHours": 0,
+  "rescheduleNoticeHours": 0,
+  "refundPercent": 0,
+  "policyText": "Sessions cost $500 USD for 60 minutes. Payment is required to confirm a booking. All payments are non-refundable, including cancellations. If you cancel, your payment remains available to reschedule the same session to another available time. Rescheduling does not require another payment. Availability is Monday through Saturday, noon to 6 p.m. Pacific time (PST/PDT).",
+  "policyVersion": "2026-10-23",
+  "meetingLocation": "",
+  "reminderHours": 0,
+  "webAppUrl": "",
+  "meetingMode": "google-meet"
+}
