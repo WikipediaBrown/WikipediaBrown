@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.json","include":["booking/src/**/*.ts","booking/src/**/*.svelte","website/src/lib/**/*.ts","website/src/lib/**/*.svelte"],"exclude":["node_modules","website/src/lib/server"]}
